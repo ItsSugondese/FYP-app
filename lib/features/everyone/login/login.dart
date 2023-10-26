@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:fyp/api/GoogleSignInApi.dart';
-import 'package:fyp/login/login-service/login-service.dart';
-import 'package:fyp/model/jwt/JwtResponse.dart';
-import 'package:http/http.dart' as http;
+import 'package:fyp/features/everyone/login/login-service/login-service.dart';
 
 class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final loginService =  LoginService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               height: 100,
               width: 100,
-              child: Image.asset('lib/images/tuteelogo.png', fit: BoxFit.contain,),
+              child: Image.asset('assets/images/tuteelogo.png', fit: BoxFit.contain,),
             ),
           ),
           Expanded(
@@ -141,7 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: SignInButton(
                             Buttons.Google,
                             text: "Sign in",
-                            onPressed: signIn,
+                            onPressed: (){ loginService.signIn(context);
+                            },
                           ),
                         ),
                       ),
@@ -169,19 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   }
-  Future signIn() async{
-    try {
-      final user = await GoogleSignInApi.login();
-      final idToken =  await user?.authentication.then((value) => value.idToken);
-      final response  = await sendLoginCredientials(idToken);
-      print(response?.jwtToken);
 
-      GoogleSignInApi.logout();
-    }on Exception catch(exception){
-      print(exception);
-      GoogleSignInApi.logout();
-    }
-  }
 
 
 

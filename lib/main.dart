@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/login/login.dart';
+import 'package:fyp/features/everyone/login/login.dart';
+
+import 'features/everyone/test.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home : LoginScreen(),
+      home : TestClass(),
     );
   }
 }
