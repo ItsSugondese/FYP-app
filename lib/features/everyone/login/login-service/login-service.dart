@@ -1,16 +1,16 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/config/auth/interceptors/dio_interceptor.dart';
 import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/features/everyone/test.dart';
 import 'package:fyp/model/auth/ErrorResponse.dart';
 import 'package:fyp/model/auth/jwt/JwtResponse.dart';
+import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/network/dio_service.dart';
 import 'package:fyp/services/storage/store_service.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../../config/network/api/GoogleSignInApi.dart';
 
@@ -30,7 +30,9 @@ class LoginService {
           .then((value) => value.idToken);
       final response = await login(context, idToken);
       Store.setToken(response!.jwtToken);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => TestClass()));
+      Store.setRoles(response.roles);
+      Store.setUsername(response.username);
+      AutoRouter.of(context).push(const TestScreenRoute());
     } on DioException catch (exception){
       final error = DioService.handleDioException(exception);
       debugPrint(error.message);

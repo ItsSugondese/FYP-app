@@ -1,14 +1,16 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/features/everyone/test_service.dart';
 
-class TestClass extends StatefulWidget {
-  const TestClass({Key? key}) : super(key: key);
+@RoutePage()
+class TestScreen extends StatefulWidget {
+  const TestScreen({Key? key}) : super(key: key);
 
   @override
-  State<TestClass> createState() => _TestClassState();
+  State<TestScreen> createState() => _TestScreenState();
 }
 
-class _TestClassState extends State<TestClass> {
+class _TestScreenState extends State<TestScreen> {
   final testService = TestService();
   Future<String>? testText;
   @override

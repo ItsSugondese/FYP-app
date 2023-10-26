@@ -41,10 +41,13 @@ dependencies:
   http: ^0.13.5
   dio: ^5.3.3
   shared_preferences: ^2.2.0
+  auto_route: ^7.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  auto_route_generator: ^7.3.2
+  build_runner:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

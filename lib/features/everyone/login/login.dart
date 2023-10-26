@@ -1,7 +1,9 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fyp/features/everyone/login/login-service/login-service.dart';
 
+@RoutePage()
 class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
