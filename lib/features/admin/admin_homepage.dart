@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 
 @RoutePage()
 class AdminHomepage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("ADMIN page"),
+      child: FloatingActionButton( onPressed: () => {GoogleSignInApi.logout()}, ),
     );
   }
 }

@@ -32,7 +32,7 @@ class LoginService {
       Store.setToken(response!.jwtToken);
       Store.setRoles(response.roles);
       Store.setUsername(response.username);
-      AutoRouter.of(context).push(const TestScreenRoute());
+      AutoRouter.of(context).push(const HomepageRoute());
     } on DioException catch (exception){
       final error = DioService.handleDioException(exception);
       debugPrint(error.message);

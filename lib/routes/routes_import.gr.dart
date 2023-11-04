@@ -13,7 +13,7 @@ import 'package:fyp/features/admin/admin_homepage.dart' as _i1;
 import 'package:fyp/features/everyone/login/login.dart' as _i3;
 import 'package:fyp/features/everyone/test.dart' as _i5;
 import 'package:fyp/features/staff/staff_homepage.dart' as _i4;
-import 'package:fyp/features/users/homepage.dart' as _i2;
+import 'package:fyp/features/users/homepage/homepage.dart' as _i2;
 
 abstract class $AppRouter extends _i6.RootStackRouter {
   $AppRouter({super.navigatorKey});
