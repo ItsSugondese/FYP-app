@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:fyp/features/everyone/login/login-service/login-service.dart';
+import 'package:fyp/features/login/login-service/login-service.dart';
 
 @RoutePage()
 class LoginScreen extends StatefulWidget {
@@ -9,7 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final loginService =  LoginService();
+  final loginService = LoginService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               height: 100,
               width: 100,
-              child: Image.asset('assets/images/tuteelogo.png', fit: BoxFit.contain,),
+              child: Image.asset(
+                'assets/images/tuteelogo.png',
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           Expanded(
@@ -62,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Text(
                               ' E M A I L',
                               style:
-                              TextStyle(color: Colors.brown, fontSize: 20),
+                                  TextStyle(color: Colors.brown, fontSize: 20),
                             )
                           ],
                         ),
@@ -72,7 +75,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40, top: 10, bottom:10),
+                    padding: EdgeInsets.only(
+                        left: 40, right: 40, top: 10, bottom: 10),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
@@ -104,7 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40, top: 30, bottom: 20),
+                    padding: EdgeInsets.only(
+                        left: 40, right: 40, top: 30, bottom: 20),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
@@ -112,49 +117,47 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Center(
                           child: Text('S I G N  I N',
                               style: TextStyle(
-                                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold
-                              )),
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left:15, right:15, bottom: 20),
+                  padding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left:10, right:5),
+                          padding: EdgeInsets.only(left: 10, right: 5),
                           child: SignInButton(
                             Buttons.AppleDark,
                             text: "Sign in",
-                            onPressed: (){
-
-                            },
+                            onPressed: () {},
                           ),
                         ),
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left:5, right:5),
+                          padding: EdgeInsets.only(left: 5, right: 5),
                           child: SignInButton(
                             Buttons.Google,
                             text: "Sign in",
-                            onPressed: (){ loginService.signIn(context);
+                            onPressed: () {
+                              loginService.signIn(context);
                             },
                           ),
                         ),
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left:5, right:10),
+                          padding: EdgeInsets.only(left: 5, right: 10),
                           child: SignInButton(
                             Buttons.Facebook,
                             text: "Sign in",
-                            onPressed: (){
-
-                            },
+                            onPressed: () {},
                           ),
                         ),
                       ),
@@ -167,15 +170,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
-
-
   }
-
-
-
-
-
 }
-
-
-
