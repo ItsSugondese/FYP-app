@@ -1,33 +1,35 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/features/order-mgmt/online-order/online-order-service/online_order_service.dart';
+import 'package:fyp/features/people-mgmt/user-mgmt/user-mgmt-service/user_management_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/order/online_order.dart';
+import 'package:fyp/model/people/user.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 
 @RoutePage()
-class OnlineOrderScreen extends StatefulWidget {
-  const OnlineOrderScreen({super.key});
+class UserManagementScreen extends StatefulWidget {
+  const UserManagementScreen({super.key});
 
   @override
-  State<OnlineOrderScreen> createState() => _OnlineOrderScreenState();
+  State<UserManagementScreen> createState() => _UserManagementScreenState();
 }
 
-class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
+class _UserManagementScreenState extends State<UserManagementScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
   // ScrollController _scrollController = ScrollController();
-  OnlineOrderService onlineOrderService = OnlineOrderService();
+  UserManagementService onlineOrderService = UserManagementService();
 
-  late Future<PaginatedData<OnlineOrder>> onlineOrderFuture;
+  late Future<PaginatedData<User>> userFuture;
 
   OnlineOrderPaginationPayload paginationPayload =
       OnlineOrderPaginationPayload();
 
   @override
   void initState() {
-    onlineOrderFuture =
-        onlineOrderService.getOnlineOrder(context, paginationPayload.toJson());
+    userFuture =
+        onlineOrderService.getAllUsers(context, paginationPayload.toJson());
   }
 
   @override
@@ -42,13 +44,13 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Online Order'),
+        title: Text('User Management'),
       ),
-      body: FutureBuilder<PaginatedData<OnlineOrder>>(
-          future: onlineOrderFuture,
+      body: FutureBuilder<PaginatedData<User>>(
+          future: userFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<OnlineOrder> listOfOnlineOrders = snapshot.data!.dataList;
+              List<User> listOfOnlineOrders = snapshot.data!.dataList;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }
@@ -57,7 +59,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
                 onPageChanged: (value) {
                   setState(() {
                     paginationPayload.page = value + 1;
-                    onlineOrderFuture = onlineOrderService.getOnlineOrder(
+                    userFuture = onlineOrderService.getAllUsers(
                         context, paginationPayload.toJson());
                   });
                 },
@@ -72,24 +74,27 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
                         dataRowHeight: 200,
                         columnSpacing: 200,
                         columns: [
+                          DataColumn(label: Text('')),
                           DataColumn(label: Text('Id')),
                           DataColumn(label: Text('Name')),
-                          DataColumn(label: Text('Price')),
+                          DataColumn(label: Text('Status')),
+                          DataColumn(label: Text('Email')),
                           DataColumn(label: Text('Action')),
                         ],
-                        rows: listOfOnlineOrders.map((onlineOrderMap) {
+                        rows: listOfOnlineOrders.map((userMap) {
                           return DataRow(cells: [
-                            DataCell(Text("${onlineOrderMap.id}")),
-                            DataCell(Text(onlineOrderMap.fullName)),
                             DataCell(
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: onlineOrderMap.orderFoodDetails
-                                    .map((e) => Text(
-                                        "${e.foodName} \t ${e.cost * e.quantity}"))
-                                    .toList(),
+                              Image.network(
+                                userMap.profilePath,
+                                width: 200.0,
+                                height: 200.0,
+                                fit: BoxFit.cover,
                               ),
                             ),
+                            DataCell(Text("${userMap.id}")),
+                            DataCell(Text(userMap.fullName)),
+                            DataCell(Text("${userMap.accountNonLocked}")),
+                            DataCell(Text("${userMap.email}")),
                             DataCell(Row(
                               children: [
                                 IconButton(

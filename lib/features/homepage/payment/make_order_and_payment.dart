@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/enums/pay_status.dart';
 import 'package:fyp/podo/foodmgmt/food_order_response.dart';
-import 'package:fyp/podo/foodmgmt/online_order_response.dart';
-import 'package:fyp/podo/foodmgmt/onsite_order_response.dart';
+import 'package:fyp/podo/orders/online-order/online_order_response.dart';
+import 'package:fyp/podo/orders/onsite-order/onsite_order_response.dart';
 import 'package:fyp/services/order-services/online_order_service.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
 import 'package:fyp/services/payment/payment_service.dart';

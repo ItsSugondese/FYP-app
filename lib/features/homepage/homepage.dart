@@ -13,7 +13,7 @@ import 'package:fyp/model/foodmgmt/Food_menu_item_with_image.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_order_response.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
-import 'package:fyp/podo/foodmgmt/online_order_response.dart';
+import 'package:fyp/podo/orders/online-order/online_order_response.dart';
 
 import '../../routes/routes_import.gr.dart';
 

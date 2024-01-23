@@ -11,22 +11,24 @@ import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/model/order/online_order.dart';
+import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/model/order/ordered_food.dart';
+import 'package:fyp/model/people/user.dart';
 import 'package:fyp/services/network/dio_service.dart';
 import 'package:flutter/material.dart';
 
-class OnlineOrderService {
+class UserManagementService {
   late final Dio _dio;
 
-  OnlineOrderService() {
+  UserManagementService() {
     _dio = DioService.getDioConfig();
   }
 
-  Future<PaginatedData<OnlineOrder>> getOnlineOrder(
+  Future<PaginatedData<User>> getAllUsers(
       BuildContext context, Map<String, dynamic> map) async {
     try {
       Response response = await _dio.post(
-        "${ApiConstant.backendUrl}/${ModuleName.ONLINE_ORDER}/paginated",
+        "${ApiConstant.backendUrl}/${ModuleName.USER}/paginated",
         data: json.encode(map),
         options: Options(
           headers: <String, String>{
@@ -38,16 +40,10 @@ class OnlineOrderService {
       if (response.statusCode == 200) {
         if (response.data['status'] == 1) {
           List<dynamic> jsonDataList = response.data['data']['content'];
-          List<OnlineOrder> onlineOrderList = [];
+          List<User> userList = [];
 
           for (var jsonData in jsonDataList) {
-            List<OrderedFood> orderedFoodList = [];
-            for (var foodJson in jsonData['orderFoodDetails']) {
-              orderedFoodList.add(OrderedFood.fromJson(foodJson));
-            }
-
-            onlineOrderList
-                .add(OnlineOrder.fromJson(jsonData, orderedFoodList));
+            userList.add(User.fromJson(jsonData));
           }
 
           int totalPages = response.data['data']['totalPages'];
@@ -55,8 +51,8 @@ class OnlineOrderService {
           int numberOfElements = response.data['data']['numberOfElements'];
           int currentPageIndex = response.data['data']['currentPageIndex'];
 
-          return PaginatedData<OnlineOrder>(
-            dataList: onlineOrderList,
+          return PaginatedData<User>(
+            dataList: userList,
             totalPages: totalPages,
             totalElements: totalElements,
             numberOfElements: numberOfElements,

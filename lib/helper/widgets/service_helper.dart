@@ -14,6 +14,8 @@ class ServiceHelper {
     final snackBar = SnackBar(
       content: Text(message),
       backgroundColor: Colors.green, // You can customize the background color
+      behavior: SnackBarBehavior.floating, // Show at the top
+      margin: EdgeInsets.all(8.0), // Adjust padding as needed
     );
 
     // Find the ScaffoldMessenger in the widget tree and show the SnackBar
