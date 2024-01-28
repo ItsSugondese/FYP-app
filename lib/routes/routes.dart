@@ -8,6 +8,7 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         /// routes go here
+        AutoRoute(page: LandingPageScreenRoute.page),
         AutoRoute(
           page: LoginScreenRoute.page,
         ),
@@ -21,6 +22,10 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: AddFoodScreenRoute.page),
         AutoRoute(page: OnlineOrderScreenRoute.page),
         AutoRoute(page: OnsiteOrderScreenRoute.page),
-        AutoRoute(page: UserManagementScreenRoute.page, initial: true),
+        AutoRoute(page: UserManagementScreenRoute.page),
+        AutoRoute(page: StaffManagementScreenRoute.page, initial: true),
+        AutoRoute(page: UserDetailsScreenRoute.page),
+        AutoRoute(page: StaffDetailsScreenRoute.page),
+        AutoRoute(page: DisableHistoryScreenRoute.page),
       ];
 }

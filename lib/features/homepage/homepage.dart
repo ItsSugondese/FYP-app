@@ -14,6 +14,7 @@ import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_order_response.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
 import 'package:fyp/podo/orders/online-order/online_order_response.dart';
+import 'package:fyp/utils/drawer/drawer.dart';
 
 import '../../routes/routes_import.gr.dart';
 
@@ -44,6 +45,7 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         title: Text("Homepage"),
       ),
+      drawer: MyDrawer(),
       floatingActionButton:
           // foodSelectedForOrderingList.length == 0?
           FloatingActionButton(

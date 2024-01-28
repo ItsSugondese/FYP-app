@@ -1,34 +1,34 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/features/people-mgmt/user-mgmt/user-mgmt-service/user_management_service.dart';
+import 'package:fyp/features/people-mgmt/staff-mgmt/staff-mgmt-service/staff_management_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
-import 'package:fyp/model/people/user.dart';
-import 'package:fyp/podo/people/user/user_pagination.dart';
+import 'package:fyp/model/people/staff.dart';
+import 'package:fyp/podo/people/staff/staff_pagination.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
-class UserManagementScreen extends StatefulWidget {
-  const UserManagementScreen({super.key});
+class StaffManagementScreen extends StatefulWidget {
+  const StaffManagementScreen({super.key});
 
   @override
-  State<UserManagementScreen> createState() => _UserManagementScreenState();
+  State<StaffManagementScreen> createState() => _StaffManagementScreenState();
 }
 
-class _UserManagementScreenState extends State<UserManagementScreen> {
+class _StaffManagementScreenState extends State<StaffManagementScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
-  UserManagementService userManagementService = UserManagementService();
+  StaffManagementService staffManagementService = StaffManagementService();
 
-  late Future<PaginatedData<User>> userFuture;
+  late Future<PaginatedData<Staff>> staffFuture;
 
-  UserPaginationPayload paginationPayload = UserPaginationPayload();
+  StaffPaginationPayload paginationPayload = StaffPaginationPayload();
 
   @override
   void initState() {
     super.initState();
-    userFuture =
-        userManagementService.getAllUsers(context, paginationPayload.toJson());
+    staffFuture =
+        staffManagementService.getAllStaff(context, paginationPayload.toJson());
   }
 
   @override
@@ -43,14 +43,14 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Management'),
+        title: Text('Staff Management'),
       ),
       drawer: MyDrawer(),
-      body: FutureBuilder<PaginatedData<User>>(
-          future: userFuture,
+      body: FutureBuilder<PaginatedData<Staff>>(
+          future: staffFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<User> listOfOnlineOrders = snapshot.data!.dataList;
+              List<Staff> listOfStaff = snapshot.data!.dataList;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }
@@ -59,7 +59,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                 onPageChanged: (value) {
                   setState(() {
                     paginationPayload.page = value + 1;
-                    userFuture = userManagementService.getAllUsers(
+                    staffFuture = staffManagementService.getAllStaff(
                         context, paginationPayload.toJson());
                   });
                 },
@@ -81,34 +81,34 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                           DataColumn(label: Text('Email')),
                           DataColumn(label: Text('Action')),
                         ],
-                        rows: listOfOnlineOrders.map((userMap) {
+                        rows: listOfStaff.map((staffMap) {
                           return DataRow(cells: [
                             DataCell(
-                              Image.network(
-                                userMap.profilePath,
+                              Image.memory(
+                                staffMap.image,
                                 width: 200.0,
                                 height: 200.0,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            DataCell(Text("${userMap.id}")),
-                            DataCell(Text(userMap.fullName)),
-                            DataCell(Text("${userMap.accountNonLocked}")),
-                            DataCell(Text("${userMap.email}")),
+                            DataCell(Text("${staffMap.id}")),
+                            DataCell(Text(staffMap.fullName)),
+                            DataCell(Text("${staffMap.accountNonLocked}")),
+                            DataCell(Text("${staffMap.email}")),
                             DataCell(Row(
                               children: [
                                 ElevatedButton(
                                     onPressed: (() {
                                       AutoRouter.of(context).push(
-                                          UserDetailsScreenRoute(
-                                              id: userMap.id));
+                                          StaffDetailsScreenRoute(
+                                              id: staffMap.id));
                                     }),
                                     child: const Text("Inspect")),
                                 ElevatedButton(
                                     onPressed: (() {
                                       AutoRouter.of(context).push(
                                           DisableHistoryScreenRoute(
-                                              id: userMap.id));
+                                              id: staffMap.id));
                                     }),
                                     child: const Text("Disable History")),
                               ],
@@ -125,7 +125,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                 children: [Text("${snapshot.error}")],
               );
             } else {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
           }),
     );

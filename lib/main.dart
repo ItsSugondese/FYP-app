@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/routes/routes_import.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
       navigatorKey: _appRouter.navigatorKey,
       builder: (context, _) {
         return MaterialApp.router(
+          theme: ThemeData(
+              fontFamily: "Inter",
+              primarySwatch: CustomColors.defaultThemeColor),
           debugShowCheckedModeBanner: false,
           routerConfig: _appRouter.config(),
           localizationsDelegates: const [

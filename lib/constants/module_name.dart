@@ -4,4 +4,5 @@ class ModuleName {
   static String ONLINE_ORDER = "online-order";
   static String ONSITE_ORDER = "onsite-order";
   static String USER = "user";
+  static String STAFF = "staff";
 }

@@ -9,21 +9,21 @@ import 'package:fyp/constants/message_constants_methods.dart';
 import 'package:fyp/constants/module_name.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
-import 'package:fyp/model/people/user.dart';
+import 'package:fyp/model/people/staff.dart';
 import 'package:fyp/services/network/dio_service.dart';
 
-class UserManagementService {
+class StaffManagementService {
   late final Dio _dio;
 
-  UserManagementService() {
+  StaffManagementService() {
     _dio = DioService.getDioConfig();
   }
 
-  Future<PaginatedData<User>> getAllUsers(
+  Future<PaginatedData<Staff>> getAllStaff(
       BuildContext context, Map<String, dynamic> map) async {
     try {
       Response response = await _dio.post(
-        "${ApiConstant.backendUrl}/${ModuleName.USER}/paginated",
+        "${ApiConstant.backendUrl}/${ModuleName.STAFF}/paginated",
         data: json.encode(map),
         options: Options(
           headers: <String, String>{
@@ -35,10 +35,11 @@ class UserManagementService {
       if (response.statusCode == 200) {
         if (response.data['status'] == 1) {
           List<dynamic> jsonDataList = response.data['data']['content'];
-          List<User> userList = [];
+          List<Staff> staffList = [];
 
           for (var jsonData in jsonDataList) {
-            userList.add(User.fromJson(jsonData));
+            staffList.add(
+                Staff.fromJson(jsonData, await fetchBlobData(jsonData['id'])));
           }
 
           int totalPages = response.data['data']['totalPages'];
@@ -46,8 +47,8 @@ class UserManagementService {
           int numberOfElements = response.data['data']['numberOfElements'];
           int currentPageIndex = response.data['data']['currentPageIndex'];
 
-          return PaginatedData<User>(
-            dataList: userList,
+          return PaginatedData<Staff>(
+            dataList: staffList,
             totalPages: totalPages,
             totalElements: totalElements,
             numberOfElements: numberOfElements,
@@ -71,7 +72,7 @@ class UserManagementService {
     }
   }
 
-  Future<User> getSingleUser(BuildContext context, int id) async {
+  Future<Staff> getSingleStaff(BuildContext context, int id) async {
     try {
       Response response =
           await _dio.get("${ApiConstant.backendUrl}/${ModuleName.USER}/$id");
@@ -79,9 +80,10 @@ class UserManagementService {
       if (response.statusCode == 200) {
         if (response.data['status'] == 1) {
           dynamic jsonData = response.data['data'];
-          User user = User.fromJson(jsonData);
+          Staff staff =
+              Staff.fromJson(jsonData, await fetchBlobData(jsonData['id']));
 
-          return user;
+          return staff;
         } else {
           ServiceHelper.showErrorSnackBar(context, response.data['message']);
           throw Exception(
