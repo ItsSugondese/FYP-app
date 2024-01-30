@@ -57,7 +57,7 @@ class OnsiteOrderService {
           int currentPageIndex = response.data['data']['currentPageIndex'];
 
           return PaginatedData<OnsiteOrder>(
-            dataList: onsiteOrderList,
+            content: onsiteOrderList,
             totalPages: totalPages,
             totalElements: totalElements,
             numberOfElements: numberOfElements,

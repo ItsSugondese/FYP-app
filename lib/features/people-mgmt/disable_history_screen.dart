@@ -52,7 +52,7 @@ class _DisableHistoryScreenState extends State<DisableHistoryScreen> {
           future: disableHistoryFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<DisableHistory> listOfHistory = snapshot.data!.dataList;
+              List<DisableHistory> listOfHistory = snapshot.data!.content;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }

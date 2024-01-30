@@ -56,7 +56,7 @@ class OnlineOrderService {
           int currentPageIndex = response.data['data']['currentPageIndex'];
 
           return PaginatedData<OnlineOrder>(
-            dataList: onlineOrderList,
+            content: onlineOrderList,
             totalPages: totalPages,
             totalElements: totalElements,
             numberOfElements: numberOfElements,

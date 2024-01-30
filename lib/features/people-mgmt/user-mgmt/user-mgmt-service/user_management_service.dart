@@ -47,7 +47,7 @@ class UserManagementService {
           int currentPageIndex = response.data['data']['currentPageIndex'];
 
           return PaginatedData<User>(
-            dataList: userList,
+            content: userList,
             totalPages: totalPages,
             totalElements: totalElements,
             numberOfElements: numberOfElements,

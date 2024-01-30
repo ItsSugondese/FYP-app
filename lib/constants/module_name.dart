@@ -5,4 +5,7 @@ class ModuleName {
   static String ONSITE_ORDER = "onsite-order";
   static String USER = "user";
   static String STAFF = "staff";
+  static String FOOD_MENU = "food-menu";
+  static String FEEDBACK = "feedback";
+  static String ENUMS = "enums";
 }

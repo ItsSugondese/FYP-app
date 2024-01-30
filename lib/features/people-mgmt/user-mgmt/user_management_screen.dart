@@ -50,7 +50,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           future: userFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<User> listOfOnlineOrders = snapshot.data!.dataList;
+              List<User> listOfOnlineOrders = snapshot.data!.content;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }

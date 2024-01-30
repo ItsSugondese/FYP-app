@@ -47,7 +47,7 @@ class PeopleManagementService {
           int currentPageIndex = response.data['data']['currentPageIndex'];
 
           return PaginatedData<DisableHistory>(
-            dataList: disableDataList,
+            content: disableDataList,
             totalPages: totalPages,
             totalElements: totalElements,
             numberOfElements: numberOfElements,

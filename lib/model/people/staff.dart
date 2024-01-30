@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:fyp/services/image-fetch-service/image_fetch_service.dart';
+
 class Staff {
   final bool accountNonLocked;
   final String email;
@@ -24,4 +26,7 @@ class Staff {
       fullName: json['fullName'],
     );
   }
+
+  static Staff fromJsonImageModel(Map<String, dynamic> json, Uint8List image) =>
+      Staff.fromJson(json, image);
 }

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/constants/message_constants.dart';
 import 'package:fyp/constants/message_constants_methods.dart';
+import 'package:fyp/constants/module_name.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/services/network/dio_service.dart';
@@ -22,7 +23,7 @@ class FoodManagementService {
       BuildContext context, Map<String, dynamic> map) async {
     try {
       Response response = await _dio.post(
-        "${ApiConstant.backendUrl}/food-menu",
+        "${ApiConstant.backendUrl}/${ModuleName.FOOD_MENU}",
         data: json.encode(map),
         options: Options(
           headers: <String, String>{
@@ -51,8 +52,8 @@ class FoodManagementService {
 
   Future<List<FoodMenu>> getFoodDetails() async {
     try {
-      Response response =
-          await _dio.get("${ApiConstant.backendUrl}/food-menu?type=TODAY");
+      Response response = await _dio
+          .get("${ApiConstant.backendUrl}/${ModuleName.FOOD_MENU}?type=TODAY");
 
       if (response.statusCode == 200) {
         List<dynamic> jsonDataList = response.data['data'];

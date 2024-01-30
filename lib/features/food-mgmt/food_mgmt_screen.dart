@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/features/food-mgmt/food-mgmt-service/food_management_service.dart';
+import 'package:fyp/features/feedback/feedback_form.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
@@ -58,8 +59,16 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                AutoRouter.of(context).push(
-                                    AddFoodScreenRoute(foodMenu: foodMenu));
+                                // AutoRouter.of(context).push(
+                                //     AddFoodScreenRoute(foodMenu: foodMenu));
+
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return FeedbackForm(
+                                        foodId: foodMenu.id,
+                                      );
+                                    });
                               },
                               child: Card(
                                 child: SizedBox(

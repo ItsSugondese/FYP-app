@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/features/order-mgmt/online-order/online-order-service/online_order_service.dart';
 import 'package:fyp/features/order-mgmt/onsite-order/onsite-order-service/onsite_order_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
-import 'package:fyp/model/order/online_order.dart';
 import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 
@@ -50,7 +48,7 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
           future: onsiteOrderFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<OnsiteOrder> listOfOnsiteOrders = snapshot.data!.dataList;
+              List<OnsiteOrder> listOfOnsiteOrders = snapshot.data!.content;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }

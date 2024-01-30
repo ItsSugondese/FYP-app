@@ -48,7 +48,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
           future: onlineOrderFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<OnlineOrder> listOfOnlineOrders = snapshot.data!.dataList;
+              List<OnlineOrder> listOfOnlineOrders = snapshot.data!.content;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }

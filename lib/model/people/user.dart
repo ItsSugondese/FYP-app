@@ -22,4 +22,6 @@ class User {
       fullName: json['fullName'],
     );
   }
+
+  static User fromJsonModel(Map<String, dynamic> json) => User.fromJson(json);
 }

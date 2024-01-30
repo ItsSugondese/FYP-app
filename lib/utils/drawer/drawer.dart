@@ -57,6 +57,14 @@ class _MyDrawerState extends State<MyDrawer> {
         ),
         ListTile(
           title: Text(
+            'Food Managemenet',
+          ),
+          onTap: () {
+            AutoRouter.of(context).push(const FoodManagementScreenRoute());
+          },
+        ),
+        ListTile(
+          title: Text(
             'Homepage',
           ),
           onTap: () {

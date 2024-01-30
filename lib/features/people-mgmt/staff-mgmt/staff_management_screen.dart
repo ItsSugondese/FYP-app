@@ -50,7 +50,7 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
           future: staffFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Staff> listOfStaff = snapshot.data!.dataList;
+              List<Staff> listOfStaff = snapshot.data!.content;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }
