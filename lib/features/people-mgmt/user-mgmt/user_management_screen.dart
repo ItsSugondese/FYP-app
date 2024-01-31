@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/features/people-mgmt/disable_people_form.dart';
 import 'package:fyp/features/people-mgmt/user-mgmt/user-mgmt-service/user_management_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/people/user.dart';
@@ -97,6 +98,17 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                             DataCell(Text("${userMap.email}")),
                             DataCell(Row(
                               children: [
+                                ElevatedButton(
+                                    onPressed: (() {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return DisablePeopleForm(
+                                              user: userMap,
+                                            );
+                                          });
+                                    }),
+                                    child: const Text("Disable")),
                                 ElevatedButton(
                                     onPressed: (() {
                                       AutoRouter.of(context).push(

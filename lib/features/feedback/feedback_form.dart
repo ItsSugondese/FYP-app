@@ -94,12 +94,6 @@ class _FeedbackFormState extends State<FeedbackForm> {
                             ElevatedButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  // Form is valid, proceed with your logic
-                                  // e.g., send data to server
-                                  // selected role: selected
-                                  // quantity: quantityController.text
-                                  // anonymous: isToggled
-                                  // ...
                                   FeedbackPayload feedbackPayload =
                                       FeedbackPayload(
                                           feedbackStatus: selected!,

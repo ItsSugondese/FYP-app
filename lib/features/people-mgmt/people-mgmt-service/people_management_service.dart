@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/constants/message_constants.dart';
 import 'package:fyp/constants/message_constants_methods.dart';
@@ -14,7 +13,7 @@ import 'package:fyp/services/network/dio_service.dart';
 
 class PeopleManagementService {
   late final Dio _dio;
-
+  final String moduleName = ModuleName.USER;
   PeopleManagementService() {
     _dio = DioService.getDioConfig();
   }
@@ -71,22 +70,36 @@ class PeopleManagementService {
     }
   }
 
-  Future<Uint8List> fetchBlobData(int photoId) async {
-    final response = await _dio.get(
-        "${ApiConstant.backendUrl}/food-menu/photo/${photoId}",
-        options: Options(responseType: ResponseType.bytes));
+  Future<bool> saveToDisableUser(
+      BuildContext context, Map<String, dynamic> map) async {
+    try {
+      Response response = await _dio.post(
+        "${ApiConstant.backendUrl}/$moduleName/disable",
+        data: json.encode(map),
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      return Uint8List.fromList(response.data);
-    } else {
-      throw Exception('Failed to fetch blob data');
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+          ServiceHelper.showSuccessMessage(context, response.data['message']);
+          return true;
+        } else {
+          ServiceHelper.showErrorSnackBar(context, response.data['message']);
+          return false;
+        }
+      } else {
+        ServiceHelper.showErrorSnackBar(context,
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.save));
+        throw Exception("Error when getting data");
+      }
+    } on DioException catch (e) {
+      print(e.toString());
+      print((DioService.handleDioException(e)).message);
+      throw (DioService.handleDioException(e)).message;
     }
-  }
-
-  Future<Uint8List> loadImageAsUint8List(String assetPath) async {
-    ByteData data = await rootBundle.load(assetPath);
-    List<int> byteList = data.buffer.asUint8List();
-    Uint8List uint8List = Uint8List.fromList(byteList);
-    return uint8List;
   }
 }

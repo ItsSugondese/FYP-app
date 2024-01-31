@@ -1,8 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fyp/model/foodmgmt/Food_menu_item_with_image.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 
 class SimpleDialogWidget {
@@ -20,7 +17,7 @@ class SimpleDialogWidget {
               title: Text("Order ${foodMenu.name}"),
               children: <Widget>[
                 Image.memory(
-                  foodMenu.image ?? Uint8List(0),
+                  foodMenu.image,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,

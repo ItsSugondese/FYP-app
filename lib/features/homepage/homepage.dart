@@ -1,19 +1,12 @@
-import 'dart:typed_data';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/enums/crud_type.dart';
 import 'package:fyp/features/food-mgmt/food-mgmt-service/food_management_service.dart';
-import 'package:fyp/features/homepage/homepage-service/homepage_service.dart';
-import 'package:fyp/features/homepage/khati_dart.dart';
 import 'package:fyp/features/homepage/make-order/item_selected_modal.dart';
 import 'package:fyp/helper/widgets/simple_dialog.dart';
-import 'package:fyp/model/foodmgmt/Food_menu_item_with_image.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
-import 'package:fyp/podo/foodmgmt/food_order_response.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
-import 'package:fyp/podo/orders/online-order/online_order_response.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
 
 import '../../routes/routes_import.gr.dart';
@@ -32,11 +25,11 @@ class _HomepageState extends State<Homepage> {
   List<FoodOrderingDetails> foodSelectedForOrderingList = [];
 
   int selectedQuantity = 0; // Initialize with a default value
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -81,20 +74,12 @@ class _HomepageState extends State<Homepage> {
                                   height: 100,
                                   child: Row(
                                     children: [
-                                      foodMenu.image != null
-                                          ? Image.memory(
-                                              foodMenu.image ?? Uint8List(0),
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Image.asset(
-                                              'assets/images/tuteelogo.png',
-                                              // The path to the asset within your app
-                                              width: 100,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                            ),
+                                      Image.memory(
+                                        foodMenu.image,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
                                       Column(
                                         children: [
                                           Text(foodMenu.name),
