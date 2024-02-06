@@ -1,34 +1,36 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/features/order-mgmt/online-order/online-order-service/online_order_service.dart';
+import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
-import 'package:fyp/model/order/online_order.dart';
+import 'package:fyp/model/user-order/user_order_history.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
+import 'package:fyp/podo/user-order/user_order_pagination.dart';
+import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
-class OnlineOrderScreen extends StatefulWidget {
-  const OnlineOrderScreen({super.key});
+class CurrentOrderScreen extends StatefulWidget {
+  const CurrentOrderScreen({super.key});
 
   @override
-  State<OnlineOrderScreen> createState() => _OnlineOrderScreenState();
+  State<CurrentOrderScreen> createState() => _CurrentOrderScreenState();
 }
 
-class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
+class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
   // ScrollController _scrollController = ScrollController();
-  OnlineOrderService onlineOrderService = OnlineOrderService();
+  OrderHistoryService orderHistoryService = OrderHistoryService();
 
-  late Future<PaginatedData<OnlineOrder>> onlineOrderFuture;
+  late Future<PaginatedData<UserOrderHistory>> orderHistoryFuture;
 
-  OnlineOrderPaginationPayload paginationPayload =
-      OnlineOrderPaginationPayload();
+  UserOrderHistoryPagination paginationPayload =
+      UserOrderHistoryPagination(fromDate: '2024-01-01', toDate: '2024-01-31');
 
   @override
   void initState() {
     super.initState();
-    onlineOrderFuture =
-        onlineOrderService.getOnlineOrder(context, paginationPayload.toJson());
+    orderHistoryFuture = orderHistoryService.getOrderHistory(
+        context, paginationPayload.toJson());
   }
 
   @override
@@ -45,23 +47,17 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
       appBar: AppBar(
         title: Text('Online Order'),
       ),
-      body: FutureBuilder<PaginatedData<OnlineOrder>>(
-          future: onlineOrderFuture,
+      drawer: MyDrawer(),
+      body: FutureBuilder<PaginatedData<UserOrderHistory>>(
+          future: orderHistoryFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<OnlineOrder> listOfOnlineOrders = snapshot.data!.content;
+              List<UserOrderHistory> listOfUserOrders = snapshot.data!.content;
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }
-              return PageView.builder(
+              return ListView.builder(
                 controller: _pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    paginationPayload.page = value + 1;
-                    onlineOrderFuture = onlineOrderService.getOnlineOrder(
-                        context, paginationPayload.toJson());
-                  });
-                },
                 itemCount: snapshot.data!.totalPages,
                 itemBuilder: ((context, index) {
                   return Center(
@@ -78,14 +74,14 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
                           DataColumn(label: Text('Price')),
                           DataColumn(label: Text('Action')),
                         ],
-                        rows: listOfOnlineOrders.map((onlineOrderMap) {
+                        rows: listOfUserOrders.map((orderHistoryMap) {
                           return DataRow(cells: [
-                            DataCell(Text("${onlineOrderMap.id}")),
-                            DataCell(Text(onlineOrderMap.fullName)),
+                            DataCell(Text("${orderHistoryMap.id}")),
+                            DataCell(Text(orderHistoryMap.orderType)),
                             DataCell(
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: onlineOrderMap.orderFoodDetails
+                                children: orderHistoryMap.orderFoodDetails!
                                     .map((e) => Text(
                                         "${e.foodName} \t ${e.cost * e.quantity}"))
                                     .toList(),

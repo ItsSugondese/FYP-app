@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fyp/config/auth/interceptors/dio_interceptor.dart';
+import 'package:fyp/helper/widgets/service_helper.dart';
 
 import '../../model/auth/ErrorResponse.dart';
 

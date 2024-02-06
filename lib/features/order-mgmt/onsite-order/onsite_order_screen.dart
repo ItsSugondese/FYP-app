@@ -26,6 +26,7 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
 
   @override
   void initState() {
+    super.initState();
     onsiteOrderFuture =
         onsiteOrderService.getOnsiteOrder(context, paginationPayload.toJson());
   }

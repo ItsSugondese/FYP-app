@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -6,9 +8,12 @@ import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/auth/ErrorResponse.dart';
 import 'package:fyp/model/auth/jwt/JwtResponse.dart';
+import 'package:fyp/podo/auth/login_response.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/network/dio_service.dart';
 import 'package:fyp/services/storage/store_service.dart';
+import 'package:http/http.dart' as http;
+
 // import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../config/network/api/GoogleSignInApi.dart';
@@ -37,12 +42,12 @@ class LoginService {
   //   } on DioException catch (exception) {
   //     final error = DioService.handleDioException(exception);
   //     debugPrint(error.message);
-  //     showErrorSnackBar(
+  //     ServiceHelper.showErrorSnackBar(
   //         context, error.message ?? 'Error happended when logging in');
   //     // GoogleSignInApi.logout();
   //   } on Exception catch (exception) {
   //     debugPrint(exception.toString());
-  //     showErrorSnackBar(context, toString());
+  //     ServiceHelper.showErrorSnackBar(context, toString());
   //     // GoogleSignInApi.logout();
   //   }
   // }
@@ -68,20 +73,28 @@ class LoginService {
   }
 
   Future tempLogin() async {
-    Map<String, dynamic> val = {
-      "userEmail": "np05cp4a210083@iic.edu.np",
-      "userPassword": "107449163184477293175"
-    };
+    UserCredentials userCredentials = UserCredentials(
+        userEmail: "np05cp4a210083@iic.edu.np",
+        userPassword: "107449163184477293175");
+    // Map<String, dynamic> val = {
+    //   "userEmail": "np05cp4a210083@iic.edu.np" as String,
+    //   "userPassword": "107449163184477293175" as String
+    // };
 
     Response response = await _dio.post(
       "${ApiConstant.backendUrl}/auth/login",
-      data: val,
+      data: userCredentials.toJson(),
       options: Options(
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
       ),
     );
+
+    // final response = await http.post(
+    //   Uri.parse("${ApiConstant.backendUrl}/auth/login"),
+    //   body: json.encode(val),
+    // );
 
     if (response.statusCode == 200) {
       return JwtResponse.fromJson(response.data);

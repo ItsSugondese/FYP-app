@@ -55,82 +55,87 @@ class _StaffManagementScreenState extends State<StaffManagementScreen> {
               for (int i = 0; i < snapshot.data!.totalPages; i++) {
                 _scrollControllerList.add(ScrollController());
               }
-              return PageView.builder(
-                controller: _pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    paginationPayload.page = value + 1;
-                    staffFuture = staffManagementService.getAllStaff(
-                        context, paginationPayload.toJson());
-                  });
-                },
-                itemCount: snapshot.data!.totalPages,
-                itemBuilder: ((context, index) {
-                  return Center(
-                    heightFactor: 1,
-                    child: SingleChildScrollView(
-                      controller: _scrollControllerList[index],
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        dataRowHeight: 200,
-                        columnSpacing: 200,
-                        columns: [
-                          DataColumn(label: Text('')),
-                          DataColumn(label: Text('Id')),
-                          DataColumn(label: Text('Name')),
-                          DataColumn(label: Text('Status')),
-                          DataColumn(label: Text('Email')),
-                          DataColumn(label: Text('Action')),
-                        ],
-                        rows: listOfStaff.map((staffMap) {
-                          return DataRow(cells: [
-                            DataCell(
-                              Image.memory(
-                                staffMap.image,
-                                width: 200.0,
-                                height: 200.0,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            DataCell(Text("${staffMap.id}")),
-                            DataCell(Text(staffMap.fullName)),
-                            DataCell(Text("${staffMap.accountNonLocked}")),
-                            DataCell(Text("${staffMap.email}")),
-                            DataCell(Row(
-                              children: [
-                                ElevatedButton(
-                                    onPressed: (() {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return DisablePeopleForm(
-                                              user: staffMap,
-                                            );
-                                          });
-                                    }),
-                                    child: const Text("Disable")),
-                                ElevatedButton(
-                                    onPressed: (() {
-                                      AutoRouter.of(context).push(
-                                          StaffDetailsScreenRoute(
-                                              id: staffMap.id));
-                                    }),
-                                    child: const Text("Inspect")),
-                                ElevatedButton(
-                                    onPressed: (() {
-                                      AutoRouter.of(context).push(
-                                          DisableHistoryScreenRoute(
-                                              id: staffMap.id));
-                                    }),
-                                    child: const Text("Disable History")),
-                              ],
-                            )),
-                          ]);
-                        }).toList(),
-                      ),
-                    ),
-                  );
-                }),
+              return Column(
+                children: [
+                  ElevatedButton(onPressed: () {}, child: Text("Add staff")),
+                  PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (value) {
+                      setState(() {
+                        paginationPayload.page = value + 1;
+                        staffFuture = staffManagementService.getAllStaff(
+                            context, paginationPayload.toJson());
+                      });
+                    },
+                    itemCount: snapshot.data!.totalPages,
+                    itemBuilder: ((context, index) {
+                      return Center(
+                        heightFactor: 1,
+                        child: SingleChildScrollView(
+                          controller: _scrollControllerList[index],
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            dataRowHeight: 200,
+                            columnSpacing: 200,
+                            columns: [
+                              DataColumn(label: Text('')),
+                              DataColumn(label: Text('Id')),
+                              DataColumn(label: Text('Name')),
+                              DataColumn(label: Text('Status')),
+                              DataColumn(label: Text('Email')),
+                              DataColumn(label: Text('Action')),
+                            ],
+                            rows: listOfStaff.map((staffMap) {
+                              return DataRow(cells: [
+                                DataCell(
+                                  Image.memory(
+                                    staffMap.image,
+                                    width: 200.0,
+                                    height: 200.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                DataCell(Text("${staffMap.id}")),
+                                DataCell(Text(staffMap.fullName)),
+                                DataCell(Text("${staffMap.accountNonLocked}")),
+                                DataCell(Text("${staffMap.email}")),
+                                DataCell(Row(
+                                  children: [
+                                    ElevatedButton(
+                                        onPressed: (() {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return DisablePeopleForm(
+                                                  user: staffMap,
+                                                );
+                                              });
+                                        }),
+                                        child: const Text("Disable")),
+                                    ElevatedButton(
+                                        onPressed: (() {
+                                          AutoRouter.of(context).push(
+                                              StaffDetailsScreenRoute(
+                                                  id: staffMap.id));
+                                        }),
+                                        child: const Text("Inspect")),
+                                    ElevatedButton(
+                                        onPressed: (() {
+                                          AutoRouter.of(context).push(
+                                              DisableHistoryScreenRoute(
+                                                  id: staffMap.id));
+                                        }),
+                                        child: const Text("Disable History")),
+                                  ],
+                                )),
+                              ]);
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ],
               );
             } else if (snapshot.hasError) {
               return Column(

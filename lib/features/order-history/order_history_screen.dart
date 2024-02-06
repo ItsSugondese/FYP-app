@@ -6,14 +6,14 @@ import 'package:fyp/model/order/online_order.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 
 @RoutePage()
-class OnlineOrderScreen extends StatefulWidget {
-  const OnlineOrderScreen({super.key});
+class OrderHistoryScreen extends StatefulWidget {
+  const OrderHistoryScreen({super.key});
 
   @override
-  State<OnlineOrderScreen> createState() => _OnlineOrderScreenState();
+  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
 }
 
-class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
   // ScrollController _scrollController = ScrollController();
