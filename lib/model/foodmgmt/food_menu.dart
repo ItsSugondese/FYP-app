@@ -7,6 +7,7 @@ class FoodMenu {
   String description;
   double cost;
   bool isPackage;
+  String foodType;
   List<String>? menuItems;
   bool isAvailableToday;
   Uint8List image;
@@ -20,7 +21,8 @@ class FoodMenu {
       this.menuItems,
       required this.isAvailableToday,
       required this.image,
-      required this.photoId});
+      required this.photoId,
+      required this.foodType});
 
   factory FoodMenu.fromJson(Map<String, dynamic> json, Uint8List image) {
     return FoodMenu(
@@ -32,6 +34,7 @@ class FoodMenu {
         isAvailableToday: json['isAvailableToday'],
         image: image,
         menuItems: (json['menuItems'] as List).cast<String>(),
-        photoId: json['photoId']);
+        photoId: json['photoId'],
+        foodType: json['foodType']);
   }
 }

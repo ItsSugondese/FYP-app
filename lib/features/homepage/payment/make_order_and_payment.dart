@@ -56,15 +56,20 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                     isOnlineOrder = false;
                     selectedTime = null;
                   });
-                  await QrScanner.showForQr(context, (String text) {
-                    setState(() {
-                      if (text.isNotEmpty) {
-                        tableNumber = text;
-                        isVerified = true;
-                      } else {
-                        isVerified = false;
-                      }
-                    });
+                  // await QrScanner.showForQr(context, (String text) {
+                  //   setState(() {
+                  //     if (text.isNotEmpty) {
+                  //       tableNumber = text;
+                  //       isVerified = true;
+                  //     } else {
+                  //       isVerified = false;
+                  //     }
+                  //   });
+                  // });
+
+                  setState(() {
+                    tableNumber = 10.toString();
+                    isVerified = true;
                   });
                 },
                 child: const Card(
@@ -102,11 +107,14 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                                         getFoodOrderList(widget.details),
                                     payStatus: PayStatus.PAID,
                                     tableNumber: int.parse(tableNumber));
-                            payWithKhaltiInApp(
-                                context,
-                                paymentService,
-                                onsiteOrderService,
-                                onsiteOrderResponse.toJson());
+                            // payWithKhaltiInApp(
+                            //     context,
+                            //     paymentService,
+                            //     onsiteOrderService,
+                            //     onsiteOrderResponse.toJson(),
+                            //     getTotalCostAmount());
+                            onsiteOrderService
+                                .makeOnsiteOrder(onsiteOrderResponse.toJson());
                           },
                           child: const Card(
                               child: SizedBox(
@@ -179,6 +187,13 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
     }).toList();
 
     return foodOrderList;
+  }
+
+  double getTotalCostAmount() {
+    return widget.details
+        .map((element) => element.foodMenu.cost * element.quantity)
+        .toList() // Convert Iterable to List
+        .fold(0, (prev, curr) => prev + curr);
   }
 
   String getStringConvertedTime(TimeOfDay? selectedTime) {

@@ -9,10 +9,11 @@ payWithKhaltiInApp(
     BuildContext context,
     PaymentService paymentService,
     OnsiteOrderService onsiteOrderService,
-    Map<String, dynamic> response) async {
+    Map<String, dynamic> response,
+    double amount) async {
   KhaltiScope.of(context).pay(
     config: PaymentConfig(
-      amount: 1000,
+      amount: (amount * 100).toInt(),
       //in paisa
       productIdentity: 'Product Id',
       productName: 'Product Name',
@@ -25,10 +26,11 @@ payWithKhaltiInApp(
     onSuccess: (success) async {
       Map<String, dynamic> map = {
         "token": success.token,
-        "amount": success.amount
+        "amount": success.amount,
+        "onsiteOrder": response
       };
       await paymentService.verifyTransaction(map);
-      await onsiteOrderService.makeOnsiteOrder(response);
+      // await onsiteOrderService.makeOnsiteOrder(response);
       onSuccess(context, success);
     },
     onFailure: onFailure,

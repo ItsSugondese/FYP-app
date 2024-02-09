@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomColors {
   static const Color defaultRedColor = Color(0xFFA62A22);
+  static const Color priceCOlor = Color(0xFF15803D);
+  static const Color foodCategoryFontColor = Color(0xFF1565C0);
+  static const Color foodCategoryBackgroundColor = Color(0xFFBBDEFB);
 
   static const MaterialColor defaultThemeColor = MaterialColor(
     0xFFA62A22,
