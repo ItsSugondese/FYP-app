@@ -6,9 +6,7 @@ class FoodMenu {
   String name;
   String description;
   double cost;
-  bool isPackage;
   String foodType;
-  List<String>? menuItems;
   bool isAvailableToday;
   Uint8List image;
   int photoId;
@@ -17,8 +15,6 @@ class FoodMenu {
       required this.name,
       required this.description,
       required this.cost,
-      required this.isPackage,
-      this.menuItems,
       required this.isAvailableToday,
       required this.image,
       required this.photoId,
@@ -30,10 +26,8 @@ class FoodMenu {
         name: json['name'],
         description: json['description'],
         cost: json['cost'],
-        isPackage: json['isPackage'],
         isAvailableToday: json['isAvailableToday'],
         image: image,
-        menuItems: (json['menuItems'] as List).cast<String>(),
         photoId: json['photoId'],
         foodType: json['foodType']);
   }

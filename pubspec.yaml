@@ -46,6 +46,8 @@ dependencies:
   khalti_flutter: ^2.2.1
   google_sign_in: ^6.1.6
   image_picker: ^0.8.0
+  item_count_number_button: ^1.9.2
+  liquid_pull_to_refresh: ^3.0.1
 
 dev_dependencies:
   flutter_test:

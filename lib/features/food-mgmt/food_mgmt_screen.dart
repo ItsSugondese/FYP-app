@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/features/feedback/feedback_form.dart';
 import 'package:fyp/features/food-mgmt/food-mgmt-service/food_management_service.dart';
+import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
+import 'package:fyp/podo/foodmgmt/food_menu_pagination.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 
@@ -17,7 +19,12 @@ class FoodManagementScreen extends StatefulWidget {
 
 class _FoodManagementScreenState extends State<FoodManagementScreen> {
   // HomepageService homepageService = HomepageService();
-  FoodManagementService foodManagementService = FoodManagementService();
+  // FoodManagementService foodManagementService = FoodManagementService();
+  late FoodManagementService foodManagementService;
+  // late Stream<PaginatedData<FoodMenu>> foodMenuFuture;
+  late Future<PaginatedData<FoodMenu>> foodMenuFuture;
+
+  FoodMenuPaginationPayload paginationPayload = FoodMenuPaginationPayload();
   List<FoodOrderingDetails> foodSelectedForOrderingList = [];
 
   int selectedQuantity = 0; // Initialize with a default value
@@ -26,6 +33,9 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    foodManagementService = FoodManagementService(context);
+    foodMenuFuture = foodManagementService
+        .getFoodDetailsPaginated(paginationPayload.toJson());
   }
 
   @override

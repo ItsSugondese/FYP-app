@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/model/auth/ErrorResponse.dart';
 import 'package:fyp/services/network/dio_service.dart';
@@ -8,11 +9,11 @@ import 'package:fyp/services/network/dio_service.dart';
 class OnsiteOrderService {
   late final Dio _dio;
 
-  OnsiteOrderService() {
-    _dio = DioService.getDioConfig();
+  OnsiteOrderService(BuildContext context) {
+    _dio = DioService.getDioConfigWithContext(context);
   }
 
-  Future<void> makeOnsiteOrder(Map<String, dynamic> data) async {
+  Future<bool> makeOnsiteOrder(Map<String, dynamic> data) async {
     Response response = await _dio.post(
       "${ApiConstant.backendUrl}/onsite-order",
       data: jsonEncode(data),
@@ -24,7 +25,7 @@ class OnsiteOrderService {
     );
 
     if (response.statusCode == 200) {
-      print("done");
+      return true;
     } else {
       final error = ErrorModel.fromJson(response.data);
       throw Exception(error);

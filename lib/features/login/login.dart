@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/landing-screen/landing-screen-service/landing_screen_constants.dart';
-import 'package:fyp/features/login/login-service/login-service.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 
 @RoutePage()
@@ -14,7 +13,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final loginService = LoginService();
   final TextEditingController _emailFieldController = TextEditingController();
   final TextEditingController _passwordFieldController =
       TextEditingController();
@@ -134,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const Spacer(),
                       Column(
                         children: [
-                          Container(
+                          SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ButtonStyle(

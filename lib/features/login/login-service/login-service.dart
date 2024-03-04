@@ -23,8 +23,8 @@ String endpoint = "http://localhost:9192/canteen";
 class LoginService {
   late final Dio _dio;
 
-  LoginService() {
-    _dio = DioService.getDioConfig();
+  LoginService(BuildContext context) {
+    _dio = DioService.getDioConfigWithContext(context);
   }
 
   // Future signIn(BuildContext context) async {

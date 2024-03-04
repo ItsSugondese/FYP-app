@@ -9,11 +9,10 @@ payWithKhaltiInApp(
     BuildContext context,
     PaymentService paymentService,
     OnsiteOrderService onsiteOrderService,
-    Map<String, dynamic> response,
-    double amount) async {
+    Map<String, dynamic> response) async {
   KhaltiScope.of(context).pay(
     config: PaymentConfig(
-      amount: (amount * 100).toInt(),
+      amount: (response['totalPrice'] * 100).toInt(),
       //in paisa
       productIdentity: 'Product Id',
       productName: 'Product Name',

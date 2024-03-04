@@ -5,7 +5,11 @@ import 'package:fyp/constants/designing/colors.dart';
 // ignore: must_be_immutable
 class GlobalFoodFilterWidget extends StatefulWidget {
   int selectedFilterer;
-  GlobalFoodFilterWidget({super.key, required this.selectedFilterer});
+  Function(String) selectedFilter;
+  GlobalFoodFilterWidget(
+      {super.key,
+      required this.selectedFilterer,
+      required this.selectedFilter});
 
   @override
   State<GlobalFoodFilterWidget> createState() => _GlobalFoodFilterWidgetState();
@@ -38,6 +42,7 @@ class _GlobalFoodFilterWidgetState extends State<GlobalFoodFilterWidget> {
                       setState(() {
                         widget.selectedFilterer = e.key;
                       });
+                      widget.selectedFilter(e.value);
                     },
                     child: Text(
                       "${e.value}",

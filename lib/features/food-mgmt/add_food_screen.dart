@@ -20,7 +20,7 @@ class AddFoodScreen extends StatefulWidget {
 }
 
 class _AddFoodScreenState extends State<AddFoodScreen> {
-  FoodManagementService foodManagementService = FoodManagementService();
+  // FoodManagementService foodManagementService = FoodManagementService();
   TemporaryAttachmentsService temporaryAttachmentsService =
       TemporaryAttachmentsService();
 
@@ -40,10 +40,12 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   bool isToggled = false;
 
   bool isFoodSelected = false;
+  late FoodManagementService foodManagementService;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    foodManagementService = FoodManagementService(context);
     if (widget.foodMenu != null) {
       isFoodSelected = true;
       _foodIdController.text = widget.foodMenu!.id.toString();

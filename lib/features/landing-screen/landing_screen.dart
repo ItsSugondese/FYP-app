@@ -14,8 +14,15 @@ class LandingPageScreen extends StatefulWidget {
 }
 
 class _LandingPageScreenState extends State<LandingPageScreen> {
-  LoginService loginService = LoginService();
+  late LoginService loginService;
   int buttonFontSize = 18;
+
+  @override
+  void initState() {
+    super.initState();
+    loginService = LoginService(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

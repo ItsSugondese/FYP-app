@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
-  const SearchWidget({super.key});
+  final Function(String) typedText;
+  const SearchWidget({super.key, required this.typedText});
+  // const SearchWidget({super.key});
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
@@ -34,8 +36,11 @@ class _SearchWidgetState extends State<SearchWidget> {
             Flexible(
               child: TextFormField(
                 // controller: _emailFieldController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     hintText: "Search food", border: InputBorder.none),
+                onFieldSubmitted: (String value) {
+                  widget.typedText(value);
+                },
               ),
             ),
             IconButton(

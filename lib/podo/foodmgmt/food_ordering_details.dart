@@ -1,4 +1,3 @@
-import 'package:fyp/model/foodmgmt/Food_menu_item_with_image.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 
 class FoodOrderingDetails {

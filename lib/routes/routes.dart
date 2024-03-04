@@ -10,7 +10,11 @@ class AppRouter extends $AppRouter {
         /// routes go here
         AutoRoute(page: LandingPageScreenRoute.page),
         AutoRoute(page: LoginScreenRoute.page),
-        AutoRoute(page: HomepageRoute.page, initial: true),
+        AutoRoute(page: HomepageRoute.page),
+        AutoRoute(page: SelectedFoodToOrderScreenRoute.page),
+        AutoRoute(
+          page: OrderedFoodScreenRoute.page,
+        ),
         AutoRoute(page: StaffHomepageRoute.page),
         AutoRoute(page: AdminHomepageRoute.page),
         AutoRoute(page: FoodManagementScreenRoute.page),
@@ -23,6 +27,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: StaffDetailsScreenRoute.page),
         AutoRoute(page: DisableHistoryScreenRoute.page),
         AutoRoute(page: FeedbackInspectScreenRoute.page),
-        AutoRoute(page: CurrentOrderScreenRoute.page),
+        AutoRoute(page: CurrentOrderScreenRoute.page, initial: true),
       ];
 }

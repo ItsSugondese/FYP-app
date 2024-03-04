@@ -14,6 +14,4 @@ class FoodMenuFilterer {
     }
     return 1; // Return null if the value is not found
   }
-
-  // static List<String> foodMenus = ["All", "Meal", "Drinks", "Misc"];
 }

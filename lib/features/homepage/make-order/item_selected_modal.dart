@@ -22,22 +22,35 @@ import '../select-to-order/edit_order_items.dart';
 //           // : selectItemSheet(context, details, callback));
 // }
 
+// void openModalButtonSheet(
+//     BuildContext context,
+//     List<FoodOrderingDetails> details,
+//     Function(int, int, ActionType) callback) {
+//   bool isOrdering = false;
+//   showModalBottomSheet(
+//     isScrollControlled: true,
+//     context: context,
+//     builder: (context) => StatefulBuilder(
+//       builder: (context, setState) {
+//         return isOrdering
+//             ? MakeOrderAndPayment(details: details)
+//             : EditOrderItems(
+//                 details: details,
+//                 callback: callback,
+//                 payCallback: (boo) => {setState(() => isOrdering = boo)});
+//       },
+//     ),
+//   );
+// }
+
 void openModalButtonSheet(
     BuildContext context,
     List<FoodOrderingDetails> details,
     Function(int, int, ActionType) callback) {
-  bool isOrdering = false;
   showModalBottomSheet(
     context: context,
-    builder: (context) => StatefulBuilder(
-      builder: (context, setState) {
-        return isOrdering
-            ? MakeOrderAndPayment(details: details)
-            : EditOrderItems(
-                details: details,
-                callback: callback,
-                payCallback: (boo) => {setState(() => isOrdering = boo)});
-      },
-    ),
+    builder: (context) => StatefulBuilder(builder: (context, setState) {
+      return MakeOrderAndPayment(details: details);
+    }),
   );
 }
