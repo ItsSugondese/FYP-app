@@ -27,8 +27,8 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
           drawer: MyDrawer(),
           body: TabBarView(
             children: [
-              CurrentOnlineOrderScreen(),
               CurrentOnsiteOrderScreen(),
+              CurrentOnlineOrderScreen(),
             ],
           )),
     );

@@ -61,8 +61,8 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
       onRefresh: refresh,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        child: SizedBox(
-          height: Dimension.getScreenHeight(context),
+        child: Container(
+          height: Dimension.getScreenHeight(context) * 0.855,
           child: FutureBuilder<List<UserOrderHistory>>(
               future: onlineOrderHistoryFuture,
               builder: (context, snapshot) {
@@ -71,21 +71,23 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasData) {
-                  return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        List<UserOrderHistory> historyList = snapshot.data!;
-                        return RefreshIndicator(
-                          onRefresh: refresh,
-                          child: SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            child: Container(
-                              margin: EdgeInsets.only(top: 3),
-                              child: Column(
+                  List<UserOrderHistory> historyList = snapshot.data!;
+                  return RefreshIndicator(
+                    onRefresh: refresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 3),
+                        child: Column(
+                          children: [
+                            for (int index = 0;
+                                index < snapshot.data!.length;
+                                index++)
+                              Column(
                                 children: [
                                   if (index != 0)
                                     SizedBox(
-                                      height: 10,
+                                      height: 30,
                                     ),
                                   Container(
                                     margin:
@@ -191,10 +193,11 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-                        );
-                      });
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 } else {
                   return Column(
                     children: [
@@ -216,67 +219,4 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return FutureBuilder<List<UserOrderHistory>>(
-  //       future: onlineOrderHistoryFuture,
-  //       builder: (context, snapshot) {
-  //         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-  //           return ListView.builder(
-  //             controller: _pageController,
-  //             itemCount: snapshot.data!.length,
-  //             itemBuilder: ((context, index) {
-  //               return Center(
-  //                 heightFactor: 1,
-  //                 child: SingleChildScrollView(
-  //                   scrollDirection: Axis.vertical,
-  //                   child: DataTable(
-  //                     dataRowHeight: 200,
-  //                     columnSpacing: 200,
-  //                     columns: [
-  //                       DataColumn(label: Text('Id')),
-  //                       DataColumn(label: Text('Price')),
-  //                       DataColumn(label: Text('Action')),
-  //                     ],
-  //                     rows: snapshot.data!.map((orderHistoryMap) {
-  //                       return DataRow(cells: [
-  //                         DataCell(Text("${orderHistoryMap.id}")),
-  //                         DataCell(
-  //                           Column(
-  //                             crossAxisAlignment: CrossAxisAlignment.start,
-  //                             children: orderHistoryMap.orderFoodDetails!
-  //                                 .map((e) => Text(
-  //                                     "${e.foodName} \t ${e.cost * e.quantity}"))
-  //                                 .toList(),
-  //                           ),
-  //                         ),
-  //                         DataCell(Row(
-  //                           children: [
-  //                             IconButton(
-  //                               icon: const Icon(Icons.edit),
-  //                               onPressed: () {},
-  //                             ),
-  //                             IconButton(
-  //                               icon: const Icon(Icons.delete),
-  //                               onPressed: () {},
-  //                             )
-  //                           ],
-  //                         )),
-  //                       ]);
-  //                     }).toList(),
-  //                   ),
-  //                 ),
-  //               );
-  //             }),
-  //           );
-  //         } else if (snapshot.hasError) {
-  //           return Column(
-  //             children: [Text("${snapshot.error}")],
-  //           );
-  //         } else {
-  //           return CircularProgressIndicator();
-  //         }
-  //       });
-  // }
 }

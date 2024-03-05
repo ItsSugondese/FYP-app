@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/features/order-mgmt/onsite-order/onsite-order-service/onsite_order_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
+import 'package:fyp/services/order-services/onsite_order_service.dart';
 
 @RoutePage()
 class OnsiteOrderScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
   final PageController _pageController = PageController();
   final List<ScrollController> _scrollControllerList = [];
   // ScrollController _scrollController = ScrollController();
-  OnsiteOrderService onsiteOrderService = OnsiteOrderService();
+  late OnsiteOrderService onsiteOrderService;
 
   late Future<PaginatedData<OnsiteOrder>> onsiteOrderFuture;
 
@@ -27,8 +27,9 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
   @override
   void initState() {
     super.initState();
+    onsiteOrderService = OnsiteOrderService(context);
     onsiteOrderFuture =
-        onsiteOrderService.getOnsiteOrder(context, paginationPayload.toJson());
+        onsiteOrderService.getOnsiteOrder(paginationPayload.toJson());
   }
 
   @override
@@ -58,8 +59,8 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
                 onPageChanged: (value) {
                   setState(() {
                     paginationPayload.page = value + 1;
-                    onsiteOrderFuture = onsiteOrderService.getOnsiteOrder(
-                        context, paginationPayload.toJson());
+                    onsiteOrderFuture = onsiteOrderService
+                        .getOnsiteOrder(paginationPayload.toJson());
                   });
                 },
                 itemCount: snapshot.data!.totalPages,

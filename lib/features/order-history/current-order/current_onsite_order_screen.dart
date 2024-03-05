@@ -1,10 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/config/network/api/GoogleSignInApi.dart';
+import 'package:fyp/constants/designing/dimension.dart';
+import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
 import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
+import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/model/user-order/user_order_history.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 import 'package:fyp/podo/user-order/user_order_pagination.dart';
+import 'package:fyp/routes/routes_import.gr.dart';
+import 'package:fyp/services/order-services/onsite_order_service.dart';
+import 'package:fyp/templates/text/food_type_text.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
@@ -17,12 +24,9 @@ class CurrentOnsiteOrderScreen extends StatefulWidget {
 }
 
 class _CurrentOnsiteOrderScreenState extends State<CurrentOnsiteOrderScreen> {
-  final PageController _pageController = PageController(initialPage: 1);
-  final List<ScrollController> _scrollControllerList = [];
-  // ScrollController _scrollController = ScrollController();
-  late OrderHistoryService orderHistoryService;
+  late OnsiteOrderService orderHistoryService;
 
-  late Future<PaginatedData<UserOrderHistory>> orderHistoryFuture;
+  late Future<List<OnsiteOrder>> onsiteOrderHistoryFuture;
 
   UserOrderHistoryPagination paginationPayload =
       UserOrderHistoryPagination(fromDate: '2024-01-01', toDate: '2024-01-31');
@@ -30,84 +34,187 @@ class _CurrentOnsiteOrderScreenState extends State<CurrentOnsiteOrderScreen> {
   @override
   void initState() {
     super.initState();
-    orderHistoryService = OrderHistoryService(context);
-    orderHistoryFuture =
-        orderHistoryService.getOrderHistory(paginationPayload.toJson());
+    orderHistoryService = OnsiteOrderService(context);
+    fetchOrder();
   }
 
   @override
   void dispose() {
     super.dispose();
-    for (ScrollController controller in _scrollControllerList) {
-      controller.dispose();
-    }
+  }
+
+  fetchOrder() {
+    onsiteOrderHistoryFuture = orderHistoryService.getUserOnsiteOrderHistory();
+  }
+
+  Future<void> refresh() async {
+    setState(() {
+      fetchOrder();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<PaginatedData<UserOrderHistory>>(
-        future: orderHistoryFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<UserOrderHistory> listOfUserOrders = snapshot.data!.content;
-            for (int i = 0; i < snapshot.data!.totalPages; i++) {
-              _scrollControllerList.add(ScrollController());
-            }
-            return ListView.builder(
-              controller: _pageController,
-              itemCount: snapshot.data!.totalPages,
-              itemBuilder: ((context, index) {
-                return Center(
-                  heightFactor: 1,
-                  child: SingleChildScrollView(
-                    controller: _scrollControllerList[index],
-                    scrollDirection: Axis.vertical,
-                    child: DataTable(
-                      dataRowHeight: 200,
-                      columnSpacing: 200,
-                      columns: [
-                        DataColumn(label: Text('Id')),
-                        DataColumn(label: Text('Price')),
-                        DataColumn(label: Text('Action')),
-                      ],
-                      rows: listOfUserOrders.map((orderHistoryMap) {
-                        return DataRow(cells: [
-                          DataCell(Text("${orderHistoryMap.id}")),
-                          DataCell(
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: orderHistoryMap.orderFoodDetails!
-                                  .map((e) => Text(
-                                      "${e.foodName} \t ${e.cost * e.quantity}"))
-                                  .toList(),
-                            ),
-                          ),
-                          DataCell(Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {},
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          height: Dimension.getScreenHeight(context) * 0.855,
+          child: FutureBuilder<List<OnsiteOrder>>(
+              future: onsiteOrderHistoryFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  List<OnsiteOrder> orderList = snapshot.data!;
+                  return RefreshIndicator(
+                    onRefresh: refresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 3),
+                        child: Column(
+                          children: [
+                            for (int index = 0;
+                                index < snapshot.data!.length;
+                                index++)
+                              Column(
+                                children: [
+                                  if (index != 0)
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    child: Column(
+                                      children: [
+                                        Column(children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Order no. ${orderList[index].fullName}",
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Ordered : ${orderList[index].orderedTime} ago",
+                                                  )
+                                                ],
+                                              ),
+                                              FoodTypeText.getFoodType(
+                                                  "Pending", 14)
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                  // mainAxisAlignment:
+                                                  //     MainAxisAlignment.end,
+                                                  children: [
+                                                    for (int i = 0;
+                                                        i <
+                                                            orderList[index]
+                                                                .orderFoodDetails
+                                                                .length;
+                                                        orderList[index]
+                                                                    .orderFoodDetails
+                                                                    .length <=
+                                                                2
+                                                            ? i++
+                                                            : i += 2)
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () {},
+                                                            child: OrderedFoodCard(
+                                                                orderedFood:
+                                                                    orderList[
+                                                                            index]
+                                                                        .orderFoodDetails[i]),
+                                                          ),
+                                                          if (orderList[index]
+                                                                  .orderFoodDetails
+                                                                  .length >
+                                                              2)
+                                                            (orderList[index]
+                                                                            .orderFoodDetails
+                                                                            .length -
+                                                                        1 >=
+                                                                    i + 1)
+                                                                ? Column(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      OrderedFoodCard(
+                                                                          orderedFood:
+                                                                              orderList[index].orderFoodDetails[i + 1]),
+                                                                    ],
+                                                                  )
+                                                                : Opacity(
+                                                                    opacity:
+                                                                        0.0,
+                                                                    child: OrderedFoodCard(
+                                                                        orderedFood:
+                                                                            orderList[index].orderFoodDetails[i]),
+                                                                  ),
+                                                        ],
+                                                      ),
+                                                  ]),
+                                            ),
+                                          ),
+                                        ]),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {},
-                              )
-                            ],
-                          )),
-                        ]);
-                      }).toList(),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      ElevatedButton(
+                          child: const Text("Remove data"),
+                          onPressed: () => {GoogleSignInApi.logout()}),
+                      ElevatedButton(
+                          child: const Text("Login"),
+                          onPressed: () => {
+                                AutoRouter.of(context)
+                                    .push(const LoginScreenRoute())
+                              }),
+                      Text("${snapshot.error}")
+                    ],
+                  );
+                }
               }),
-            );
-          } else if (snapshot.hasError) {
-            return Column(
-              children: [Text("${snapshot.error}")],
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
+        ),
+      ),
+    );
   }
 }
