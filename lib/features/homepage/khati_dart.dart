@@ -37,6 +37,35 @@ payWithKhaltiInApp(
   );
 }
 
+payWithKhaltiInAppPurchase(BuildContext context, PaymentService paymentService,
+    double price, int orderId) async {
+  KhaltiScope.of(context).pay(
+    config: PaymentConfig(
+      amount: (price * 100).toInt(),
+      //in paisa
+      productIdentity: 'Product Id',
+      productName: 'Product Name',
+      mobileReadOnly: false,
+      mobile: '9810527260',
+    ),
+    preferences: [
+      PaymentPreference.khalti,
+    ],
+    onSuccess: (success) async {
+      Map<String, dynamic> map = {
+        "token": success.token,
+        "amount": success.amount,
+        "onsiteOrderId": orderId
+      };
+      await paymentService.verifyTransaction(map);
+      // await onsiteOrderService.makeOnsiteOrder(response);
+      onSuccess(context, success);
+    },
+    onFailure: onFailure,
+    onCancel: onCancel,
+  );
+}
+
 void onSuccess(
   BuildContext context,
   PaymentSuccessModel success,

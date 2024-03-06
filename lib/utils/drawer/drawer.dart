@@ -68,6 +68,14 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             ListTile(
+              title: Text(
+                'Feedback',
+              ),
+              onTap: () {
+                AutoRouter.of(context).push(const HomepageRoute());
+              },
+            ),
+            ListTile(
               title: Text('Logout', style: TextStyle(color: Colors.red)),
               onTap: () {
                 AutoRouter.of(context).push(const LoginScreenRoute());

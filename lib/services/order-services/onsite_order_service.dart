@@ -40,6 +40,18 @@ class OnsiteOrderService {
     }
   }
 
+  Future<bool> cancelOrder(int orderId) async {
+    Response response = await _dio
+        .get("${ApiConstant.backendUrl}/onsite-order/status/$orderId/CANCELED");
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      final error = ErrorModel.fromJson(response.data);
+      throw Exception(error);
+    }
+  }
+
   Future<List<OnsiteOrder>> getUserOnsiteOrderHistory() async {
     try {
       Response response = await _dio.get(

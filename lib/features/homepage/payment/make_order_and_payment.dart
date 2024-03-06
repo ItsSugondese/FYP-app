@@ -24,7 +24,7 @@ class MakeOrderAndPayment extends StatefulWidget {
 }
 
 class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
-  PaymentService paymentService = PaymentService();
+  // PaymentService paymentService = PaymentService();
   late OnsiteOrderService onsiteOrderService;
   late OnlineOrderService onlineOrderService;
 

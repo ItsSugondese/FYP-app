@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fyp/config/auth/interceptors/dio_interceptor.dart';
 import 'package:fyp/services/network/dio_service.dart';
 
 import '../../constants/api-constant.dart';
 
-class PaymentService{
+class PaymentService {
   late final Dio _dio;
-  PaymentService(){
-    _dio = DioService.getDioConfig();
+  PaymentService(BuildContext context) {
+    _dio = DioService.getDioConfigWithContext(context);
   }
-
 
   Future<void> verifyTransaction(Map<String, dynamic> payload) async {
     try {
