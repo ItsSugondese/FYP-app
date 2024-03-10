@@ -28,8 +28,7 @@ class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
   void initState() {
     super.initState();
     paginationPayload = FeedbackPagination(foodId: widget.foodId);
-    feedbackFuture =
-        feedbackService.getFeedbacks(context, paginationPayload.toJson());
+    feedbackFuture = feedbackService.getFeedbacks(paginationPayload.toJson());
   }
 
   @override
@@ -60,8 +59,8 @@ class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
                 onPageChanged: (value) {
                   setState(() {
                     paginationPayload.page = value + 1;
-                    feedbackFuture = feedbackService.getFeedbacks(
-                        context, paginationPayload.toJson());
+                    feedbackFuture = feedbackService
+                        .getFeedbacks(paginationPayload.toJson());
                   });
                 },
                 itemCount: snapshot.data!.totalPages,
