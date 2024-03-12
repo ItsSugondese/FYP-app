@@ -8,4 +8,5 @@ class ModuleName {
   static String FOOD_MENU = "food-menu";
   static String FEEDBACK = "feedback";
   static String ENUMS = "enums";
+  static String NOTIFICATION = "notification";
 }

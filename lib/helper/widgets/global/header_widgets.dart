@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/routes/routes_import.gr.dart';
 
 class GlobalHeaderWidget {
   static Align getHeader(BuildContext context) {
@@ -51,7 +53,7 @@ class GlobalHeaderWidget {
                   Icons.notifications), // Replace with your desired icon
               color: Colors.black, // Adjust the icon color as needed
               onPressed: () {
-                // Add your button press logic here
+                AutoRouter.of(context).push(const NotificationScreenRoute());
               },
             ),
           )

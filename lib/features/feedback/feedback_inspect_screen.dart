@@ -18,7 +18,7 @@ class FeedbackInspectScreen extends StatefulWidget {
 class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
-  FeedbackService feedbackService = FeedbackService();
+  late FeedbackService feedbackService;
 
   late Future<PaginatedData<FeedbackModel>> feedbackFuture;
 
@@ -27,6 +27,7 @@ class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
   @override
   void initState() {
     super.initState();
+    feedbackService = FeedbackService(context);
     paginationPayload = FeedbackPagination(foodId: widget.foodId);
     feedbackFuture = feedbackService.getFeedbacks(paginationPayload.toJson());
   }

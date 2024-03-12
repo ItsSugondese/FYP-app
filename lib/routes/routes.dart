@@ -27,6 +27,10 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: StaffDetailsScreenRoute.page),
         AutoRoute(page: DisableHistoryScreenRoute.page),
         AutoRoute(page: FeedbackInspectScreenRoute.page),
-        AutoRoute(page: CurrentOrderScreenRoute.page, initial: true),
+        AutoRoute(
+          page: CurrentOrderScreenRoute.page,
+        ),
+        AutoRoute(page: FeedbackProvideScreenRoute.page, initial: true),
+        AutoRoute(page: NotificationScreenRoute.page),
       ];
 }

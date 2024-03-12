@@ -11,6 +11,7 @@ import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/feedback/feedback.dart';
 import 'package:fyp/podo/feedback/food_menu_for_feedback.dart';
+import 'package:fyp/podo/feedback/view_feedback.dart';
 import 'package:fyp/services/image-fetch-service/image_fetch_service.dart';
 import 'package:fyp/services/network/dio_service.dart';
 
@@ -18,8 +19,8 @@ class FeedbackService {
   late final Dio _dio;
   final String moduleName = ModuleName.FEEDBACK;
 
-  FeedbackService() {
-    _dio = DioService.getDioConfig();
+  FeedbackService(BuildContext context) {
+    _dio = DioService.getDioConfigWithContext(context);
   }
 
   Future<List<String>> getFeedbackStatus() async {
@@ -130,6 +131,48 @@ class FeedbackService {
           }
 
           return feedbackList;
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
+
+  Future<ViewFeedback> viewFeedbackGiven(int foodId) async {
+    try {
+      Response response = await _dio.get(
+          "${ApiConstant.backendUrl}/$moduleName/view-feedback-user/$foodId");
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+          return ViewFeedback.fromJson(response.data['data']);
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
+
+  Future<bool> deleteFeedback(int id) async {
+    try {
+      Response response =
+          await _dio.delete("${ApiConstant.backendUrl}/$moduleName/$id");
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+          return true;
         } else {
           throw Exception(
               MessageConstantsMethods.dataRetrieveError(MessageConstants.get));

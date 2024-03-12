@@ -72,7 +72,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 'Feedback',
               ),
               onTap: () {
-                AutoRouter.of(context).push(const HomepageRoute());
+                AutoRouter.of(context).push(const FeedbackProvideScreenRoute());
               },
             ),
             ListTile(

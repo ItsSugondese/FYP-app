@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/features/feedback/feedback-service/feedback_service.dart';
 import 'package:fyp/podo/feedback/feedback_payload.dart';
+import 'package:fyp/podo/feedback/food_menu_for_feedback.dart';
 
 class FeedbackForm extends StatefulWidget {
-  final int foodId;
-  const FeedbackForm({super.key, required this.foodId});
+  final FoodMenuForFeedback menu;
+  final Function(bool) callback;
+  const FeedbackForm({super.key, required this.menu, required this.callback});
 
   @override
   State<FeedbackForm> createState() => _FeedbackFormState();
@@ -12,7 +14,7 @@ class FeedbackForm extends StatefulWidget {
 
 class _FeedbackFormState extends State<FeedbackForm> {
   bool isToggled = false;
-  FeedbackService feedbackService = FeedbackService();
+  late FeedbackService feedbackService;
   late Future<List<String>> getFeedbackStatusFuture;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController feedbackRemarksController =
@@ -23,6 +25,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    feedbackService = FeedbackService(context);
     getFeedbackStatusFuture = feedbackService.getFeedbackStatus();
   }
 
@@ -33,7 +36,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SimpleDialog(
-              title: Text("Order "),
+              title: Text("Feedback for ${widget.menu.foodName}"),
               children: <Widget>[
                 Form(
                     key: _formKey,
@@ -97,7 +100,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                                   FeedbackPayload feedbackPayload =
                                       FeedbackPayload(
                                           feedbackStatus: selected!,
-                                          foodId: widget.foodId,
+                                          foodId: widget.menu.foodId,
                                           feedbacks:
                                               feedbackRemarksController.text,
                                           isAnonymous: isToggled);
@@ -106,6 +109,7 @@ class _FeedbackFormState extends State<FeedbackForm> {
                                       .saveFeedbacks(feedbackPayload.toJson());
 
                                   if (saved) {
+                                    widget.callback(true);
                                     Navigator.pop(context);
                                   }
                                 }
@@ -129,7 +133,14 @@ class _FeedbackFormState extends State<FeedbackForm> {
             // ServiceHelper.showErrorSnackBar(context, "Error");
             throw Exception("Error");
           } else {
-            return CircularProgressIndicator();
+            return SizedBox(
+              child: Center(
+                  child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              )),
+              height: 10.0,
+              width: 10.0,
+            );
           }
         });
   }
