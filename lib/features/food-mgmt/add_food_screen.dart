@@ -201,8 +201,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                                 description: _foodDescriptionController.text,
                                 menuItems: values);
 
-                            foodManagementService.saveFoodDetails(
-                                context, response.toJson());
+                            foodManagementService
+                                .saveFoodDetails(response.toJson());
                           }
                         },
                   child: Text('Save'),

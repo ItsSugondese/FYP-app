@@ -28,6 +28,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   List<NotificationModel> notifications = [];
   int totalPage = 1;
+  bool isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -42,11 +43,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Future<void> refresh() async {}
 
   Future<void> getNotifications() async {
+    setState(() {
+      isLoading = true;
+    });
+
     PaginatedData<NotificationModel> notificationsPagination =
         await notificationService
             .getAllNotification(paginationPayload.toJson());
-
+    Future.delayed(Duration(seconds: 6));
     setState(() {
+      isLoading = false;
       totalPage = notificationsPagination.totalPages;
       notifications.addAll(notificationsPagination.content);
     });
@@ -76,30 +82,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                     Align(
                         alignment: Alignment.center,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          shrinkWrap: false,
-                          itemCount: notifications.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: Image.asset(ImagePath.getImagePath(
-                                  ScreenName.landing, "anon.jpg")),
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 70,
+                          ),
+                          child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            controller: _scrollController,
+                            shrinkWrap: false,
+                            itemCount: notifications.length,
+                            itemBuilder: (context, index) {
+                              return Column(
                                 children: [
-                                  Text(notifications[index].message),
-                                  if (notifications[index].remark != null)
-                                    Text(
-                                      notifications[index].remark!,
-                                      style: TextStyle(
-                                          fontStyle: FontStyle.italic),
+                                  ListTile(
+                                    leading: Image.asset(ImagePath.getImagePath(
+                                        ScreenName.landing, "anon.jpg")),
+                                    title: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(notifications[index].message),
+                                        if (notifications[index].remark != null)
+                                          Text(
+                                            notifications[index].remark!,
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.italic),
+                                          ),
+                                      ],
                                     ),
+                                    subtitle: Text(notifications[index].date),
+                                  ),
+                                  if (index == notifications.length - 1 &&
+                                      isLoading)
+                                    const Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: CircularProgressIndicator(),
+                                    )
                                 ],
-                              ),
-                              subtitle: Text(notifications[index].date),
-                            );
-                          },
+                              );
+                            },
+                          ),
                         )),
                   ],
                 )),
@@ -110,7 +132,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void loadMoreData() {
     if (_scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent &&
-        notifications.length < totalPage) {
+        paginationPayload.page < totalPage) {
       paginationPayload.page++;
       getNotifications();
     }

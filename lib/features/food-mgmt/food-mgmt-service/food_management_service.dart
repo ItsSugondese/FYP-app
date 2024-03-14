@@ -20,8 +20,7 @@ class FoodManagementService {
     _dio = DioService.getDioConfigWithContext(context);
   }
 
-  Future<void> saveFoodDetails(
-      BuildContext context, Map<String, dynamic> map) async {
+  Future<bool> saveFoodDetails(Map<String, dynamic> map) async {
     try {
       Response response = await _dio.post(
         "${ApiConstant.backendUrl}/${ModuleName.FOOD_MENU}",
@@ -34,14 +33,8 @@ class FoodManagementService {
       );
 
       if (response.statusCode == 200) {
-        if (response.data['status'] == 1) {
-          ServiceHelper.showSuccessMessage(context, response.data['message']);
-        } else {
-          ServiceHelper.showErrorSnackBar(context, response.data['message']);
-        }
+        return true;
       } else {
-        ServiceHelper.showErrorSnackBar(context,
-            MessageConstantsMethods.dataRetrieveError(MessageConstants.save));
         throw Exception("Error when getting data");
       }
     } on DioException catch (e) {
@@ -86,72 +79,6 @@ class FoodManagementService {
           numberOfElements: numberOfElements,
           currentPageIndex: currentPageIndex,
         );
-      } else {
-        throw Exception("Error when getting data");
-      }
-    } on DioException catch (e) {
-      throw e.message!;
-    }
-  }
-  // Future<PaginatedData<FoodMenu>> getFoodDetailsPaginated(
-  //     Map<String, dynamic> map) async {
-  //   try {
-  //     Response response = await _dio.post(
-  //       "${ApiConstant.backendUrl}/${ModuleName.FOOD_MENU}/pageable",
-  //       data: map,
-  //       options: Options(
-  //         headers: <String, String>{
-  //           'Content-Type': 'application/json',
-  //         },
-  //       ),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       List<dynamic> jsonDataList = response.data['data']['content'];
-  //       List<FoodMenu> menusWithImages = [];
-
-  //       for (var jsonData in jsonDataList) {
-  //         Uint8List image = await fetchBlobData(jsonData['photoId']);
-  //         FoodMenu foodMenu = FoodMenu.fromJson(jsonData, image);
-  //         menusWithImages.add(foodMenu);
-  //       }
-
-  //       int totalPages = response.data['data']['totalPages'];
-  //       int totalElements = response.data['data']['totalElements'];
-  //       int numberOfElements = response.data['data']['numberOfElements'];
-  //       int currentPageIndex = response.data['data']['currentPageIndex'];
-
-  //       return PaginatedData<FoodMenu>(
-  //         content: menusWithImages,
-  //         totalPages: totalPages,
-  //         totalElements: totalElements,
-  //         numberOfElements: numberOfElements,
-  //         currentPageIndex: currentPageIndex,
-  //       );
-  //     } else {
-  //       throw Exception("Error when getting data");
-  //     }
-  //   } on DioException catch (e) {
-  //     throw e.message!;
-  //   }
-  // }
-
-  Future<List<FoodMenu>> getFoodDetails() async {
-    try {
-      Response response = await _dio
-          .get("${ApiConstant.backendUrl}/${ModuleName.FOOD_MENU}?type=TODAY");
-
-      if (response.statusCode == 200) {
-        List<dynamic> jsonDataList = response.data['data'];
-        List<FoodMenu> menusWithImages = [];
-
-        for (var jsonData in jsonDataList) {
-          Uint8List image = await fetchBlobData(jsonData['photoId']);
-          FoodMenu foodMenu = FoodMenu.fromJson(jsonData, image);
-          menusWithImages.add(foodMenu);
-        }
-
-        return menusWithImages;
       } else {
         throw Exception("Error when getting data");
       }
