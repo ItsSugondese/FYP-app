@@ -2,7 +2,7 @@ import 'package:fyp/podo/pagination/pagination_request.dart';
 
 class FoodMenuPaginationPayload extends DefaultPagination {
   String? foodType;
-  String? filter;
+  bool? filter;
   String? name;
   FoodMenuPaginationPayload(
       {this.foodType, this.filter, this.name, row = 5, page = 1})

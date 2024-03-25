@@ -22,12 +22,12 @@ class FoodCardWidget extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(right: 10),
                 alignment: Alignment.topCenter,
-                width: 100,
+                width: double.infinity,
                 height: 100,
                 child: Image.memory(
                   foodMenu.image,
                   fit: BoxFit.cover,
-                  width: 100,
+                  width: double.infinity,
                   height: 100,
                 ),
               ),

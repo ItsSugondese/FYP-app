@@ -17,7 +17,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
   // ScrollController _scrollController = ScrollController();
-  OnlineOrderService onlineOrderService = OnlineOrderService();
+  late OnlineOrderService onlineOrderService;
 
   late Future<PaginatedData<OnlineOrder>> onlineOrderFuture;
 
@@ -27,6 +27,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
   @override
   void initState() {
     super.initState();
+    onlineOrderService = OnlineOrderService(context);
     onlineOrderFuture =
         onlineOrderService.getOnlineOrder(context, paginationPayload.toJson());
   }

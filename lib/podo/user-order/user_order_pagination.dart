@@ -4,9 +4,11 @@ import 'package:fyp/podo/pagination/pagination_request.dart';
 class UserOrderHistoryPagination extends DefaultPagination {
   String? fromDate;
   String? toDate;
+  bool today;
   UserOrderHistoryPagination(
       {this.fromDate,
       this.toDate,
+      this.today = false,
       row = PaginationConstant.row,
       page = PaginationConstant.page})
       : super(page: page, row: row);

@@ -23,6 +23,7 @@ import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_menu_pagination.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
 import 'package:fyp/templates/not-found/no_data.dart';
+import 'package:fyp/utils/appbar/custom-appbar.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -55,7 +56,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
     homeWidget = HomepageWidgets(context: context);
     foodManagementService = FoodManagementService(context);
-    paginationPayload.filter = "TODAY";
+    paginationPayload.filter = true;
     fetchFoodMenu();
   }
 
@@ -70,11 +71,14 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
+  double iconSize = 45;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: MyDrawer(),
+        appBar: const CustomAppbar(),
         backgroundColor: const Color(0xFFF5F5F0),
         floatingActionButton:
             // foodSelectedForOrderingList.length == 0?
@@ -108,179 +112,157 @@ class _HomepageState extends State<Homepage> {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Container(
-                padding: const EdgeInsets.only(top: 50, left: 20),
-                height: Dimension.getScreenHeight(context),
-                child: Stack(
+                padding: const EdgeInsets.only(left: 20),
+                height: Dimension.getScreenHeight(context) -
+                    AppBar().preferredSize.height -
+                    MediaQuery.of(context).padding.top,
+                child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Builder(
-                        builder: (context) =>
-                            GlobalHeaderWidget.getHeader(context),
+                      padding: const EdgeInsets.only(right: 20, top: 10),
+                      child: SearchWidget(
+                        typedText: (val) {
+                          paginationPayload.name =
+                              val.trim() == "" ? null : val;
+                          setState(() {
+                            fetchFoodMenu();
+                          });
+                        },
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 70,
-                        ),
-                        height: Dimension.getScreenHeight(context),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: SearchWidget(
-                                typedText: (val) {
-                                  paginationPayload.name =
-                                      val.trim() == "" ? null : val;
-                                  setState(() {
-                                    fetchFoodMenu();
-                                  });
-                                },
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    GlobalFoodFilterWidget(
+                        selectedFilterer: selectedFilterer,
+                        selectedFilter: (val) {
+                          paginationPayload.foodType =
+                              (val == "All") ? null : val.toUpperCase();
+                          setState(() {
+                            selectedFilterer =
+                                FoodMenuFilterer.findKeyByValue(val);
+
+                            fetchFoodMenu();
+                          });
+                        }),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    FutureBuilder<PaginatedData<FoodMenu>>(
+                        future: foodMenuFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return homeWidget.getContentContainer(
+                              const Center(
+                                child: CircularProgressIndicator(),
                               ),
-                            ),
-                            const Spacer(),
-                            GlobalFoodFilterWidget(
-                                selectedFilterer: selectedFilterer,
-                                selectedFilter: (val) {
-                                  paginationPayload.foodType =
-                                      (val == "All") ? null : val.toUpperCase();
-                                  setState(() {
-                                    selectedFilterer =
-                                        FoodMenuFilterer.findKeyByValue(val);
+                            );
+                          } else if (snapshot.hasData) {
+                            List<FoodMenu> foodMenus = snapshot.data!.content;
+                            return foodMenus.length == 0
+                                ? homeWidget.getContentContainer(
+                                    NoData.getNoDataImage())
+                                : homeWidget.getContentContainer(
+                                    SingleChildScrollView(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.end,
+                                          children: [
+                                            for (int i = 0;
+                                                i < foodMenus.length;
+                                                foodMenus.length <= 2
+                                                    ? i++
+                                                    : i += 2)
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      // showDialog(
+                                                      //   context: context,
+                                                      //   builder:
+                                                      //       (BuildContext
+                                                      //           context) {
 
-                                    fetchFoodMenu();
-                                  });
-                                }),
-                            const Spacer(),
-                            FutureBuilder<PaginatedData<FoodMenu>>(
-                                future: foodMenuFuture,
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return homeWidget.getContentContainer(
-                                      const Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                    );
-                                  } else if (snapshot.hasData) {
-                                    List<FoodMenu> foodMenus =
-                                        snapshot.data!.content;
-                                    return foodMenus.length == 0
-                                        ? homeWidget.getContentContainer(
-                                            NoData.getNoDataImage())
-                                        : homeWidget.getContentContainer(
-                                            SingleChildScrollView(
-                                              physics:
-                                                  const AlwaysScrollableScrollPhysics(),
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                  // mainAxisAlignment:
-                                                  //     MainAxisAlignment.end,
-                                                  children: [
-                                                    for (int i = 0;
-                                                        i < foodMenus.length;
-                                                        foodMenus.length <= 2
-                                                            ? i++
-                                                            : i += 2)
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              // showDialog(
-                                                              //   context: context,
-                                                              //   builder:
-                                                              //       (BuildContext
-                                                              //           context) {
+                                                      // Navigator.push(
+                                                      //     context,
+                                                      //     MaterialPageRoute(
+                                                      //         builder: (context) => SelectedFoodToOrderScreen(
+                                                      //             foodMenu:
+                                                      //                 foodMenus[
+                                                      //                     i],
+                                                      //             callback:
+                                                      //                 handleQuantitySelection)));
+                                                      //           }
+                                                      // );
+                                                      selectQuantityToOrderAction(
+                                                          foodMenus[i]);
 
-                                                              // Navigator.push(
-                                                              //     context,
-                                                              //     MaterialPageRoute(
-                                                              //         builder: (context) => SelectedFoodToOrderScreen(
-                                                              //             foodMenu:
-                                                              //                 foodMenus[
-                                                              //                     i],
-                                                              //             callback:
-                                                              //                 handleQuantitySelection)));
-                                                              //           }
-                                                              // );
-                                                              selectQuantityToOrderAction(
-                                                                  foodMenus[i]);
+                                                      // SimpleDialogWidget
+                                                      //     .showSimpleDialog(
+                                                      //         context,
+                                                      //         foodMenus[i],
+                                                      //         handleQuantitySelection);
+                                                    },
+                                                    child: FoodCardWidget(
+                                                        foodMenu: foodMenus[i]),
+                                                  ),
+                                                  (foodMenus.length - 1 >=
+                                                              i + 1) &&
+                                                          foodMenus.length > 2
+                                                      ? GestureDetector(
+                                                          onTap: () {
+                                                            // SimpleDialogWidget
+                                                            //     .showSimpleDialog(
+                                                            //         context,
+                                                            //         foodMenus[
+                                                            //             i + 1],
+                                                            //         handleQuantitySelection);
 
-                                                              // SimpleDialogWidget
-                                                              //     .showSimpleDialog(
-                                                              //         context,
-                                                              //         foodMenus[i],
-                                                              //         handleQuantitySelection);
-                                                            },
-                                                            child: FoodCardWidget(
-                                                                foodMenu:
-                                                                    foodMenus[
-                                                                        i]),
-                                                          ),
-                                                          (foodMenus.length -
-                                                                          1 >=
-                                                                      i + 1) &&
-                                                                  foodMenus
-                                                                          .length >
-                                                                      2
-                                                              ? GestureDetector(
-                                                                  onTap: () {
-                                                                    // SimpleDialogWidget
-                                                                    //     .showSimpleDialog(
-                                                                    //         context,
-                                                                    //         foodMenus[
-                                                                    //             i + 1],
-                                                                    //         handleQuantitySelection);
-
-                                                                    selectQuantityToOrderAction(
-                                                                        foodMenus[i +
-                                                                            1]);
-                                                                  },
-                                                                  child: FoodCardWidget(
-                                                                      foodMenu:
-                                                                          foodMenus[i +
-                                                                              1]),
-                                                                )
-                                                              : Opacity(
-                                                                  opacity: 0.0,
-                                                                  child: FoodCardWidget(
-                                                                      foodMenu:
-                                                                          foodMenus[
-                                                                              i]),
-                                                                ),
-                                                        ],
-                                                      ),
-                                                  ]),
-                                            ),
-                                          );
-                                  } else {
-                                    return Column(
-                                      children: [
-                                        ElevatedButton(
-                                            child: const Text("Remove data"),
-                                            onPressed: () =>
-                                                {GoogleSignInApi.logout()}),
-                                        ElevatedButton(
-                                            child: const Text("Login"),
-                                            onPressed: () => {
-                                                  AutoRouter.of(context).push(
-                                                      const LoginScreenRoute())
-                                                }),
-                                        Text("${snapshot.error}")
-                                      ],
-                                    );
-                                  }
-                                }),
-                            const Spacer()
-                          ],
-                        ),
-                      ),
-                    ),
+                                                            selectQuantityToOrderAction(
+                                                                foodMenus[
+                                                                    i + 1]);
+                                                          },
+                                                          child: FoodCardWidget(
+                                                              foodMenu:
+                                                                  foodMenus[
+                                                                      i + 1]),
+                                                        )
+                                                      : Opacity(
+                                                          opacity: 0.0,
+                                                          child: FoodCardWidget(
+                                                              foodMenu:
+                                                                  foodMenus[i]),
+                                                        ),
+                                                ],
+                                              ),
+                                          ]),
+                                    ),
+                                  );
+                          } else {
+                            return Column(
+                              children: [
+                                ElevatedButton(
+                                    child: const Text("Remove data"),
+                                    onPressed: () =>
+                                        {GoogleSignInApi.logout()}),
+                                ElevatedButton(
+                                    child: const Text("Login"),
+                                    onPressed: () => {
+                                          AutoRouter.of(context)
+                                              .push(const LoginScreenRoute())
+                                        }),
+                                Text("${snapshot.error}")
+                              ],
+                            );
+                          }
+                        }),
                   ],
                 )),
           ),

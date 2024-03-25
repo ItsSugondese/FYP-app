@@ -16,8 +16,8 @@ import 'package:fyp/services/network/dio_service.dart';
 class OnlineOrderService {
   late final Dio _dio;
 
-  OnlineOrderService() {
-    _dio = DioService.getDioConfig();
+  OnlineOrderService(BuildContext context) {
+    _dio = DioService.getDioConfigWithContext(context);
   }
 
   Future<PaginatedData<OnlineOrder>> getOnlineOrder(

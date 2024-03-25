@@ -52,15 +52,16 @@ class OnsiteOrderService {
     }
   }
 
-  Future<List<OnsiteOrder>> getUserOnsiteOrderHistory() async {
+  Future<PaginatedData<OnsiteOrder>> getUserOnsiteOrderHistory(
+      Map<String, dynamic> data) async {
     try {
-      Response response = await _dio.get(
-        "${ApiConstant.backendUrl}/${ModuleName.ONSITE_ORDER}/user-orders",
-      );
+      Response response = await _dio.post(
+          "${ApiConstant.backendUrl}/${ModuleName.ONSITE_ORDER}/history/paginated",
+          data: jsonEncode(data));
 
       if (response.statusCode == 200) {
         if (response.data['status'] == 1) {
-          List<dynamic> jsonDataList = response.data['data'];
+          List<dynamic> jsonDataList = response.data['data']['content'];
           List<OnsiteOrder> userOrderHistoryList = [];
 
           for (var jsonData in jsonDataList) {
@@ -76,7 +77,19 @@ class OnsiteOrderService {
                 .add(OnsiteOrder.fromJson(jsonData, orderedFoodList));
           }
 
-          return userOrderHistoryList;
+          int totalPages = response.data['data']['totalPages'];
+          int totalElements = response.data['data']['totalElements'];
+          int numberOfElements = response.data['data']['numberOfElements'];
+          int currentPageIndex = response.data['data']['currentPageIndex'];
+
+          return PaginatedData<OnsiteOrder>(
+            content: userOrderHistoryList,
+            totalPages: totalPages,
+            totalElements: totalElements,
+            numberOfElements: numberOfElements,
+            currentPageIndex: currentPageIndex,
+          );
+          ;
         } else {
           throw Exception(
               MessageConstantsMethods.dataRetrieveError(MessageConstants.get));

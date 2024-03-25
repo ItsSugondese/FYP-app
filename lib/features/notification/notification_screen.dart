@@ -29,6 +29,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   List<NotificationModel> notifications = [];
   int totalPage = 1;
   bool isLoading = false;
+  bool initialLoading = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,6 +55,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     Future.delayed(Duration(seconds: 6));
     setState(() {
       isLoading = false;
+      initialLoading = false;
       totalPage = notificationsPagination.totalPages;
       notifications.addAll(notificationsPagination.content);
     });
@@ -68,63 +71,74 @@ class _NotificationScreenState extends State<NotificationScreen> {
           onRefresh: refresh,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            child: Container(
-                padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
-                height: Dimension.getScreenHeight(context),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 0),
-                      child: Builder(
-                        builder: (context) =>
-                            GlobalHeaderWidget.getHeader(context),
-                      ),
-                    ),
-                    Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 70,
+            child: !initialLoading
+                ? Container(
+                    padding:
+                        const EdgeInsets.only(top: 50, left: 20, right: 20),
+                    height: Dimension.getScreenHeight(context),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 0),
+                          child: Builder(
+                            builder: (context) =>
+                                GlobalHeaderWidget.getHeader(context),
                           ),
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            controller: _scrollController,
-                            shrinkWrap: false,
-                            itemCount: notifications.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  ListTile(
-                                    leading: Image.asset(ImagePath.getImagePath(
-                                        ScreenName.landing, "anon.jpg")),
-                                    title: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(notifications[index].message),
-                                        if (notifications[index].remark != null)
-                                          Text(
-                                            notifications[index].remark!,
-                                            style: TextStyle(
-                                                fontStyle: FontStyle.italic),
-                                          ),
-                                      ],
-                                    ),
-                                    subtitle: Text(notifications[index].date),
-                                  ),
-                                  if (index == notifications.length - 1 &&
-                                      isLoading)
-                                    const Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: CircularProgressIndicator(),
-                                    )
-                                ],
-                              );
-                            },
-                          ),
-                        )),
-                  ],
-                )),
+                        ),
+                        Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 70,
+                              ),
+                              child: ListView.builder(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                controller: _scrollController,
+                                shrinkWrap: false,
+                                itemCount: notifications.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      ListTile(
+                                        leading: Image.asset(
+                                            ImagePath.getImagePath(
+                                                ScreenName.landing,
+                                                "anon.jpg")),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(notifications[index].message),
+                                            if (notifications[index].remark !=
+                                                null)
+                                              Text(
+                                                notifications[index].remark!,
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.italic),
+                                              ),
+                                          ],
+                                        ),
+                                        subtitle:
+                                            Text(notifications[index].date),
+                                      ),
+                                      if (index == notifications.length - 1 &&
+                                          isLoading)
+                                        const Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: CircularProgressIndicator(),
+                                        )
+                                    ],
+                                  );
+                                },
+                              ),
+                            )),
+                      ],
+                    ))
+                : Container(
+                    height: Dimension.getScreenHeight(context),
+                    child: const Center(child: CircularProgressIndicator()),
+                  ),
           ),
         ));
   }

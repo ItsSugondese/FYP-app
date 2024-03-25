@@ -28,14 +28,17 @@ class CurrentOnsiteOrderScreen extends StatefulWidget {
 class _CurrentOnsiteOrderScreenState extends State<CurrentOnsiteOrderScreen> {
   late OnsiteOrderService onsiteOrderService;
 
-  late Future<List<OnsiteOrder>> onsiteOrderHistoryFuture;
+  late Future<PaginatedData<OnsiteOrder>> onsiteOrderHistoryFuture;
 
-  UserOrderHistoryPagination paginationPayload =
-      UserOrderHistoryPagination(fromDate: '2024-01-01', toDate: '2024-01-31');
+  UserOrderHistoryPagination paginationPayload = UserOrderHistoryPagination(
+      fromDate: DateTime.now().toString().split(' ')[0],
+      toDate: DateTime.now().toString().split(' ')[0],
+      today: true);
 
   @override
   void initState() {
     super.initState();
+    print(DateTime.now().toString());
     onsiteOrderService = OnsiteOrderService(context);
     fetchOrder();
   }
@@ -46,7 +49,8 @@ class _CurrentOnsiteOrderScreenState extends State<CurrentOnsiteOrderScreen> {
   }
 
   fetchOrder() {
-    onsiteOrderHistoryFuture = onsiteOrderService.getUserOnsiteOrderHistory();
+    onsiteOrderHistoryFuture = onsiteOrderService
+        .getUserOnsiteOrderHistory(paginationPayload.toJson());
   }
 
   Future<void> refresh() async {
@@ -57,188 +61,205 @@ class _CurrentOnsiteOrderScreenState extends State<CurrentOnsiteOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Dimension.getScreenHeight(context),
-      child: FutureBuilder<List<OnsiteOrder>>(
-          future: onsiteOrderHistoryFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasData) {
-              List<OnsiteOrder> orderList = snapshot.data!;
-              return RefreshIndicator(
-                onRefresh: refresh,
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    // height: Dimension.getScreenHeight(context),
-                    margin: EdgeInsets.only(top: 3),
-                    child: Column(
-                      children: [
-                        for (int index = 0;
-                            index < snapshot.data!.length;
-                            index++)
-                          Column(
-                            children: [
-                              if (index != 0)
-                                SizedBox(
-                                  height: 30,
-                                ),
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  children: [
-                                    Column(children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: SingleChildScrollView(
+        child: Container(
+          height: Dimension.getScreenHeight(context),
+          child: FutureBuilder<PaginatedData<OnsiteOrder>>(
+              future: onsiteOrderHistoryFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  List<OnsiteOrder> orderList = snapshot.data!.content;
+                  return RefreshIndicator(
+                    onRefresh: refresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Container(
+                        // height: Dimension.getScreenHeight(context),
+                        margin: EdgeInsets.only(top: 3),
+                        child: Column(
+                          children: [
+                            for (int index = 0;
+                                index < orderList.length;
+                                index++)
+                              Column(
+                                children: [
+                                  if (index != 0)
+                                    SizedBox(
+                                      height: 30,
+                                    ),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    child: Column(
+                                      children: [
+                                        Column(children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
-                                                "Order no. ${orderList[index].fullName}",
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 20,
-                                                ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Order no. ${orderList[index].fullName}",
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Ordered : ${orderList[index].orderedTime} ago",
+                                                  )
+                                                ],
                                               ),
-                                              Text(
-                                                "Ordered : ${orderList[index].orderedTime} ago",
-                                              )
+                                              FoodTypeText.getFoodType(
+                                                  orderList[index].orderStatus,
+                                                  14)
                                             ],
                                           ),
-                                          FoodTypeText.getFoodType(
-                                              orderList[index].orderStatus, 14)
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.end,
-                                              children: [
-                                                for (int i = 0;
-                                                    i <
-                                                        orderList[index]
-                                                            .orderFoodDetails
-                                                            .length;
-                                                    orderList[index]
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                  // mainAxisAlignment:
+                                                  //     MainAxisAlignment.end,
+                                                  children: [
+                                                    for (int i = 0;
+                                                        i <
+                                                            orderList[index]
                                                                 .orderFoodDetails
-                                                                .length <=
-                                                            2
-                                                        ? i++
-                                                        : i += 2)
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      GestureDetector(
-                                                        onTap: () {},
-                                                        child: OrderedFoodCard(
-                                                            orderedFood: orderList[
-                                                                    index]
-                                                                .orderFoodDetails[i]),
-                                                      ),
-                                                      if (orderList[index]
-                                                              .orderFoodDetails
-                                                              .length >
-                                                          2)
-                                                        (orderList[index]
-                                                                        .orderFoodDetails
-                                                                        .length -
-                                                                    1 >=
-                                                                i + 1)
-                                                            ? Column(
-                                                                children: [
-                                                                  SizedBox(
-                                                                    height: 10,
+                                                                .length;
+                                                        orderList[index]
+                                                                    .orderFoodDetails
+                                                                    .length <=
+                                                                2
+                                                            ? i++
+                                                            : i += 2)
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () {},
+                                                            child: OrderedFoodCard(
+                                                                orderedFood:
+                                                                    orderList[
+                                                                            index]
+                                                                        .orderFoodDetails[i]),
+                                                          ),
+                                                          if (orderList[index]
+                                                                  .orderFoodDetails
+                                                                  .length >
+                                                              2)
+                                                            (orderList[index]
+                                                                            .orderFoodDetails
+                                                                            .length -
+                                                                        1 >=
+                                                                    i + 1)
+                                                                ? Column(
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      OrderedFoodCard(
+                                                                          orderedFood:
+                                                                              orderList[index].orderFoodDetails[i + 1]),
+                                                                    ],
+                                                                  )
+                                                                : Opacity(
+                                                                    opacity:
+                                                                        0.0,
+                                                                    child: OrderedFoodCard(
+                                                                        orderedFood:
+                                                                            orderList[index].orderFoodDetails[i]),
                                                                   ),
-                                                                  OrderedFoodCard(
-                                                                      orderedFood:
-                                                                          orderList[index].orderFoodDetails[i +
-                                                                              1]),
-                                                                ],
-                                                              )
-                                                            : Opacity(
-                                                                opacity: 0.0,
-                                                                child: OrderedFoodCard(
-                                                                    orderedFood:
-                                                                        orderList[index]
-                                                                            .orderFoodDetails[i]),
-                                                              ),
-                                                    ],
-                                                  ),
-                                              ]),
-                                        ),
-                                      ),
-                                    ]),
-                                    if (orderList[index].orderStatus ==
-                                        'Pending')
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            onsiteOrderService
-                                                .cancelOrder(
-                                                    orderList[index].id)
-                                                .then((value) {
-                                              if (value) {
-                                                setState(() {
-                                                  fetchOrder();
+                                                        ],
+                                                      ),
+                                                  ]),
+                                            ),
+                                          ),
+                                        ]),
+                                        if (orderList[index].orderStatus ==
+                                            'Pending')
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                onsiteOrderService
+                                                    .cancelOrder(
+                                                        orderList[index].id)
+                                                    .then((value) {
+                                                  if (value) {
+                                                    setState(() {
+                                                      fetchOrder();
+                                                    });
+                                                  }
                                                 });
-                                              }
-                                            });
-                                          },
-                                          child: Text("Cancel"))
-                                    else if (orderList[index].orderStatus ==
-                                            'Delivered' ||
-                                        orderList[index].orderStatus ==
-                                            'Partial Paid')
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            payWithKhaltiInAppPurchase(
-                                                context,
-                                                PaymentService(context),
-                                                orderList[index]
-                                                    .remainingAmount,
-                                                orderList[index].id);
-                                          },
-                                          child: Text("Pay")),
-                                  ],
-                                ),
+                                              },
+                                              child: Text("Cancel"))
+                                        else if (orderList[index].orderStatus ==
+                                                'Delivered' ||
+                                            orderList[index].orderStatus ==
+                                                'Partial Paid')
+                                          ElevatedButton(
+                                              onPressed: () {
+                                                payWithKhaltiInAppPurchase(
+                                                    context,
+                                                    PaymentService(context),
+                                                    orderList[index]
+                                                        .remainingAmount,
+                                                    orderList[index].id);
+                                              },
+                                              child: Text("Pay")),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                      ],
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              );
-            } else {
-              return Column(
-                children: [
-                  ElevatedButton(
-                      child: const Text("Remove data"),
-                      onPressed: () => {GoogleSignInApi.logout()}),
-                  ElevatedButton(
-                      child: const Text("Login"),
-                      onPressed: () => {
-                            AutoRouter.of(context)
-                                .push(const LoginScreenRoute())
-                          }),
-                  Text("${snapshot.error}")
-                ],
-              );
-            }
-          }),
+                  );
+                } else {
+                  return RefreshIndicator(
+                    onRefresh: refresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                                child: const Text("Remove data"),
+                                onPressed: () => {GoogleSignInApi.logout()}),
+                            ElevatedButton(
+                                child: const Text("Login"),
+                                onPressed: () => {
+                                      AutoRouter.of(context)
+                                          .push(const LoginScreenRoute())
+                                    }),
+                            Text("${snapshot.error}")
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }
+              }),
+        ),
+      ),
     );
   }
 }
