@@ -4,6 +4,7 @@ import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/homepage/khati_dart.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
+import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
 import 'package:fyp/features/order-mgmt/online-order/online-order-service/online_order_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/order/online_order.dart';
@@ -18,16 +19,18 @@ import 'package:fyp/utils/appbar/custom-appbar.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
-class OrderHistoryScreen extends StatefulWidget {
-  const OrderHistoryScreen({super.key});
+class OrderHistoryManagementScreen extends StatefulWidget {
+  const OrderHistoryManagementScreen({super.key});
 
   @override
-  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
+  State<OrderHistoryManagementScreen> createState() =>
+      _OrderHistoryManagementScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+class _OrderHistoryManagementScreenState
+    extends State<OrderHistoryManagementScreen> {
   final ScrollController _scrollController = ScrollController();
-  late OnsiteOrderService onsiteOrderService;
+  late OrderHistoryService orderHistoryService;
   late Future<PaginatedData<OnsiteOrder>> onsiteOrderHistoryFuture;
 
   List<OnsiteOrder> orderList = [];
@@ -47,7 +50,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   @override
   void initState() {
     super.initState();
-    onsiteOrderService = OnsiteOrderService(context);
+    orderHistoryService = OrderHistoryService(context);
 
     setAndFetchOrder();
     _scrollController.addListener(loadMoreData);
@@ -98,8 +101,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
     PaginatedData<OnsiteOrder> onsiteOrderPagination;
     try {
-      onsiteOrderPagination = await onsiteOrderService
-          .getUserOnsiteOrderHistory(paginationPayload.toJson());
+      onsiteOrderPagination = await orderHistoryService
+          .getEveryOrderHistory(paginationPayload.toJson());
       errMessage = null;
     } catch (e) {
       setState(() {
@@ -238,33 +241,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                       ),
                                     ),
                                   ]),
-                                  if (orderList[index].orderStatus == 'Pending')
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          onsiteOrderService
-                                              .cancelOrder(orderList[index].id)
-                                              .then((value) {
-                                            if (value) {
-                                              setState(() {
-                                                setAndFetchOrder();
-                                              });
-                                            }
-                                          });
-                                        },
-                                        child: Text("Cancel"))
-                                  else if (orderList[index].orderStatus ==
-                                          'Delivered' ||
-                                      orderList[index].orderStatus ==
-                                          'Partial Paid')
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          payWithKhaltiInAppPurchase(
-                                              context,
-                                              PaymentService(context),
-                                              orderList[index].remainingAmount,
-                                              orderList[index].id);
-                                        },
-                                        child: Text("Pay")),
                                 ],
                               ),
                             );

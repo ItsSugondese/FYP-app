@@ -8,17 +8,17 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i25;
-import 'package:flutter/material.dart' as _i26;
+import 'package:auto_route/auto_route.dart' as _i26;
+import 'package:flutter/material.dart' as _i27;
 import 'package:fyp/features/admin-dashboard/admin_homepage.dart' as _i3;
 import 'package:fyp/features/feedback/feedback_inspect_screen.dart' as _i8;
 import 'package:fyp/features/feedback/feedback_provide_screen.dart' as _i9;
 import 'package:fyp/features/food-mgmt/add_food_screen.dart' as _i1;
 import 'package:fyp/features/food-mgmt/food_mgmt_screen.dart' as _i10;
 import 'package:fyp/features/homepage/homepage.dart' as _i11;
-import 'package:fyp/features/homepage/order_foods_screen.dart' as _i18;
+import 'package:fyp/features/homepage/order_foods_screen.dart' as _i19;
 import 'package:fyp/features/homepage/selected_food_to_order_screen.dart'
-    as _i19;
+    as _i20;
 import 'package:fyp/features/landing-screen/landing_screen.dart' as _i12;
 import 'package:fyp/features/login/login.dart' as _i13;
 import 'package:fyp/features/notification/notification_screen.dart' as _i14;
@@ -28,7 +28,9 @@ import 'package:fyp/features/order-history/current-order/current_onsite_order_sc
     as _i5;
 import 'package:fyp/features/order-history/current-order/current_order_screen.dart'
     as _i6;
-import 'package:fyp/features/order-history/order_history_screen.dart' as _i17;
+import 'package:fyp/features/order-history/order_history_management_screen.dart'
+    as _i17;
+import 'package:fyp/features/order-history/order_history_screen.dart' as _i18;
 import 'package:fyp/features/order-mgmt/online-order/online_order_screen.dart'
     as _i15;
 import 'package:fyp/features/order-mgmt/onsite-order/onsite_order_screen.dart'
@@ -37,25 +39,25 @@ import 'package:fyp/features/people-mgmt/disable_history_screen.dart' as _i7;
 import 'package:fyp/features/people-mgmt/staff-mgmt/add-staff/add_staff_screen.dart'
     as _i2;
 import 'package:fyp/features/people-mgmt/staff-mgmt/staff-inspect/staff_details.dart'
-    as _i20;
+    as _i21;
 import 'package:fyp/features/people-mgmt/staff-mgmt/staff_management_screen.dart'
-    as _i22;
-import 'package:fyp/features/people-mgmt/user-mgmt/user-inspect/user_details.dart'
     as _i23;
-import 'package:fyp/features/people-mgmt/user-mgmt/user_management_screen.dart'
+import 'package:fyp/features/people-mgmt/user-mgmt/user-inspect/user_details.dart'
     as _i24;
-import 'package:fyp/features/staff/staff_homepage.dart' as _i21;
-import 'package:fyp/model/foodmgmt/food_menu.dart' as _i27;
+import 'package:fyp/features/people-mgmt/user-mgmt/user_management_screen.dart'
+    as _i25;
+import 'package:fyp/features/staff/staff_homepage.dart' as _i22;
+import 'package:fyp/model/foodmgmt/food_menu.dart' as _i28;
 
-abstract class $AppRouter extends _i25.RootStackRouter {
+abstract class $AppRouter extends _i26.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i25.PageFactory> pagesMap = {
+  final Map<String, _i26.PageFactory> pagesMap = {
     AddFoodScreenRoute.name: (routeData) {
       final args = routeData.argsAs<AddFoodScreenRouteArgs>(
           orElse: () => const AddFoodScreenRouteArgs());
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i1.AddFoodScreen(
           key: args.key,
@@ -66,7 +68,7 @@ abstract class $AppRouter extends _i25.RootStackRouter {
     AddStaffscreenRoute.name: (routeData) {
       final args = routeData.argsAs<AddStaffscreenRouteArgs>(
           orElse: () => const AddStaffscreenRouteArgs());
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i2.AddStaffscreen(
           key: args.key,
@@ -75,32 +77,32 @@ abstract class $AppRouter extends _i25.RootStackRouter {
       );
     },
     AdminHomepageRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i3.AdminHomepage(),
       );
     },
     CurrentOnlineOrderScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i4.CurrentOnlineOrderScreen(),
       );
     },
     CurrentOnsiteOrderScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i5.CurrentOnsiteOrderScreen(),
       );
     },
     CurrentOrderScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i6.CurrentOrderScreen(),
       );
     },
     DisableHistoryScreenRoute.name: (routeData) {
       final args = routeData.argsAs<DisableHistoryScreenRouteArgs>();
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i7.DisableHistoryScreen(
           key: args.key,
@@ -110,7 +112,7 @@ abstract class $AppRouter extends _i25.RootStackRouter {
     },
     FeedbackInspectScreenRoute.name: (routeData) {
       final args = routeData.argsAs<FeedbackInspectScreenRouteArgs>();
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i8.FeedbackInspectScreen(
           key: args.key,
@@ -119,70 +121,76 @@ abstract class $AppRouter extends _i25.RootStackRouter {
       );
     },
     FeedbackProvideScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i9.FeedbackProvideScreen(),
       );
     },
     FoodManagementScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i10.FoodManagementScreen(),
       );
     },
     HomepageRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i11.Homepage(),
       );
     },
     LandingPageScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i12.LandingPageScreen(),
       );
     },
     LoginScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i13.LoginScreen(),
       );
     },
     NotificationScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i14.NotificationScreen(),
       );
     },
     OnlineOrderScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i15.OnlineOrderScreen(),
       );
     },
     OnsiteOrderScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i16.OnsiteOrderScreen(),
       );
     },
-    OrderHistoryScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+    OrderHistoryManagementScreenRoute.name: (routeData) {
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.OrderHistoryScreen(),
+        child: const _i17.OrderHistoryManagementScreen(),
+      );
+    },
+    OrderHistoryScreenRoute.name: (routeData) {
+      return _i26.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i18.OrderHistoryScreen(),
       );
     },
     OrderedFoodScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i18.OrderedFoodScreen(),
+        child: const _i19.OrderedFoodScreen(),
       );
     },
     SelectedFoodToOrderScreenRoute.name: (routeData) {
       final args = routeData.argsAs<SelectedFoodToOrderScreenRouteArgs>();
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i19.SelectedFoodToOrderScreen(
+        child: _i20.SelectedFoodToOrderScreen(
           key: args.key,
           foodMenu: args.foodMenu,
           callback: args.callback,
@@ -191,40 +199,40 @@ abstract class $AppRouter extends _i25.RootStackRouter {
     },
     StaffDetailsScreenRoute.name: (routeData) {
       final args = routeData.argsAs<StaffDetailsScreenRouteArgs>();
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i20.StaffDetailsScreen(
+        child: _i21.StaffDetailsScreen(
           key: args.key,
           id: args.id,
         ),
       );
     },
     StaffHomepageRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i21.StaffHomepage(),
+        child: const _i22.StaffHomepage(),
       );
     },
     StaffManagementScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i22.StaffManagementScreen(),
+        child: const _i23.StaffManagementScreen(),
       );
     },
     UserDetailsScreenRoute.name: (routeData) {
       final args = routeData.argsAs<UserDetailsScreenRouteArgs>();
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i23.UserDetailsScreen(
+        child: _i24.UserDetailsScreen(
           key: args.key,
           id: args.id,
         ),
       );
     },
     UserManagementScreenRoute.name: (routeData) {
-      return _i25.AutoRoutePage<dynamic>(
+      return _i26.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i24.UserManagementScreen(),
+        child: const _i25.UserManagementScreen(),
       );
     },
   };
@@ -232,11 +240,11 @@ abstract class $AppRouter extends _i25.RootStackRouter {
 
 /// generated route for
 /// [_i1.AddFoodScreen]
-class AddFoodScreenRoute extends _i25.PageRouteInfo<AddFoodScreenRouteArgs> {
+class AddFoodScreenRoute extends _i26.PageRouteInfo<AddFoodScreenRouteArgs> {
   AddFoodScreenRoute({
-    _i26.Key? key,
-    _i27.FoodMenu? foodMenu,
-    List<_i25.PageRouteInfo>? children,
+    _i27.Key? key,
+    _i28.FoodMenu? foodMenu,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           AddFoodScreenRoute.name,
           args: AddFoodScreenRouteArgs(
@@ -248,8 +256,8 @@ class AddFoodScreenRoute extends _i25.PageRouteInfo<AddFoodScreenRouteArgs> {
 
   static const String name = 'AddFoodScreenRoute';
 
-  static const _i25.PageInfo<AddFoodScreenRouteArgs> page =
-      _i25.PageInfo<AddFoodScreenRouteArgs>(name);
+  static const _i26.PageInfo<AddFoodScreenRouteArgs> page =
+      _i26.PageInfo<AddFoodScreenRouteArgs>(name);
 }
 
 class AddFoodScreenRouteArgs {
@@ -258,9 +266,9 @@ class AddFoodScreenRouteArgs {
     this.foodMenu,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
-  final _i27.FoodMenu? foodMenu;
+  final _i28.FoodMenu? foodMenu;
 
   @override
   String toString() {
@@ -270,11 +278,11 @@ class AddFoodScreenRouteArgs {
 
 /// generated route for
 /// [_i2.AddStaffscreen]
-class AddStaffscreenRoute extends _i25.PageRouteInfo<AddStaffscreenRouteArgs> {
+class AddStaffscreenRoute extends _i26.PageRouteInfo<AddStaffscreenRouteArgs> {
   AddStaffscreenRoute({
-    _i26.Key? key,
-    _i27.FoodMenu? foodMenu,
-    List<_i25.PageRouteInfo>? children,
+    _i27.Key? key,
+    _i28.FoodMenu? foodMenu,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           AddStaffscreenRoute.name,
           args: AddStaffscreenRouteArgs(
@@ -286,8 +294,8 @@ class AddStaffscreenRoute extends _i25.PageRouteInfo<AddStaffscreenRouteArgs> {
 
   static const String name = 'AddStaffscreenRoute';
 
-  static const _i25.PageInfo<AddStaffscreenRouteArgs> page =
-      _i25.PageInfo<AddStaffscreenRouteArgs>(name);
+  static const _i26.PageInfo<AddStaffscreenRouteArgs> page =
+      _i26.PageInfo<AddStaffscreenRouteArgs>(name);
 }
 
 class AddStaffscreenRouteArgs {
@@ -296,9 +304,9 @@ class AddStaffscreenRouteArgs {
     this.foodMenu,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
-  final _i27.FoodMenu? foodMenu;
+  final _i28.FoodMenu? foodMenu;
 
   @override
   String toString() {
@@ -308,8 +316,8 @@ class AddStaffscreenRouteArgs {
 
 /// generated route for
 /// [_i3.AdminHomepage]
-class AdminHomepageRoute extends _i25.PageRouteInfo<void> {
-  const AdminHomepageRoute({List<_i25.PageRouteInfo>? children})
+class AdminHomepageRoute extends _i26.PageRouteInfo<void> {
+  const AdminHomepageRoute({List<_i26.PageRouteInfo>? children})
       : super(
           AdminHomepageRoute.name,
           initialChildren: children,
@@ -317,13 +325,13 @@ class AdminHomepageRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'AdminHomepageRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i4.CurrentOnlineOrderScreen]
-class CurrentOnlineOrderScreenRoute extends _i25.PageRouteInfo<void> {
-  const CurrentOnlineOrderScreenRoute({List<_i25.PageRouteInfo>? children})
+class CurrentOnlineOrderScreenRoute extends _i26.PageRouteInfo<void> {
+  const CurrentOnlineOrderScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           CurrentOnlineOrderScreenRoute.name,
           initialChildren: children,
@@ -331,13 +339,13 @@ class CurrentOnlineOrderScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'CurrentOnlineOrderScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i5.CurrentOnsiteOrderScreen]
-class CurrentOnsiteOrderScreenRoute extends _i25.PageRouteInfo<void> {
-  const CurrentOnsiteOrderScreenRoute({List<_i25.PageRouteInfo>? children})
+class CurrentOnsiteOrderScreenRoute extends _i26.PageRouteInfo<void> {
+  const CurrentOnsiteOrderScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           CurrentOnsiteOrderScreenRoute.name,
           initialChildren: children,
@@ -345,13 +353,13 @@ class CurrentOnsiteOrderScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'CurrentOnsiteOrderScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i6.CurrentOrderScreen]
-class CurrentOrderScreenRoute extends _i25.PageRouteInfo<void> {
-  const CurrentOrderScreenRoute({List<_i25.PageRouteInfo>? children})
+class CurrentOrderScreenRoute extends _i26.PageRouteInfo<void> {
+  const CurrentOrderScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           CurrentOrderScreenRoute.name,
           initialChildren: children,
@@ -359,17 +367,17 @@ class CurrentOrderScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'CurrentOrderScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i7.DisableHistoryScreen]
 class DisableHistoryScreenRoute
-    extends _i25.PageRouteInfo<DisableHistoryScreenRouteArgs> {
+    extends _i26.PageRouteInfo<DisableHistoryScreenRouteArgs> {
   DisableHistoryScreenRoute({
-    _i26.Key? key,
+    _i27.Key? key,
     required int id,
-    List<_i25.PageRouteInfo>? children,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           DisableHistoryScreenRoute.name,
           args: DisableHistoryScreenRouteArgs(
@@ -381,8 +389,8 @@ class DisableHistoryScreenRoute
 
   static const String name = 'DisableHistoryScreenRoute';
 
-  static const _i25.PageInfo<DisableHistoryScreenRouteArgs> page =
-      _i25.PageInfo<DisableHistoryScreenRouteArgs>(name);
+  static const _i26.PageInfo<DisableHistoryScreenRouteArgs> page =
+      _i26.PageInfo<DisableHistoryScreenRouteArgs>(name);
 }
 
 class DisableHistoryScreenRouteArgs {
@@ -391,7 +399,7 @@ class DisableHistoryScreenRouteArgs {
     required this.id,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final int id;
 
@@ -404,11 +412,11 @@ class DisableHistoryScreenRouteArgs {
 /// generated route for
 /// [_i8.FeedbackInspectScreen]
 class FeedbackInspectScreenRoute
-    extends _i25.PageRouteInfo<FeedbackInspectScreenRouteArgs> {
+    extends _i26.PageRouteInfo<FeedbackInspectScreenRouteArgs> {
   FeedbackInspectScreenRoute({
-    _i26.Key? key,
+    _i27.Key? key,
     required int foodId,
-    List<_i25.PageRouteInfo>? children,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           FeedbackInspectScreenRoute.name,
           args: FeedbackInspectScreenRouteArgs(
@@ -420,8 +428,8 @@ class FeedbackInspectScreenRoute
 
   static const String name = 'FeedbackInspectScreenRoute';
 
-  static const _i25.PageInfo<FeedbackInspectScreenRouteArgs> page =
-      _i25.PageInfo<FeedbackInspectScreenRouteArgs>(name);
+  static const _i26.PageInfo<FeedbackInspectScreenRouteArgs> page =
+      _i26.PageInfo<FeedbackInspectScreenRouteArgs>(name);
 }
 
 class FeedbackInspectScreenRouteArgs {
@@ -430,7 +438,7 @@ class FeedbackInspectScreenRouteArgs {
     required this.foodId,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final int foodId;
 
@@ -442,8 +450,8 @@ class FeedbackInspectScreenRouteArgs {
 
 /// generated route for
 /// [_i9.FeedbackProvideScreen]
-class FeedbackProvideScreenRoute extends _i25.PageRouteInfo<void> {
-  const FeedbackProvideScreenRoute({List<_i25.PageRouteInfo>? children})
+class FeedbackProvideScreenRoute extends _i26.PageRouteInfo<void> {
+  const FeedbackProvideScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           FeedbackProvideScreenRoute.name,
           initialChildren: children,
@@ -451,13 +459,13 @@ class FeedbackProvideScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'FeedbackProvideScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i10.FoodManagementScreen]
-class FoodManagementScreenRoute extends _i25.PageRouteInfo<void> {
-  const FoodManagementScreenRoute({List<_i25.PageRouteInfo>? children})
+class FoodManagementScreenRoute extends _i26.PageRouteInfo<void> {
+  const FoodManagementScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           FoodManagementScreenRoute.name,
           initialChildren: children,
@@ -465,13 +473,13 @@ class FoodManagementScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'FoodManagementScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i11.Homepage]
-class HomepageRoute extends _i25.PageRouteInfo<void> {
-  const HomepageRoute({List<_i25.PageRouteInfo>? children})
+class HomepageRoute extends _i26.PageRouteInfo<void> {
+  const HomepageRoute({List<_i26.PageRouteInfo>? children})
       : super(
           HomepageRoute.name,
           initialChildren: children,
@@ -479,13 +487,13 @@ class HomepageRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'HomepageRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i12.LandingPageScreen]
-class LandingPageScreenRoute extends _i25.PageRouteInfo<void> {
-  const LandingPageScreenRoute({List<_i25.PageRouteInfo>? children})
+class LandingPageScreenRoute extends _i26.PageRouteInfo<void> {
+  const LandingPageScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           LandingPageScreenRoute.name,
           initialChildren: children,
@@ -493,13 +501,13 @@ class LandingPageScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'LandingPageScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i13.LoginScreen]
-class LoginScreenRoute extends _i25.PageRouteInfo<void> {
-  const LoginScreenRoute({List<_i25.PageRouteInfo>? children})
+class LoginScreenRoute extends _i26.PageRouteInfo<void> {
+  const LoginScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           LoginScreenRoute.name,
           initialChildren: children,
@@ -507,13 +515,13 @@ class LoginScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'LoginScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i14.NotificationScreen]
-class NotificationScreenRoute extends _i25.PageRouteInfo<void> {
-  const NotificationScreenRoute({List<_i25.PageRouteInfo>? children})
+class NotificationScreenRoute extends _i26.PageRouteInfo<void> {
+  const NotificationScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           NotificationScreenRoute.name,
           initialChildren: children,
@@ -521,13 +529,13 @@ class NotificationScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'NotificationScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i15.OnlineOrderScreen]
-class OnlineOrderScreenRoute extends _i25.PageRouteInfo<void> {
-  const OnlineOrderScreenRoute({List<_i25.PageRouteInfo>? children})
+class OnlineOrderScreenRoute extends _i26.PageRouteInfo<void> {
+  const OnlineOrderScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           OnlineOrderScreenRoute.name,
           initialChildren: children,
@@ -535,13 +543,13 @@ class OnlineOrderScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'OnlineOrderScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i16.OnsiteOrderScreen]
-class OnsiteOrderScreenRoute extends _i25.PageRouteInfo<void> {
-  const OnsiteOrderScreenRoute({List<_i25.PageRouteInfo>? children})
+class OnsiteOrderScreenRoute extends _i26.PageRouteInfo<void> {
+  const OnsiteOrderScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           OnsiteOrderScreenRoute.name,
           initialChildren: children,
@@ -549,13 +557,27 @@ class OnsiteOrderScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'OnsiteOrderScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i17.OrderHistoryScreen]
-class OrderHistoryScreenRoute extends _i25.PageRouteInfo<void> {
-  const OrderHistoryScreenRoute({List<_i25.PageRouteInfo>? children})
+/// [_i17.OrderHistoryManagementScreen]
+class OrderHistoryManagementScreenRoute extends _i26.PageRouteInfo<void> {
+  const OrderHistoryManagementScreenRoute({List<_i26.PageRouteInfo>? children})
+      : super(
+          OrderHistoryManagementScreenRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OrderHistoryManagementScreenRoute';
+
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i18.OrderHistoryScreen]
+class OrderHistoryScreenRoute extends _i26.PageRouteInfo<void> {
+  const OrderHistoryScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           OrderHistoryScreenRoute.name,
           initialChildren: children,
@@ -563,13 +585,13 @@ class OrderHistoryScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'OrderHistoryScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i18.OrderedFoodScreen]
-class OrderedFoodScreenRoute extends _i25.PageRouteInfo<void> {
-  const OrderedFoodScreenRoute({List<_i25.PageRouteInfo>? children})
+/// [_i19.OrderedFoodScreen]
+class OrderedFoodScreenRoute extends _i26.PageRouteInfo<void> {
+  const OrderedFoodScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           OrderedFoodScreenRoute.name,
           initialChildren: children,
@@ -577,21 +599,21 @@ class OrderedFoodScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'OrderedFoodScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i19.SelectedFoodToOrderScreen]
+/// [_i20.SelectedFoodToOrderScreen]
 class SelectedFoodToOrderScreenRoute
-    extends _i25.PageRouteInfo<SelectedFoodToOrderScreenRouteArgs> {
+    extends _i26.PageRouteInfo<SelectedFoodToOrderScreenRouteArgs> {
   SelectedFoodToOrderScreenRoute({
-    _i26.Key? key,
-    required _i27.FoodMenu foodMenu,
+    _i27.Key? key,
+    required _i28.FoodMenu foodMenu,
     required dynamic Function(
       int,
-      _i27.FoodMenu,
+      _i28.FoodMenu,
     ) callback,
-    List<_i25.PageRouteInfo>? children,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           SelectedFoodToOrderScreenRoute.name,
           args: SelectedFoodToOrderScreenRouteArgs(
@@ -604,8 +626,8 @@ class SelectedFoodToOrderScreenRoute
 
   static const String name = 'SelectedFoodToOrderScreenRoute';
 
-  static const _i25.PageInfo<SelectedFoodToOrderScreenRouteArgs> page =
-      _i25.PageInfo<SelectedFoodToOrderScreenRouteArgs>(name);
+  static const _i26.PageInfo<SelectedFoodToOrderScreenRouteArgs> page =
+      _i26.PageInfo<SelectedFoodToOrderScreenRouteArgs>(name);
 }
 
 class SelectedFoodToOrderScreenRouteArgs {
@@ -615,13 +637,13 @@ class SelectedFoodToOrderScreenRouteArgs {
     required this.callback,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
-  final _i27.FoodMenu foodMenu;
+  final _i28.FoodMenu foodMenu;
 
   final dynamic Function(
     int,
-    _i27.FoodMenu,
+    _i28.FoodMenu,
   ) callback;
 
   @override
@@ -631,13 +653,13 @@ class SelectedFoodToOrderScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i20.StaffDetailsScreen]
+/// [_i21.StaffDetailsScreen]
 class StaffDetailsScreenRoute
-    extends _i25.PageRouteInfo<StaffDetailsScreenRouteArgs> {
+    extends _i26.PageRouteInfo<StaffDetailsScreenRouteArgs> {
   StaffDetailsScreenRoute({
-    _i26.Key? key,
+    _i27.Key? key,
     required int id,
-    List<_i25.PageRouteInfo>? children,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           StaffDetailsScreenRoute.name,
           args: StaffDetailsScreenRouteArgs(
@@ -649,8 +671,8 @@ class StaffDetailsScreenRoute
 
   static const String name = 'StaffDetailsScreenRoute';
 
-  static const _i25.PageInfo<StaffDetailsScreenRouteArgs> page =
-      _i25.PageInfo<StaffDetailsScreenRouteArgs>(name);
+  static const _i26.PageInfo<StaffDetailsScreenRouteArgs> page =
+      _i26.PageInfo<StaffDetailsScreenRouteArgs>(name);
 }
 
 class StaffDetailsScreenRouteArgs {
@@ -659,7 +681,7 @@ class StaffDetailsScreenRouteArgs {
     required this.id,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final int id;
 
@@ -670,9 +692,9 @@ class StaffDetailsScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i21.StaffHomepage]
-class StaffHomepageRoute extends _i25.PageRouteInfo<void> {
-  const StaffHomepageRoute({List<_i25.PageRouteInfo>? children})
+/// [_i22.StaffHomepage]
+class StaffHomepageRoute extends _i26.PageRouteInfo<void> {
+  const StaffHomepageRoute({List<_i26.PageRouteInfo>? children})
       : super(
           StaffHomepageRoute.name,
           initialChildren: children,
@@ -680,13 +702,13 @@ class StaffHomepageRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'StaffHomepageRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i22.StaffManagementScreen]
-class StaffManagementScreenRoute extends _i25.PageRouteInfo<void> {
-  const StaffManagementScreenRoute({List<_i25.PageRouteInfo>? children})
+/// [_i23.StaffManagementScreen]
+class StaffManagementScreenRoute extends _i26.PageRouteInfo<void> {
+  const StaffManagementScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           StaffManagementScreenRoute.name,
           initialChildren: children,
@@ -694,17 +716,17 @@ class StaffManagementScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'StaffManagementScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i23.UserDetailsScreen]
+/// [_i24.UserDetailsScreen]
 class UserDetailsScreenRoute
-    extends _i25.PageRouteInfo<UserDetailsScreenRouteArgs> {
+    extends _i26.PageRouteInfo<UserDetailsScreenRouteArgs> {
   UserDetailsScreenRoute({
-    _i26.Key? key,
+    _i27.Key? key,
     required int id,
-    List<_i25.PageRouteInfo>? children,
+    List<_i26.PageRouteInfo>? children,
   }) : super(
           UserDetailsScreenRoute.name,
           args: UserDetailsScreenRouteArgs(
@@ -716,8 +738,8 @@ class UserDetailsScreenRoute
 
   static const String name = 'UserDetailsScreenRoute';
 
-  static const _i25.PageInfo<UserDetailsScreenRouteArgs> page =
-      _i25.PageInfo<UserDetailsScreenRouteArgs>(name);
+  static const _i26.PageInfo<UserDetailsScreenRouteArgs> page =
+      _i26.PageInfo<UserDetailsScreenRouteArgs>(name);
 }
 
 class UserDetailsScreenRouteArgs {
@@ -726,7 +748,7 @@ class UserDetailsScreenRouteArgs {
     required this.id,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final int id;
 
@@ -737,9 +759,9 @@ class UserDetailsScreenRouteArgs {
 }
 
 /// generated route for
-/// [_i24.UserManagementScreen]
-class UserManagementScreenRoute extends _i25.PageRouteInfo<void> {
-  const UserManagementScreenRoute({List<_i25.PageRouteInfo>? children})
+/// [_i25.UserManagementScreen]
+class UserManagementScreenRoute extends _i26.PageRouteInfo<void> {
+  const UserManagementScreenRoute({List<_i26.PageRouteInfo>? children})
       : super(
           UserManagementScreenRoute.name,
           initialChildren: children,
@@ -747,5 +769,5 @@ class UserManagementScreenRoute extends _i25.PageRouteInfo<void> {
 
   static const String name = 'UserManagementScreenRoute';
 
-  static const _i25.PageInfo<void> page = _i25.PageInfo<void>(name);
+  static const _i26.PageInfo<void> page = _i26.PageInfo<void>(name);
 }

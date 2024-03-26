@@ -37,26 +37,19 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             ListTile(
               title: Text(
-                'Staff Managemenet',
-              ),
-              onTap: () {
-                AutoRouter.of(context).push(const StaffManagementScreenRoute());
-              },
-            ),
-            ListTile(
-              title: Text(
-                'User Managemenet',
-              ),
-              onTap: () {
-                AutoRouter.of(context).push(const UserManagementScreenRoute());
-              },
-            ),
-            ListTile(
-              title: Text(
                 'Food Managemenet',
               ),
               onTap: () {
                 AutoRouter.of(context).push(const FoodManagementScreenRoute());
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Order History',
+              ),
+              onTap: () {
+                AutoRouter.of(context)
+                    .push(const OrderHistoryManagementScreenRoute());
               },
             ),
             ListTile(

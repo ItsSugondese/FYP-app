@@ -29,7 +29,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
   late OnlineOrderService onlineOrderService;
 
   bool? isVerified;
-  bool isOnlineOrder = false;
+  bool? isOnlineOrder;
   bool payUsingCash = false;
   String tableNumber = "";
 
@@ -87,7 +87,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                   },
                   child: Card(
                       child: Container(
-                          decoration: !isOnlineOrder
+                          decoration: isOnlineOrder == false
                               ? BoxDecoration(
                                   border: Border.all(
                                   color: Colors.red, // Border color
@@ -109,7 +109,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                   },
                   child: Card(
                       child: Container(
-                          decoration: isOnlineOrder
+                          decoration: isOnlineOrder == true
                               ? BoxDecoration(
                                   border: Border.all(
                                   color: Colors.red, // Border color
@@ -163,7 +163,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                     )
                   : const Text(
                       "Data from QR didn't matches with on-ste vetification"),
-          isOnlineOrder
+          isOnlineOrder == true
               ? ElevatedButton(
                   style: ButtonStyle(
                       side: MaterialStateProperty.all(const BorderSide(

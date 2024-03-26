@@ -18,7 +18,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: StaffHomepageRoute.page),
         AutoRoute(page: AdminHomepageRoute.page),
         AutoRoute(page: FoodManagementScreenRoute.page),
-        AutoRoute(page: AddFoodScreenRoute.page),
         AutoRoute(page: OnlineOrderScreenRoute.page),
         AutoRoute(page: OnsiteOrderScreenRoute.page),
         AutoRoute(page: UserManagementScreenRoute.page),
@@ -30,8 +29,9 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: CurrentOrderScreenRoute.page,
         ),
+        AutoRoute(page: OrderHistoryManagementScreenRoute.page, initial: true),
         AutoRoute(page: FeedbackProvideScreenRoute.page),
         AutoRoute(page: NotificationScreenRoute.page),
-        AutoRoute(page: OrderHistoryScreenRoute.page, initial: true),
+        AutoRoute(page: OrderHistoryScreenRoute.page),
       ];
 }
