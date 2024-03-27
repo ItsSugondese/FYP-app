@@ -15,12 +15,11 @@ import 'package:fyp/services/network/dio_service.dart';
 class UserManagementService {
   late final Dio _dio;
 
-  UserManagementService() {
-    _dio = DioService.getDioConfig();
+  UserManagementService(BuildContext context) {
+    _dio = DioService.getDioConfigWithContext(context);
   }
 
-  Future<PaginatedData<User>> getAllUsers(
-      BuildContext context, Map<String, dynamic> map) async {
+  Future<PaginatedData<User>> getAllUsers(Map<String, dynamic> map) async {
     try {
       Response response = await _dio.post(
         "${ApiConstant.backendUrl}/${ModuleName.USER}/paginated",
@@ -54,19 +53,14 @@ class UserManagementService {
             currentPageIndex: currentPageIndex,
           );
         } else {
-          ServiceHelper.showErrorSnackBar(context, response.data['message']);
           throw Exception(
               MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
         }
       } else {
-        ServiceHelper.showErrorSnackBar(context,
-            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
         throw Exception(
             MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
       }
     } on DioException catch (e) {
-      print(e.toString());
-      print((DioService.handleDioException(e)).message);
       throw (DioService.handleDioException(e)).message;
     }
   }

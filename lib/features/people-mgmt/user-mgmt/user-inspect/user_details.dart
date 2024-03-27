@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/constants/designing/image_path.dart';
+import 'package:fyp/constants/designing/screen_name.dart';
 import 'package:fyp/features/people-mgmt/user-mgmt/user-mgmt-service/user_management_service.dart';
 import 'package:fyp/model/people/user.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
@@ -16,7 +18,7 @@ class UserDetailsScreen extends StatefulWidget {
 class _UserDetailsScreenState extends State<UserDetailsScreen> {
   final List<ScrollController> _scrollControllerList = [];
   // ScrollController _scrollController = ScrollController();
-  UserManagementService userManagementService = UserManagementService();
+  late UserManagementService userManagementService;
 
   late Future<User> userFuture;
 
@@ -26,6 +28,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    userManagementService = UserManagementService(context);
     userFuture = userManagementService.getSingleUser(context, widget.id);
   }
 
@@ -55,7 +58,9 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                     Text(userDetails.fullName),
                     Text(userDetails.email),
                     Text("${userDetails.accountNonLocked}"),
-                    Image.network(userDetails.profilePath)
+                    Image.network(userDetails.profilePath == null
+                        ? ImagePath.getImagePath(ScreenName.landing, "anon.jpg")
+                        : userDetails.profilePath!)
                   ]),
                 ),
               );

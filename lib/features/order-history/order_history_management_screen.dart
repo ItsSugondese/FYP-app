@@ -2,18 +2,22 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/constants/designing/dimension.dart';
+import 'package:fyp/constants/filter-map/pay_filter_map.dart';
 import 'package:fyp/features/homepage/khati_dart.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
 import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
 import 'package:fyp/features/order-mgmt/online-order/online-order-service/online_order_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
+import 'package:fyp/helper/widgets/global/pay_filter_widgets.dart';
 import 'package:fyp/model/order/online_order.dart';
 import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
+import 'package:fyp/podo/user-order/order_history_management_pagination.dart';
 import 'package:fyp/podo/user-order/user_order_pagination.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
 import 'package:fyp/services/payment/payment_service.dart';
+import 'package:fyp/templates/not-found/no_data.dart';
 import 'package:fyp/templates/text/food_type_text.dart';
 import 'package:fyp/utils/appbar/custom-appbar.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
@@ -34,10 +38,10 @@ class _OrderHistoryManagementScreenState
   late Future<PaginatedData<OnsiteOrder>> onsiteOrderHistoryFuture;
 
   List<OnsiteOrder> orderList = [];
-  UserOrderHistoryPagination paginationPayload = UserOrderHistoryPagination(
+  OrderHistoryManagementPagination paginationPayload =
+      OrderHistoryManagementPagination(
     fromDate: DateTime.now().toString().split(' ')[0],
     toDate: DateTime.now().toString().split(' ')[0],
-    today: false,
   );
 
   DateTime _startDate = DateTime.now();
@@ -131,123 +135,145 @@ class _OrderHistoryManagementScreenState
                 onPressed: _selectDateRange,
                 child: Text(
                     '${paginationPayload.fromDate!} - ${paginationPayload.toDate!}')),
+            GlobalPayFilterWidget(
+                options: PayFilterMap.payfilter,
+                selectedFilter: (val) {
+                  paginationPayload.payStatus = val;
+                  setState(() {
+                    setAndFetchOrder();
+                  });
+                }),
             if (errMessage != null)
               Center(child: Text(errMessage!))
             else
               !initialLoading
-                  ? Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: refresh,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemCount: orderList.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 15),
-                              child: Column(
-                                children: [
-                                  Column(children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                  ? orderList.isEmpty
+                      ? Expanded(child: Center(child: NoData.getNoDataImage()))
+                      : Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: refresh,
+                            child: ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              itemCount: orderList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Column(
+                                    children: [
+                                      Column(children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              "Order no. ${orderList[index].fullName}",
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 20,
-                                              ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  width:
+                                                      Dimension.getScreenWidth(
+                                                              context) *
+                                                          0.65,
+                                                  child: Text(
+                                                    "${orderList[index].fullName}",
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Ordered : ${orderList[index].orderedTime} ago",
+                                                )
+                                              ],
                                             ),
-                                            Text(
-                                              "Ordered : ${orderList[index].orderedTime} ago",
-                                            )
+                                            FoodTypeText.getFoodType(
+                                                orderList[index].orderStatus,
+                                                14)
                                           ],
                                         ),
-                                        FoodTypeText.getFoodType(
-                                            orderList[index].orderStatus, 14)
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.end,
-                                            children: [
-                                              for (int i = 0;
-                                                  i <
-                                                      orderList[index]
-                                                          .orderFoodDetails
-                                                          .length;
-                                                  orderList[index]
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.end,
+                                                children: [
+                                                  for (int i = 0;
+                                                      i <
+                                                          orderList[index]
                                                               .orderFoodDetails
-                                                              .length <=
-                                                          2
-                                                      ? i++
-                                                      : i += 2)
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {},
-                                                      child: OrderedFoodCard(
-                                                          orderedFood: orderList[
-                                                                  index]
-                                                              .orderFoodDetails[i]),
-                                                    ),
-                                                    if (orderList[index]
-                                                            .orderFoodDetails
-                                                            .length >
-                                                        2)
-                                                      (orderList[index]
-                                                                      .orderFoodDetails
-                                                                      .length -
-                                                                  1 >=
-                                                              i + 1)
-                                                          ? Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 10,
+                                                              .length;
+                                                      orderList[index]
+                                                                  .orderFoodDetails
+                                                                  .length <=
+                                                              2
+                                                          ? i++
+                                                          : i += 2)
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {},
+                                                          child: OrderedFoodCard(
+                                                              orderedFood:
+                                                                  orderList[
+                                                                          index]
+                                                                      .orderFoodDetails[i]),
+                                                        ),
+                                                        if (orderList[index]
+                                                                .orderFoodDetails
+                                                                .length >
+                                                            2)
+                                                          (orderList[index]
+                                                                          .orderFoodDetails
+                                                                          .length -
+                                                                      1 >=
+                                                                  i + 1)
+                                                              ? Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    OrderedFoodCard(
+                                                                        orderedFood:
+                                                                            orderList[index].orderFoodDetails[i +
+                                                                                1]),
+                                                                  ],
+                                                                )
+                                                              : Opacity(
+                                                                  opacity: 0.0,
+                                                                  child: OrderedFoodCard(
+                                                                      orderedFood:
+                                                                          orderList[index]
+                                                                              .orderFoodDetails[i]),
                                                                 ),
-                                                                OrderedFoodCard(
-                                                                    orderedFood:
-                                                                        orderList[index].orderFoodDetails[i +
-                                                                            1]),
-                                                              ],
-                                                            )
-                                                          : Opacity(
-                                                              opacity: 0.0,
-                                                              child: OrderedFoodCard(
-                                                                  orderedFood:
-                                                                      orderList[
-                                                                              index]
-                                                                          .orderFoodDetails[i]),
-                                                            ),
-                                                  ],
-                                                ),
-                                            ]),
-                                      ),
-                                    ),
-                                  ]),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    )
+                                                      ],
+                                                    ),
+                                                ]),
+                                          ),
+                                        ),
+                                      ]),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        )
                   : const Expanded(
                       child: Center(
                         child: CircularProgressIndicator(),

@@ -29,7 +29,8 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: CurrentOrderScreenRoute.page,
         ),
-        AutoRoute(page: OrderHistoryManagementScreenRoute.page, initial: true),
+        AutoRoute(page: OrderHistoryManagementScreenRoute.page),
+        AutoRoute(page: UserPaymentManagementScreenRoute.page, initial: true),
         AutoRoute(page: FeedbackProvideScreenRoute.page),
         AutoRoute(page: NotificationScreenRoute.page),
         AutoRoute(page: OrderHistoryScreenRoute.page),

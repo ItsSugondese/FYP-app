@@ -8,4 +8,8 @@ class Dimension {
   static double getScreenHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
+
+  static double getAppbarHeight(BuildContext context) {
+    return AppBar().preferredSize.height;
+  }
 }

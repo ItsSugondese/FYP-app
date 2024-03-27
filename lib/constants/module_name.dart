@@ -9,4 +9,5 @@ class ModuleName {
   static String FEEDBACK = "feedback";
   static String ENUMS = "enums";
   static String NOTIFICATION = "notification";
+  static String PAYMENT = "payment";
 }

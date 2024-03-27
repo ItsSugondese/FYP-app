@@ -1,17 +1,18 @@
 class User {
   final bool accountNonLocked;
   final String email;
-  final String profilePath;
+  final String? profilePath;
   final int id;
   final String fullName;
+  final double remainingAmount;
 
-  User({
-    required this.accountNonLocked,
-    required this.email,
-    required this.profilePath,
-    required this.id,
-    required this.fullName,
-  });
+  User(
+      {required this.accountNonLocked,
+      required this.email,
+      this.profilePath,
+      required this.id,
+      required this.fullName,
+      required this.remainingAmount});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -20,6 +21,7 @@ class User {
       profilePath: json['profilePath'],
       id: json['id'],
       fullName: json['fullName'],
+      remainingAmount: json['remainingAmount'],
     );
   }
 

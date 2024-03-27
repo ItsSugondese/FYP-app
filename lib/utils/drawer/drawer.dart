@@ -54,6 +54,15 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             ListTile(
               title: Text(
+                'User Payment management',
+              ),
+              onTap: () {
+                AutoRouter.of(context)
+                    .push(const UserPaymentManagementScreenRoute());
+              },
+            ),
+            ListTile(
+              title: Text(
                 'Homepage',
               ),
               onTap: () {

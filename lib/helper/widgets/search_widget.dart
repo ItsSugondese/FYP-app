@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatefulWidget {
+  final String? searchText;
   final Function(String) typedText;
   final Function(dynamic)? selectedFilter;
   final Map<String, dynamic>? filterItems;
   const SearchWidget(
       {super.key,
       required this.typedText,
+      this.searchText,
       this.filterItems,
       this.selectedFilter});
   // const SearchWidget({super.key});
@@ -22,7 +24,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   // List of items for the dropdown
   Map<String, dynamic>? _items;
-
+  String hintText = "Search Food";
   @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +32,10 @@ class _SearchWidgetState extends State<SearchWidget> {
     _items = widget.filterItems;
     if (_items != null) {
       _selectedKey = _items!.keys.first;
+    }
+
+    if (widget.searchText != null) {
+      hintText = widget.searchText!;
     }
   }
 
@@ -59,42 +65,38 @@ class _SearchWidgetState extends State<SearchWidget> {
             Flexible(
               child: TextFormField(
                 // controller: _emailFieldController,
-                decoration: const InputDecoration(
-                    hintText: "Search food", border: InputBorder.none),
+                decoration: InputDecoration(
+                    hintText: hintText, border: InputBorder.none),
                 onFieldSubmitted: (String value) {
                   widget.typedText(value);
                 },
               ),
             ),
-            _items == null
-                ? IconButton(
-                    icon: Icon(Icons.filter_list),
-                    onPressed: () {},
-                  )
-                : PopupMenuButton<String>(
-                    icon: Icon(Icons.filter_list),
-                    onSelected: (String key) {
-                      setState(() {
-                        _selectedKey = key;
-                        _selectedValue = _items![key];
-                        widget.selectedFilter!(_selectedValue);
-                      });
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return _items!.keys.map((String key) {
-                        return PopupMenuItem<String>(
-                          value: key,
-                          child: Text(
-                            key,
-                            style: TextStyle(
-                                color: _selectedKey == key
-                                    ? Colors.red
-                                    : Colors.black),
-                          ),
-                        );
-                      }).toList();
-                    },
-                  ),
+            if (_items != null)
+              PopupMenuButton<String>(
+                icon: Icon(Icons.filter_list),
+                onSelected: (String key) {
+                  setState(() {
+                    _selectedKey = key;
+                    _selectedValue = _items![key];
+                    widget.selectedFilter!(_selectedValue);
+                  });
+                },
+                itemBuilder: (BuildContext context) {
+                  return _items!.keys.map((String key) {
+                    return PopupMenuItem<String>(
+                      value: key,
+                      child: Text(
+                        key,
+                        style: TextStyle(
+                            color: _selectedKey == key
+                                ? Colors.red
+                                : Colors.black),
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
           ],
         ),
       ),

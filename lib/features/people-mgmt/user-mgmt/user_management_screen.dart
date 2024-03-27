@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:fyp/constants/designing/image_path.dart';
+import 'package:fyp/constants/designing/screen_name.dart';
 import 'package:fyp/features/people-mgmt/disable_people_form.dart';
 import 'package:fyp/features/people-mgmt/user-mgmt/user-mgmt-service/user_management_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
@@ -19,7 +21,7 @@ class UserManagementScreen extends StatefulWidget {
 class _UserManagementScreenState extends State<UserManagementScreen> {
   final PageController _pageController = PageController(initialPage: 1);
   final List<ScrollController> _scrollControllerList = [];
-  UserManagementService userManagementService = UserManagementService();
+  late UserManagementService userManagementService;
 
   late Future<PaginatedData<User>> userFuture;
 
@@ -28,8 +30,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
   @override
   void initState() {
     super.initState();
-    userFuture =
-        userManagementService.getAllUsers(context, paginationPayload.toJson());
+    userManagementService = UserManagementService(context);
+    userFuture = userManagementService.getAllUsers(paginationPayload.toJson());
   }
 
   @override
@@ -60,8 +62,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                 onPageChanged: (value) {
                   setState(() {
                     paginationPayload.page = value + 1;
-                    userFuture = userManagementService.getAllUsers(
-                        context, paginationPayload.toJson());
+                    userFuture = userManagementService
+                        .getAllUsers(paginationPayload.toJson());
                   });
                 },
                 itemCount: snapshot.data!.totalPages,
@@ -86,7 +88,9 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                           return DataRow(cells: [
                             DataCell(
                               Image.network(
-                                userMap.profilePath,
+                                userMap.profilePath ??
+                                    ImagePath.getImagePath(
+                                        ScreenName.landing, "anon.jpg"),
                                 width: 200.0,
                                 height: 200.0,
                                 fit: BoxFit.cover,
