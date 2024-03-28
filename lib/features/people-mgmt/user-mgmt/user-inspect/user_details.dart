@@ -4,7 +4,6 @@ import 'package:fyp/constants/designing/image_path.dart';
 import 'package:fyp/constants/designing/screen_name.dart';
 import 'package:fyp/features/people-mgmt/user-mgmt/user-mgmt-service/user_management_service.dart';
 import 'package:fyp/model/people/user.dart';
-import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 
 @RoutePage()
 class UserDetailsScreen extends StatefulWidget {
@@ -21,9 +20,6 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
   late UserManagementService userManagementService;
 
   late Future<User> userFuture;
-
-  OnlineOrderPaginationPayload paginationPayload =
-      OnlineOrderPaginationPayload();
 
   @override
   void initState() {

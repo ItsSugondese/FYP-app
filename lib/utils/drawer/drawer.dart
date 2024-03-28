@@ -54,6 +54,22 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             ListTile(
               title: Text(
+                'Onsite Order Management',
+              ),
+              onTap: () {
+                AutoRouter.of(context).push(const OnsiteOrderScreenRoute());
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Online Order Management',
+              ),
+              onTap: () {
+                AutoRouter.of(context).push(const OnlineOrderScreenRoute());
+              },
+            ),
+            ListTile(
+              title: Text(
                 'User Payment management',
               ),
               onTap: () {

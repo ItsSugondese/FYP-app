@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fyp/constants/currency_constant.dart';
+import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/model/people/user.dart';
 import 'package:fyp/podo/user-payment/pay_remaining_amount_payload.dart';
+import 'package:fyp/podo/user-payment/payment_payload.dart';
 import 'package:fyp/services/payment/payment_service.dart';
 
-class PayUserPopUp extends StatefulWidget {
-  final User user;
+class PayOrderPopUp extends StatefulWidget {
+  final OnsiteOrder order;
   final Function(bool) callback;
-  const PayUserPopUp({super.key, required this.user, required this.callback});
+  const PayOrderPopUp({super.key, required this.order, required this.callback});
 
   @override
-  State<PayUserPopUp> createState() => _PayUserPopUpState();
+  State<PayOrderPopUp> createState() => _PayOrderPopUpState();
 }
 
-class _PayUserPopUpState extends State<PayUserPopUp> {
+class _PayOrderPopUpState extends State<PayOrderPopUp> {
   final TextEditingController amountController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late PaymentService paymentService;
@@ -30,10 +32,14 @@ class _PayUserPopUpState extends State<PayUserPopUp> {
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text("Payment for ${widget.user.fullName}"),
+      title: Text("Payment for ${widget.order.fullName}"),
       children: <Widget>[
         Text(
-            "Remaining Amount: ${CurrencyConstant.currency}${widget.user.remainingAmount}"),
+            "Current Order cost: ${CurrencyConstant.currency}${widget.order.totalPrice}"),
+        Text(
+            "Previous Due Amount: ${CurrencyConstant.currency}${widget.order.remainingAmount - widget.order.totalPrice}"),
+        Text(
+            "Remaining Amount To pay: ${CurrencyConstant.currency}${widget.order.remainingAmount}"),
         Form(
             key: _formKey,
             child: Column(
@@ -52,7 +58,7 @@ class _PayUserPopUpState extends State<PayUserPopUp> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please valid amount between ${CurrencyConstant.currency}1 - ${CurrencyConstant.currency}${widget.user.remainingAmount}';
+                      return 'Please valid amount between ${CurrencyConstant.currency}1 - ${CurrencyConstant.currency}${widget.order.remainingAmount}';
                     }
                     return null;
                   },
@@ -62,30 +68,32 @@ class _PayUserPopUpState extends State<PayUserPopUp> {
                           amountController.text.isEmpty ||
                           (amountController.text.isNotEmpty &&
                               (double.parse(amountController.text) >
-                                      widget.user.remainingAmount ||
+                                      widget.order.remainingAmount ||
                                   double.parse(amountController.text) < 1))
                       ? null
                       : () async {
                           setStateForLoading(true);
                           if (_formKey.currentState!.validate()) {
-                            RemainingPaymentPayload payload =
-                                RemainingPaymentPayload(
-                                    paidAmount: convertControllerToDouble(),
-                                    userId: widget.user.id);
-
-                            bool saved = false;
+                            PaymentPayload payload = PaymentPayload(
+                                totalAmount: widget.order.totalPrice,
+                                paidAmount: convertControllerToDouble(),
+                                dueAmount: convertControllerToDouble() >
+                                        widget.order.totalPrice
+                                    ? 0
+                                    : widget.order.totalPrice -
+                                        convertControllerToDouble(),
+                                onsiteOrderId: widget.order.id,
+                                userId: widget.order.userId);
 
                             try {
-                              saved = await paymentService
-                                  .payRemainingAmount(payload.toJson());
+                              await paymentService
+                                  .payForOrder(payload.toJson());
                             } catch (e) {
                               setStateForLoading(false);
                             }
 
-                            if (saved) {
-                              widget.callback(true);
-                              Navigator.pop(context);
-                            }
+                            widget.callback(true);
+                            Navigator.pop(context);
                           }
                           setStateForLoading(true);
                         },

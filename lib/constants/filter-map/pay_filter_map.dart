@@ -10,4 +10,12 @@ class PayFilterMap {
     'Paid': 'PAID',
     'Unpaid': 'UNPAID',
   };
+
+  static final Map<String, dynamic> orderManagementFilter = {
+    'Pending': 'PENDING',
+    'Viewed': 'VIEWED',
+    'Delivered': 'DELIVERED',
+    'Paid': 'PAID',
+    'Canceled': 'CANCELED'
+  };
 }

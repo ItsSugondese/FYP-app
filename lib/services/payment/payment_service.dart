@@ -58,4 +58,25 @@ class PaymentService {
       throw (DioService.handleDioException(e)).message;
     }
   }
+
+  Future<void> payForOrder(Map<String, dynamic> payload) async {
+    try {
+      Response response = await _dio.post(
+        "${ApiConstant.backendUrl}/${ModuleName.PAYMENT}",
+        data: payload,
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+      } else {
+        throw Exception("Error when operation data");
+      }
+    } on DioException catch (e) {
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
 }

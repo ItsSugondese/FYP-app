@@ -5,19 +5,22 @@ class OnlineOrderResponse {
   List<FoodOrderResponse> foodOrderList;
   List<int>? removeFoodId;
   String arrivalTime;
+  double totalPrice;
 
   OnlineOrderResponse(
       {this.id,
       required this.foodOrderList,
       this.removeFoodId,
-      required this.arrivalTime});
+      required this.arrivalTime,
+      required this.totalPrice});
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
       "foodOrderList": foodOrderList,
       "removeFoodId": removeFoodId ?? [],
-      "arrivalTime": arrivalTime
+      "arrivalTime": arrivalTime,
+      "totalPrice": totalPrice
     };
   }
 }

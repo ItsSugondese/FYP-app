@@ -135,11 +135,8 @@ class _UserPaymentManagementScreenState
                           onRefresh: refresh,
                           child: SingleChildScrollView(
                             physics: const AlwaysScrollableScrollPhysics(),
-                            child: Container(
-                              height: Dimension.getScreenHeight(context) * 0.7,
-                              child: Center(
-                                child: NoData.getNoDataImage(),
-                              ),
+                            child: Center(
+                              child: NoData.getNoDataImage(context, null, 0.7),
                             ),
                           ),
                         )

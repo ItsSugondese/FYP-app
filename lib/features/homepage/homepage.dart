@@ -162,7 +162,7 @@ class _HomepageState extends State<Homepage> {
                             List<FoodMenu> foodMenus = snapshot.data!.content;
                             return foodMenus.length == 0
                                 ? homeWidget.getContentContainer(
-                                    NoData.getNoDataImage())
+                                    NoData.getNoDataImage(context, null, null))
                                 : homeWidget.getContentContainer(
                                     SingleChildScrollView(
                                       physics:

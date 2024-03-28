@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/features/people-mgmt/staff-mgmt/staff-mgmt-service/staff_management_service.dart';
 import 'package:fyp/model/people/staff.dart';
-import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 
 @RoutePage()
 class StaffDetailsScreen extends StatefulWidget {
@@ -19,9 +18,6 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
   StaffManagementService staffManagementService = StaffManagementService();
 
   late Future<Staff> staffFuture;
-
-  OnlineOrderPaginationPayload paginationPayload =
-      OnlineOrderPaginationPayload();
 
   @override
   void initState() {

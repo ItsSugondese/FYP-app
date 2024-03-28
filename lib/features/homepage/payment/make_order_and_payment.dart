@@ -189,15 +189,18 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
           selectedTime != null
               ? DefaultButton(
                   text: "Make Order",
-                  onPressed: () {
+                  onPressed: () async {
                     OnlineOrderResponse onlineOrderResponse =
                         OnlineOrderResponse(
                             foodOrderList: getFoodOrderList(widget.details),
-                            arrivalTime: getStringConvertedTime(selectedTime) ??
-                                "hello");
+                            arrivalTime:
+                                getStringConvertedTime(selectedTime) ?? "hello",
+                            totalPrice: getTotalCostAmount());
 
-                    onlineOrderService
+                    await onlineOrderService
                         .makeOnlineOrder(onlineOrderResponse.toJson());
+
+                    Navigator.pop(context);
                   },
                 )
               : const SizedBox(width: 0.0, height: 0.0)

@@ -126,7 +126,10 @@ class OnsiteOrderService {
           for (var jsonData in jsonDataList) {
             List<OrderedFood> orderedFoodList = [];
             for (var foodJson in jsonData['orderFoodDetails']) {
-              orderedFoodList.add(OrderedFood.fromJson(foodJson, null));
+              orderedFoodList.add(OrderedFood.fromJson(
+                  foodJson,
+                  await FetchImageService.fetchBlobData(_dio,
+                      ApiImageConstants.getFoodImage(foodJson['photoId']))));
             }
 
             onsiteOrderList
@@ -156,6 +159,48 @@ class OnsiteOrderService {
     } on DioException catch (e) {
       print(e.toString());
       print((DioService.handleDioException(e)).message);
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
+
+  Future<void> updateOrderStatus(int id, String status) async {
+    try {
+      Response response = await _dio.get(
+        "${ApiConstant.backendUrl}/${ModuleName.ONSITE_ORDER}/status/$id/$status",
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
+
+  Future<void> markAsRead(int id) async {
+    try {
+      Response response = await _dio.get(
+        "${ApiConstant.backendUrl}/${ModuleName.ONSITE_ORDER}/mark-as-read/$id",
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
       throw (DioService.handleDioException(e)).message;
     }
   }

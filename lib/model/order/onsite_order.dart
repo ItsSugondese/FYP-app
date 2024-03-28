@@ -31,7 +31,7 @@ class OnsiteOrder {
     return OnsiteOrder(
         id: json['id'] ?? 0,
         fullName: json['fullName'] ?? '',
-        userId: json['user_id'] ?? 0,
+        userId: json['userId'] ?? 0,
         orderType: json['orderType'] ?? '',
         email: json['email'] ?? '',
         orderedTime: json['orderedTime'] ?? '',
