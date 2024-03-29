@@ -15,10 +15,10 @@ class AppRouter extends $AppRouter {
         AutoRoute(
           page: OrderedFoodScreenRoute.page,
         ),
-        AutoRoute(page: StaffHomepageRoute.page),
+        AutoRoute(page: StaffHomepageRoute.page, initial: true),
         AutoRoute(page: AdminHomepageRoute.page),
         AutoRoute(page: FoodManagementScreenRoute.page),
-        AutoRoute(page: OnlineOrderScreenRoute.page, initial: true),
+        AutoRoute(page: OnlineOrderScreenRoute.page),
         AutoRoute(page: OnsiteOrderScreenRoute.page),
         AutoRoute(page: UserManagementScreenRoute.page),
         AutoRoute(page: StaffManagementScreenRoute.page),
