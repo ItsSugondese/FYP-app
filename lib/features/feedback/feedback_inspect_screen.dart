@@ -5,8 +5,6 @@ import 'package:fyp/features/feedback/feedback-service/feedback_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/feedback/feedback.dart';
 import 'package:fyp/podo/feedback/feedback_pagination.dart';
-import 'package:fyp/utils/appbar/custom-appbar.dart';
-import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
 class FeedbackInspectScreen extends StatefulWidget {

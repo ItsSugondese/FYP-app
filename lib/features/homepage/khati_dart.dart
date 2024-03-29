@@ -1,9 +1,7 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:fyp/podo/orders/onsite-order/onsite_order_response.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:fyp/services/payment/payment_service.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 
 payWithKhaltiInApp(
     BuildContext context,

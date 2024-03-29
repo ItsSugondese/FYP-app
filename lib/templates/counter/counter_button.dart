@@ -1,7 +1,6 @@
 library item_count_number_button;
 
 import 'package:flutter/material.dart';
-import 'package:fyp/constants/designing/colors.dart';
 
 typedef CounterChangeCallback = void Function(num value);
 
@@ -67,8 +66,6 @@ class ItemCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,

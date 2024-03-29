@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/model/order/ordered_food.dart';
 import 'package:fyp/templates/pop-up/are_you_sure_pop_up.dart';

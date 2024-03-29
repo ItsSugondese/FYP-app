@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/enums/pay_status.dart';
-import 'package:fyp/features/landing-screen/landing-screen-service/landing_screen_constants.dart';
 import 'package:fyp/podo/foodmgmt/food_order_response.dart';
 import 'package:fyp/podo/orders/online-order/online_order_response.dart';
 import 'package:fyp/podo/orders/onsite-order/onsite_order_response.dart';
 import 'package:fyp/services/order-services/online_order_service.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
-import 'package:fyp/services/payment/payment_service.dart';
 import 'package:fyp/templates/button/default_button.dart';
 
-import '../../../constants/api-constant.dart';
 import '../../../podo/foodmgmt/food_ordering_details.dart';
-import '../khati_dart.dart';
-import '../qr_scanner.dart';
 
 class MakeOrderAndPayment extends StatefulWidget {
   final List<FoodOrderingDetails> details;
@@ -193,8 +188,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                     OnlineOrderResponse onlineOrderResponse =
                         OnlineOrderResponse(
                             foodOrderList: getFoodOrderList(widget.details),
-                            arrivalTime:
-                                getStringConvertedTime(selectedTime) ?? "hello",
+                            arrivalTime: getStringConvertedTime(selectedTime),
                             totalPrice: getTotalCostAmount());
 
                     await onlineOrderService

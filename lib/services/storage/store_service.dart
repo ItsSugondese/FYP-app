@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
 
 class Store {
   const Store._();
@@ -8,17 +7,17 @@ class Store {
   static const String _rolesKey = "ROLES";
   static const String _usernameKey = "USERNAME";
 
-  static Future<void> setToken(String token) async{
+  static Future<void> setToken(String token) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString(_tokenKey, token);
   }
 
-  static Future<void> setRoles(List<String> roles) async{
+  static Future<void> setRoles(List<String> roles) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setStringList(_rolesKey, roles);
   }
 
-  static Future<void> setUsername(String username) async{
+  static Future<void> setUsername(String username) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString(_usernameKey, username);
   }

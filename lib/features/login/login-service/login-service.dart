@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
@@ -12,7 +9,6 @@ import 'package:fyp/podo/auth/login_response.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/network/dio_service.dart';
 import 'package:fyp/services/storage/store_service.dart';
-import 'package:http/http.dart' as http;
 
 // import 'package:google_sign_in/google_sign_in.dart';
 

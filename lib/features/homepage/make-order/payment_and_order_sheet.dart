@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 
 import '../../../enums/crud_type.dart';
-import '../../../model/foodmgmt/Food_menu_item_with_image.dart';
 import '../../../podo/foodmgmt/food_ordering_details.dart';
 
 class PaymentAndOrder {
@@ -30,7 +29,7 @@ class PaymentAndOrder {
                     children: [
                       Expanded(
                         child: Image.memory(
-                          foodMenu.image ?? Uint8List(0),
+                          foodMenu.image,
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,

@@ -20,7 +20,6 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
   String? _selectedKey;
   dynamic _selectedValue;
-  TextEditingController _textEditingController = TextEditingController();
 
   // List of items for the dropdown
   Map<String, dynamic>? _items;

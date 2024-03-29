@@ -4,7 +4,6 @@ class DefaultPagination {
 
   DefaultPagination({this.row = 10, this.page = 1});
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       'row': row,

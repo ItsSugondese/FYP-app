@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fyp/config/auth/interceptors/dio_interceptor.dart';
 import 'package:fyp/constants/module_name.dart';
 import 'package:fyp/services/network/dio_service.dart';
 

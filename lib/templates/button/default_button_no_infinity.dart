@@ -10,6 +10,7 @@ class DefaultButtonNoInfinity extends StatelessWidget {
   final VoidCallback? onPressed;
   bool? hasBorder = false;
   Color? borderColor = CustomColors.defaultRedColor;
+  bool isDisabled;
 
   DefaultButtonNoInfinity(
       {super.key,
@@ -18,6 +19,7 @@ class DefaultButtonNoInfinity extends StatelessWidget {
       this.color,
       required this.onPressed,
       this.hasBorder,
+      this.isDisabled = false,
       this.borderColor = CustomColors.defaultRedColor});
 
   @override
@@ -36,7 +38,7 @@ class DefaultButtonNoInfinity extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all(bgColor),
           // elevation: MaterialStateProperty.all(0)
         ),
-        onPressed: onPressed,
+        onPressed: isDisabled ? null : onPressed,
         child: Text(
           text,
           style: TextStyle(

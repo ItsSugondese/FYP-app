@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fyp/constants/currency_constant.dart';
 import 'package:fyp/model/order/onsite_order.dart';
-import 'package:fyp/model/people/user.dart';
-import 'package:fyp/podo/user-payment/pay_remaining_amount_payload.dart';
 import 'package:fyp/podo/user-payment/payment_payload.dart';
 import 'package:fyp/services/payment/payment_service.dart';
 

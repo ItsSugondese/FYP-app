@@ -1,20 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
-import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
-import 'package:fyp/constants/designing/image_path.dart';
-import 'package:fyp/constants/designing/screen_name.dart';
-import 'package:fyp/features/homepage/widgets/food_cards.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
 import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
-import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/user-order/user_order_history.dart';
-import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 import 'package:fyp/podo/user-order/user_order_pagination.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/templates/text/food_type_text.dart';
-import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
 class CurrentOnlineOrderScreen extends StatefulWidget {

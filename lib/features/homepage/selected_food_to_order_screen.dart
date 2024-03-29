@@ -2,13 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
-import 'package:fyp/constants/designing/image_path.dart';
-import 'package:fyp/constants/designing/screen_name.dart';
-import 'package:fyp/helper/widgets/global/header_widgets.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/templates/counter/counter_button.dart';
 import 'package:fyp/templates/text/food_type_text.dart';
-import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
 class SelectedFoodToOrderScreen extends StatefulWidget {

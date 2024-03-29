@@ -4,17 +4,13 @@ import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/homepage/khati_dart.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
-import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/order/onsite_order.dart';
-import 'package:fyp/model/user-order/user_order_history.dart';
-import 'package:fyp/podo/orders/online-order/online_order_pagination.dart';
 import 'package:fyp/podo/user-order/user_order_pagination.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
 import 'package:fyp/services/payment/payment_service.dart';
 import 'package:fyp/templates/text/food_type_text.dart';
-import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
 class CurrentOnsiteOrderScreen extends StatefulWidget {

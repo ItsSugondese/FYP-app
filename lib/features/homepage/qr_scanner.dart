@@ -1,12 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrScanner {
-  static Future<void> showForQr(BuildContext context, Function(String) callback) async {
-    String text = "Hello";
+  static Future<void> showForQr(
+      BuildContext context, Function(String) callback) async {
     showDialog(
         context: context,
         builder: (BuildContext newContext) {

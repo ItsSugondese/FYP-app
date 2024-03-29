@@ -89,7 +89,6 @@ class OnsiteOrderService {
             numberOfElements: numberOfElements,
             currentPageIndex: currentPageIndex,
           );
-          ;
         } else {
           throw Exception(
               MessageConstantsMethods.dataRetrieveError(MessageConstants.get));

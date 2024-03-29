@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
-import 'package:fyp/constants/designing/image_path.dart';
-import 'package:fyp/constants/designing/screen_name.dart';
 import 'package:fyp/model/order/ordered_food.dart';
 
 class OrderedFoodCard extends StatelessWidget {

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -7,7 +6,6 @@ import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/constants/module_name.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/services/network/dio_service.dart';
-import 'package:http/http.dart' as http;
 
 class TemporaryAttachmentsService {
   late final Dio _dio;
