@@ -14,11 +14,29 @@ class GoogleSignInApi {
   // );
 
   static GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: GOOGLE_CLIENT_DEV_KEY,
-    scopes: [
-      'email',
-    ],
-  );
+      // clientId: GOOGLE_CLIENT_DEV_KEY,
+      // scopes: [
+      //   'email',
+      // ],
+      );
   static Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();
   static Future<GoogleSignInAccount?> logout() => _googleSignIn.signOut();
+
+  static Future<GoogleSignInAccount?> signinWithGoogle() async {
+    // const GOOGLE_CLIENT_DEV_KEY =
+    //     '4449957172430-47hod191ajas0an2f1ouh8melfa3122asdd.apps.googleusercontent.com'; // This is a fake key. Please use a correct key.
+    final GoogleSignIn _googleSignIn = new GoogleSignIn(
+      clientId: GOOGLE_CLIENT_DEV_KEY,
+      scopes: [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'openid',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ],
+    );
+    try {
+      return _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+  }
 }

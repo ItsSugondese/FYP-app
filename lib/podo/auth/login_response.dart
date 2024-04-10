@@ -1,23 +1,18 @@
 class UserCredentials {
   String userEmail;
   String userPassword;
+  String device;
 
-  UserCredentials({
-    required this.userEmail,
-    required this.userPassword,
-  });
-
-  factory UserCredentials.fromJson(Map<String, dynamic> json) {
-    return UserCredentials(
-      userEmail: json['userEmail'],
-      userPassword: json['userPassword'],
-    );
-  }
+  UserCredentials(
+      {required this.userEmail,
+      required this.userPassword,
+      required this.device});
 
   Map<String, dynamic> toJson() {
     return {
       'userEmail': userEmail,
       'userPassword': userPassword,
+      'device': device
     };
   }
 }

@@ -43,7 +43,10 @@ class _FeedbackProvideScreenState extends State<FeedbackProvideScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: MyDrawer(),
+        // drawer: MyDrawer(),
+        appBar: AppBar(
+          title: Text("Feedback"),
+        ),
         backgroundColor: const Color(0xFFF5F5F0),
         body: RefreshIndicator(
           onRefresh: refresh,

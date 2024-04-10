@@ -37,7 +37,7 @@ class UserManagementService {
           List<User> userList = [];
 
           for (var jsonData in jsonDataList) {
-            userList.add(User.fromJson(jsonData));
+            userList.add(User.fromJson(jsonData, null));
           }
 
           int totalPages = response.data['data']['totalPages'];
@@ -73,7 +73,7 @@ class UserManagementService {
       if (response.statusCode == 200) {
         if (response.data['status'] == 1) {
           dynamic jsonData = response.data['data'];
-          User user = User.fromJson(jsonData);
+          User user = User.fromJson(jsonData, null);
 
           return user;
         } else {

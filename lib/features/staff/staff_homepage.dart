@@ -1,8 +1,13 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/currency_constant.dart';
+import 'package:fyp/constants/designing/colors.dart';
+import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/food-mgmt/food-mgmt-service/food_management_service.dart';
 import 'package:fyp/features/order-mgmt/order_time_constant.dart';
+import 'package:fyp/features/staff/widgets/header_widget.dart';
+import 'package:fyp/features/staff/widgets/normal_data_card.dart';
+import 'package:fyp/features/staff/widgets/payment_card_widget.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/dashboard/payload/food_menu_data_payload.dart';
@@ -63,24 +68,33 @@ class _StaffHomepageState extends State<StaffHomepage> {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text("Today Sales Data"),
+                    const StaffHomepageHeader(header: "Sales Data"),
                     FutureBuilder<RevenueData>(
                         future: revenueDataFuture,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const DefaultCircularIndicator(height: 0.7);
+                            return const DefaultCircularIndicator();
                           } else if (snapshot.hasData) {
                             RevenueData data = snapshot.data!;
                             return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("${data.paidAmount}"),
-                                Text("${data.leftToPay}"),
-                                Text("${data.deliveredOrder}"),
+                                PaymentCard(
+                                    amount: '${data.paidAmount}',
+                                    label: 'Total Paid'),
+                                PaymentCard(
+                                    amount: '${data.leftToPay}',
+                                    label: 'Left to Pay'),
+                                PaymentCard(
+                                    amount: '${data.deliveredOrder}',
+                                    label: 'Order Delivered'),
                               ],
                             );
                           } else {
@@ -89,23 +103,34 @@ class _StaffHomepageState extends State<StaffHomepage> {
                         }),
                   ],
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
                 Column(
                   children: [
-                    Text(
-                        "Pending Orders ${OrderTimeConstant.timeInterval} minutes"),
+                    StaffHomepageHeader(
+                        header:
+                            "Pending Orders (${OrderTimeConstant.timeInterval} minutes)"),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     FutureBuilder<OrderData>(
                         future: orderDataFuture,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const DefaultCircularIndicator(height: 0.7);
+                            return const DefaultCircularIndicator();
                           } else if (snapshot.hasData) {
                             OrderData data = snapshot.data!;
-                            return Column(
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("${data.totalPending}"),
-                                Text("${data.onsiteOrder.pending}"),
-                                Text("${data.onlineOrder.pending}"),
+                                NormalDataCard(
+                                    amount: "${data.onsiteOrder.pending}",
+                                    label: "Onsite Order"),
+                                NormalDataCard(
+                                    amount: "${data.onlineOrder.pending}",
+                                    label: "Online Order")
                               ],
                             );
                           } else {
@@ -114,24 +139,42 @@ class _StaffHomepageState extends State<StaffHomepage> {
                         }),
                   ],
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
                 Column(
                   children: [
-                    Text("Food Menu Data"),
+                    const StaffHomepageHeader(header: "Food Menu Data"),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     FutureBuilder<FoodMenuData>(
                         future: foodMenuDataFuture,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const DefaultCircularIndicator(height: 0.7);
+                            return const DefaultCircularIndicator();
                           } else if (snapshot.hasData) {
                             FoodMenuData data = snapshot.data!;
-                            return Column(
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("${data.total}"),
-                                Text("${data.today}"),
-                                Text("${data.notToday}"),
+                                NormalDataCard(
+                                    amount: "${data.today}",
+                                    label: "Available"),
+                                NormalDataCard(
+                                    amount: "${data.notToday}",
+                                    label: "Not available")
                               ],
                             );
+
+                            // Column(
+                            //   children: [
+                            //     Text("${data.total}"),
+                            //     Text("${data.today}"),
+                            //     Text("${data.notToday}"),
+                            //   ],
+                            // );
                           } else {
                             return Text("error");
                           }

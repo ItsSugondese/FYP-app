@@ -12,6 +12,7 @@ import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_menu_pagination.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
+import 'package:fyp/templates/circular_indicator/default_circular_indicator.dart';
 import 'package:fyp/utils/appbar/custom-appbar.dart';
 import 'package:fyp/utils/drawer/drawer.dart';
 
@@ -67,7 +68,7 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
       //         onPressed: () =>
       //             AutoRouter.of(context).push(AddFoodScreenRoute())),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
         height: Dimension.getScreenHeight(context),
         child: Column(children: [
           SearchWidget(
@@ -89,6 +90,9 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
               });
             },
           ),
+          const SizedBox(
+            height: 20,
+          ),
           GlobalFoodFilterWidget(
               selectedFilterer: selectedFilterer,
               selectedFilter: (val) {
@@ -100,39 +104,44 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
                   fetchFoodMenu();
                 });
               }),
+          const SizedBox(
+            height: 10,
+          ),
           FutureBuilder<PaginatedData<FoodMenu>>(
               future: foodMenuFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return Expanded(child: const DefaultCircularIndicator());
                 } else if (snapshot.hasData) {
                   return Expanded(
                     child: RefreshIndicator(
                       onRefresh: refresh,
-                      child: ListView.builder(
+                      child: ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(
+                                height: 16,
+                              ),
                           shrinkWrap: true,
-                          itemCount: snapshot.data?.content.length,
+                          itemCount: snapshot.data!.content.length,
                           itemBuilder: (BuildContext context, int index) {
                             FoodMenu foodMenu = snapshot.data!.content[index];
-                            return Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    AutoRouter.of(context).push(
-                                        FeedbackInspectScreenRoute(
-                                            foodId: foodMenu.id));
-                                  },
-                                  child: Container(
-                                    width: Dimension.getScreenWidth(context),
+                            return Container(
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      AutoRouter.of(context).push(
+                                          FeedbackInspectScreenRoute(
+                                              foodId: foodMenu.id,
+                                              header: foodMenu.name));
+                                    },
                                     child: Card(
+                                      elevation: 5,
                                       child: SizedBox(
                                         width:
                                             Dimension.getScreenWidth(context),
                                         child: Row(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             Image.memory(
                                               foodMenu.image,
@@ -147,42 +156,44 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
                                             SizedBox(
                                               width: 5,
                                             ),
-                                            Container(
-                                              height: 100,
-                                              width: Dimension.getScreenWidth(
-                                                      context) *
-                                                  0.38,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    foodMenu.name,
-                                                    style:
-                                                        TextStyle(fontSize: 18),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  Text(
-                                                    "Rs. ${foodMenu.cost}",
-                                                    style: TextStyle(
-                                                        color: CustomColors
-                                                            .priceCOlor,
-                                                        fontSize: 15),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                    foodMenu.description,
-                                                    style:
-                                                        TextStyle(fontSize: 13),
-                                                    maxLines: 3,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                ],
+                                            Flexible(
+                                              child: Container(
+                                                // height: 100,
+                                                width: Dimension.getScreenWidth(
+                                                        context) *
+                                                    0.43,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      foodMenu.name,
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                      // maxLines: 1,
+                                                      // overflow:
+                                                      //     TextOverflow.ellipsis,
+                                                    ),
+                                                    Text(
+                                                      "Rs. ${foodMenu.cost}",
+                                                      style: TextStyle(
+                                                          color: CustomColors
+                                                              .priceCOlor,
+                                                          fontSize: 15),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      foodMenu.description,
+                                                      style: TextStyle(
+                                                          fontSize: 13),
+                                                      maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             Switch(
@@ -197,9 +208,9 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             );
                           }),
                     ),

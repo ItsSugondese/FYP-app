@@ -47,9 +47,9 @@ android {
 
     signingConfigs{
         debug{
-            keyAlias 'upload'
+            keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('upload-keystore.jks')
+            storeFile file('mykey.jks')
             storePassword 'android'
         }
     }
@@ -58,11 +58,11 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
+        // release {
+        //     // TODO: Add your own signing config for the release build.
+        //     // Signing with the debug keys for now, so `flutter run --release` works.
+        //     signingConfig signingConfigs.debug
+        // }
     }
 }
 

@@ -5,10 +5,10 @@ class CustomColors {
   static const Color priceCOlor = Color(0xFF15803D);
   static const Color foodCategoryFontColor = Color(0xFF1565C0);
   static const Color foodCategoryBackgroundColor = Color(0xFFBBDEFB);
+  static const Color detailsBoxBackgroundColor = Color(0xFFF4E7EA);
   static const Color borderColor = Color(0xFFE0E0E0);
   static const Color disableText = Colors.black45;
   static const Color disableButton = Colors.grey;
-
 
   static const MaterialColor defaultThemeColor = MaterialColor(
     0xFFA62A22,

@@ -86,41 +86,9 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             ListTile(
-              title: Text(
-                'Homepage',
-              ),
-              onTap: () {
-                AutoRouter.of(context).push(const HomepageRoute());
-              },
-            ),
-            ListTile(
-              title: Text(
-                'Feedback',
-              ),
-              onTap: () {
-                AutoRouter.of(context).push(const FeedbackProvideScreenRoute());
-              },
-            ),
-            ListTile(
-              title: Text(
-                'Order History Screen',
-              ),
-              onTap: () {
-                AutoRouter.of(context).push(const OrderHistoryScreenRoute());
-              },
-            ),
-            ListTile(
-              title: Text(
-                'Today Order history',
-              ),
-              onTap: () {
-                AutoRouter.of(context).push(const CurrentOrderScreenRoute());
-              },
-            ),
-            ListTile(
               title: Text('Logout', style: TextStyle(color: Colors.red)),
               onTap: () {
-                AutoRouter.of(context).push(const LoginScreenRoute());
+                AutoRouter.of(context).push(const LandingPageScreenRoute());
               },
             ),
           ],

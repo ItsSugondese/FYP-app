@@ -62,7 +62,7 @@ class _PayUserPopUpState extends State<PayUserPopUp> {
                           amountController.text.isEmpty ||
                           (amountController.text.isNotEmpty &&
                               (double.parse(amountController.text) >
-                                      widget.user.remainingAmount ||
+                                      widget.user.remainingAmount! ||
                                   double.parse(amountController.text) < 1))
                       ? null
                       : () async {

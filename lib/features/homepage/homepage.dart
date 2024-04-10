@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
+import 'package:fyp/constants/currency_constant.dart';
 import 'package:fyp/constants/data/food-menu/filter_food_menu.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
@@ -77,9 +78,14 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: MyDrawer(),
-        appBar: const CustomAppbar(),
-        backgroundColor: const Color(0xFFF5F5F0),
+        // drawer: MyDrawer(),
+        appBar: AppBar(
+          title: Text("Homepage"),
+          // centerTitle: true,
+        ),
+
+        // backgroundColor: const Color(0xFFF5F5F0),
+        // backgroundColor: const Color(0xFFF5F5F0),
         floatingActionButton:
             // foodSelectedForOrderingList.length == 0?
             FloatingActionButton(
@@ -107,48 +113,52 @@ class _HomepageState extends State<Homepage> {
                 },
         ),
         // : null,
-        body: RefreshIndicator(
-          onRefresh: refresh,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Container(
-                padding: const EdgeInsets.only(left: 20),
-                height: Dimension.getScreenHeight(context) -
-                    AppBar().preferredSize.height -
-                    MediaQuery.of(context).padding.top,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20, top: 10),
-                      child: SearchWidget(
-                        typedText: (val) {
-                          paginationPayload.name =
-                              val.trim() == "" ? null : val;
-                          setState(() {
-                            fetchFoodMenu();
-                          });
-                        },
+        body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            // height: Dimension.getScreenHeight(context) -
+            //     AppBar().preferredSize.height -
+            //     MediaQuery.of(context).padding.top,
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: SearchWidget(
+                          typedText: (val) {
+                            paginationPayload.name =
+                                val.trim() == "" ? null : val;
+                            setState(() {
+                              fetchFoodMenu();
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    GlobalFoodFilterWidget(
-                        selectedFilterer: selectedFilterer,
-                        selectedFilter: (val) {
-                          paginationPayload.foodType =
-                              (val == "All") ? null : val.toUpperCase();
-                          setState(() {
-                            selectedFilterer =
-                                FoodMenuFilterer.findKeyByValue(val);
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      GlobalFoodFilterWidget(
+                          selectedFilterer: selectedFilterer,
+                          selectedFilter: (val) {
+                            paginationPayload.foodType =
+                                (val == "All") ? null : val.toUpperCase();
+                            setState(() {
+                              selectedFilterer =
+                                  FoodMenuFilterer.findKeyByValue(val);
 
-                            fetchFoodMenu();
-                          });
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    FutureBuilder<PaginatedData<FoodMenu>>(
+                              fetchFoodMenu();
+                            });
+                          }),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 130),
+                    child: FutureBuilder<PaginatedData<FoodMenu>>(
                         future: foodMenuFuture,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
@@ -163,88 +173,214 @@ class _HomepageState extends State<Homepage> {
                             return foodMenus.length == 0
                                 ? homeWidget.getContentContainer(
                                     NoData.getNoDataImage(context, null, null))
-                                : homeWidget.getContentContainer(
-                                    SingleChildScrollView(
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.end,
-                                          children: [
-                                            for (int i = 0;
-                                                i < foodMenus.length;
-                                                foodMenus.length <= 2
-                                                    ? i++
-                                                    : i += 2)
-                                              Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      // showDialog(
-                                                      //   context: context,
-                                                      //   builder:
-                                                      //       (BuildContext
-                                                      //           context) {
-
-                                                      // Navigator.push(
-                                                      //     context,
-                                                      //     MaterialPageRoute(
-                                                      //         builder: (context) => SelectedFoodToOrderScreen(
-                                                      //             foodMenu:
-                                                      //                 foodMenus[
-                                                      //                     i],
-                                                      //             callback:
-                                                      //                 handleQuantitySelection)));
-                                                      //           }
-                                                      // );
-                                                      selectQuantityToOrderAction(
-                                                          foodMenus[i]);
-
-                                                      // SimpleDialogWidget
-                                                      //     .showSimpleDialog(
-                                                      //         context,
-                                                      //         foodMenus[i],
-                                                      //         handleQuantitySelection);
-                                                    },
-                                                    child: FoodCardWidget(
-                                                        foodMenu: foodMenus[i]),
+                                : RefreshIndicator(
+                                    onRefresh: refresh,
+                                    child: ListView.separated(
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(
+                                              height: 40,
+                                            ),
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        controller: _scrollController,
+                                        shrinkWrap: true,
+                                        // itemCount: 1,
+                                        itemCount: foodMenus.length,
+                                        itemBuilder: (context, index) {
+                                          FoodMenu foodMenu = foodMenus[index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              selectQuantityToOrderAction(
+                                                  foodMenu);
+                                            },
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  // decoration: BoxDecoration(
+                                                  //   borderRadius: BorderRadius.circular(
+                                                  //       10.0), // Adjust the radius as needed
+                                                  //   border: Border.all(
+                                                  //     color: Colors
+                                                  //         .black, // Set border color as per your requirement
+                                                  //     width:
+                                                  //         2.0, // Set border width as per your requirement
+                                                  //   ),
+                                                  // ),
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0), // Same radius as BoxDecoration
+                                                    child: Image.memory(
+                                                      foodMenu.image,
+                                                      fit: BoxFit.cover,
+                                                      width: double.infinity,
+                                                      height: Dimension
+                                                              .getScreenHeight(
+                                                                  context) *
+                                                          0.25,
+                                                    ),
                                                   ),
-                                                  (foodMenus.length - 1 >=
-                                                              i + 1) &&
-                                                          foodMenus.length > 2
-                                                      ? GestureDetector(
-                                                          onTap: () {
-                                                            // SimpleDialogWidget
-                                                            //     .showSimpleDialog(
-                                                            //         context,
-                                                            //         foodMenus[
-                                                            //             i + 1],
-                                                            //         handleQuantitySelection);
-
-                                                            selectQuantityToOrderAction(
-                                                                foodMenus[
-                                                                    i + 1]);
-                                                          },
-                                                          child: FoodCardWidget(
-                                                              foodMenu:
-                                                                  foodMenus[
-                                                                      i + 1]),
-                                                        )
-                                                      : Opacity(
-                                                          opacity: 0.0,
-                                                          child: FoodCardWidget(
-                                                              foodMenu:
-                                                                  foodMenus[i]),
+                                                ),
+                                                SizedBox(height: 3),
+                                                Text(
+                                                  "${foodMenu.name}",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 3),
+                                                Text(
+                                                  "${foodMenu.description}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                  ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                SizedBox(height: 15),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12,
+                                                              vertical: 5),
+                                                      decoration:
+                                                          ShapeDecoration(
+                                                        color: CustomColors
+                                                            .detailsBoxBackgroundColor,
+                                                        shape: StadiumBorder(),
+                                                      ),
+                                                      child: Text(
+                                                        "${foodMenu.foodType}",
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
                                                         ),
-                                                ],
-                                              ),
-                                          ]),
-                                    ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12,
+                                                              vertical: 5),
+                                                      decoration:
+                                                          ShapeDecoration(
+                                                        color: CustomColors
+                                                            .detailsBoxBackgroundColor,
+                                                        shape: StadiumBorder(),
+                                                      ),
+                                                      child: Text(
+                                                        "${CurrencyConstant.currency}${foodMenu.cost}",
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }),
                                   );
+                            // : homeWidget.getContentContainer(
+                            //     SingleChildScrollView(
+                            //       physics:
+                            //           const AlwaysScrollableScrollPhysics(),
+                            //       scrollDirection: Axis.horizontal,
+                            //       child: Row(
+                            //           // mainAxisAlignment:
+                            //           //     MainAxisAlignment.end,
+                            //           children: [
+                            //             for (int i = 0;
+                            //                 i < foodMenus.length;
+                            //                 foodMenus.length <= 2
+                            //                     ? i++
+                            //                     : i += 2)
+                            //               Column(
+                            //                 mainAxisAlignment:
+                            //                     MainAxisAlignment
+                            //                         .spaceAround,
+                            //                 children: [
+                            //                   GestureDetector(
+                            //                     onTap: () {
+                            //                       // showDialog(
+                            //                       //   context: context,
+                            //                       //   builder:
+                            //                       //       (BuildContext
+                            //                       //           context) {
+
+                            //                       // Navigator.push(
+                            //                       //     context,
+                            //                       //     MaterialPageRoute(
+                            //                       //         builder: (context) => SelectedFoodToOrderScreen(
+                            //                       //             foodMenu:
+                            //                       //                 foodMenus[
+                            //                       //                     i],
+                            //                       //             callback:
+                            //                       //                 handleQuantitySelection)));
+                            //                       //           }
+                            //                       // );
+                            //                       selectQuantityToOrderAction(
+                            //                           foodMenus[i]);
+
+                            //                       // SimpleDialogWidget
+                            //                       //     .showSimpleDialog(
+                            //                       //         context,
+                            //                       //         foodMenus[i],
+                            //                       //         handleQuantitySelection);
+                            //                     },
+                            //                     child: FoodCardWidget(
+                            //                         foodMenu: foodMenus[i]),
+                            //                   ),
+                            //                   (foodMenus.length - 1 >=
+                            //                               i + 1) &&
+                            //                           foodMenus.length > 2
+                            //                       ? GestureDetector(
+                            //                           onTap: () {
+                            //                             // SimpleDialogWidget
+                            //                             //     .showSimpleDialog(
+                            //                             //         context,
+                            //                             //         foodMenus[
+                            //                             //             i + 1],
+                            //                             //         handleQuantitySelection);
+
+                            //                             selectQuantityToOrderAction(
+                            //                                 foodMenus[
+                            //                                     i + 1]);
+                            //                           },
+                            //                           child: FoodCardWidget(
+                            //                               foodMenu:
+                            //                                   foodMenus[
+                            //                                       i + 1]),
+                            //                         )
+                            //                       : Opacity(
+                            //                           opacity: 0.0,
+                            //                           child: FoodCardWidget(
+                            //                               foodMenu:
+                            //                                   foodMenus[i]),
+                            //                         ),
+                            //                 ],
+                            //               ),
+                            //           ]),
+                            //     ),
+                            //   );
                           } else {
                             return Column(
                               children: [
@@ -263,10 +399,10 @@ class _HomepageState extends State<Homepage> {
                             );
                           }
                         }),
-                  ],
-                )),
-          ),
-        ));
+                  ),
+                ),
+              ],
+            )));
   }
 
   void selectQuantityToOrderAction(FoodMenu foodMenu) {

@@ -2,14 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/feedback/feedback-service/feedback_service.dart';
+import 'package:fyp/features/feedback/widgets/feedback_card.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/feedback/feedback.dart';
 import 'package:fyp/podo/feedback/feedback_pagination.dart';
+import 'package:fyp/templates/not-found/no_data.dart';
 
 @RoutePage()
 class FeedbackInspectScreen extends StatefulWidget {
   final int foodId;
-  const FeedbackInspectScreen({super.key, required this.foodId});
+  final String header;
+  const FeedbackInspectScreen(
+      {super.key, required this.foodId, required this.header});
 
   @override
   State<FeedbackInspectScreen> createState() => _FeedbackInspectScreenState();
@@ -58,6 +62,7 @@ class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
       firstDate: DateTime(2020),
       lastDate: DateTime(2025),
     );
+
     if (picked != null) {
       setState(() {
         _startDate = picked.start;
@@ -110,85 +115,63 @@ class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          children: [
-            ElevatedButton(
-                onPressed: _selectDateRange,
-                child: Text(
-                    '${paginationPayload.fromDate!} - ${paginationPayload.toDate!}')),
-            if (errMessage != null)
-              Center(child: Text(errMessage!))
-            else
-              !initialLoading
-                  ? Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: refresh,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemCount: feedbackList.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 15),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      ClipOval(
-                                        child: Image.network(
-                                          feedbackList[index].userProfileUrl,
-                                          // width: 80,
-                                          height: Dimension.getScreenHeight(
-                                                  context) *
-                                              0.1,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            feedbackList[index].username,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          Text(
-                                            "Ordered : ${feedbackList[index].feedbackStatus} ago",
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  Text(feedbackList[index].feedbacks)
-                                ],
+        appBar: AppBar(
+          title: Text(widget.header),
+        ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          width: Dimension.getScreenWidth(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                  onPressed: _selectDateRange,
+                  child: Text(
+                      '${paginationPayload.fromDate!} - ${paginationPayload.toDate!}')),
+              if (errMessage != null)
+                Center(child: Text(errMessage!))
+              else
+                !initialLoading
+                    ? (feedbackList.length == 0)
+                        ? Expanded(
+                            child: Center(
+                            child: NoData.getNoDataImage(
+                                context, "No Feedback", null),
+                          ))
+                        : Expanded(
+                            child: RefreshIndicator(
+                              onRefresh: refresh,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: 20,
+                                ),
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                controller: _scrollController,
+                                shrinkWrap: true,
+                                itemCount: feedbackList.length,
+                                itemBuilder: (context, index) {
+                                  FeedbackModel feedback = feedbackList[index];
+                                  return FeedbackCard(
+                                    username: feedback.username,
+                                    userImage: feedback.userProfileUrl,
+                                    feedbackStatus: feedback.feedbackStatus,
+                                    feedbackMessage: feedback.feedbacks,
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ),
+                          )
+                    : const Expanded(
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
                       ),
-                    )
-                  : const Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-            if (isLoading)
-              const Center(
-                child: CircularProgressIndicator(),
-              )
-          ],
+              if (isLoading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+            ],
+          ),
         ));
   }
 

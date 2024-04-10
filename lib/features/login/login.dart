@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/landing-screen/landing-screen-service/landing_screen_constants.dart';
+import 'package:fyp/features/login/login-service/login-service.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 
 @RoutePage()
@@ -16,9 +17,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailFieldController = TextEditingController();
   final TextEditingController _passwordFieldController =
       TextEditingController();
+  late LoginService loginService;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loginService = LoginService(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(),
         // drawer: MyDrawer(),
         backgroundColor: Colors.white,
@@ -144,7 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   backgroundColor: MaterialStateProperty.all(
                                       CustomColors.defaultRedColor),
                                   elevation: MaterialStateProperty.all(0)),
-                              onPressed: () {},
+                              onPressed: () {
+                                loginService.tempLogin(
+                                    _emailFieldController.text,
+                                    _passwordFieldController.text,
+                                    context);
+                              },
                               child: const Text(
                                 "Login",
                                 style: TextStyle(

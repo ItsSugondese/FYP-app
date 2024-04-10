@@ -44,11 +44,13 @@ dependencies:
   mobile_scanner: ^3.5.2
   qr_flutter: ^4.1.0
   khalti_flutter: ^2.2.1
-  google_sign_in: ^6.1.6
+  google_sign_in: ^5.0.0
+  # google_sign_in: ^6.1.6
   image_picker: ^0.8.0
   item_count_number_button: ^1.9.2
   liquid_pull_to_refresh: ^3.0.1
   intl: ^0.17.0
+  flutter_svg: 2.0.9
 
 dev_dependencies:
   flutter_test:

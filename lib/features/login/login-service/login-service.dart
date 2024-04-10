@@ -9,6 +9,7 @@ import 'package:fyp/podo/auth/login_response.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/network/dio_service.dart';
 import 'package:fyp/services/storage/store_service.dart';
+import 'package:fyp/services/user/user_service.dart';
 
 // import 'package:google_sign_in/google_sign_in.dart';
 
@@ -23,55 +24,57 @@ class LoginService {
     _dio = DioService.getDioConfigWithContext(context);
   }
 
-  // Future signIn(BuildContext context) async {
-  //   try {
-  //     final idToken = await (await GoogleSignInApi.login())
-  //         ?.authentication
-  //         .then((value) => value.idToken);
-
-  //     print(idToken);
-  //     // final response = await login(context, idToken);
-  //     // Store.setToken(response!.jwtToken);
-  //     // Store.setRoles(response.roles);
-  //     // Store.setUsername(response.username);
-  //     // AutoRouter.of(context).push(const HomepageRoute());
-  //   } on DioException catch (exception) {
-  //     final error = DioService.handleDioException(exception);
-  //     debugPrint(error.message);
-  //     ServiceHelper.showErrorSnackBar(
-  //         context, error.message ?? 'Error happended when logging in');
-  //     // GoogleSignInApi.logout();
-  //   } on Exception catch (exception) {
-  //     debugPrint(exception.toString());
-  //     ServiceHelper.showErrorSnackBar(context, toString());
-  //     // GoogleSignInApi.logout();
-  //   }
-  // }
-
   Future signIn(BuildContext context) async {
     try {
-      final response = await tempLogin();
-      Store.setToken(response!.jwtToken);
-      Store.setRoles(response.roles);
-      Store.setUsername(response.username);
-      AutoRouter.of(context).push(const HomepageRoute());
+      final val = await (GoogleSignInApi.login());
+      final idToken = await val?.authentication.then((value) => value.idToken);
+      // final idToken = await (await GoogleSignInApi.login())
+      //     ?.authentication
+      //     .then((value) => value.idToken);
+
+      print(idToken);
+      tempLogin(val!.email, val.id, context);
     } on DioException catch (exception) {
       final error = DioService.handleDioException(exception);
       debugPrint(error.message);
       ServiceHelper.showErrorSnackBar(
           context, error.message ?? 'Error happended when logging in');
-      GoogleSignInApi.logout();
+      // GoogleSignInApi.logout();
     } on Exception catch (exception) {
       debugPrint(exception.toString());
-      ServiceHelper.showErrorSnackBar(context, toString());
-      GoogleSignInApi.logout();
+      ServiceHelper.showErrorSnackBar(context, "User not from organziation");
+      // GoogleSignInApi.logout();
     }
   }
 
-  Future tempLogin() async {
+  // Future signIn(BuildContext context) async {
+  //   try {
+  //     final response = await tempLogin();
+  //     Store.setToken(response!.jwtToken);
+  //     Store.setRoles(response.roles);
+  //     Store.setUsername(response.username);
+  //     // AutoRouter.of(context).push(const HomepageRoute());
+  //     UserService.dashboardManagement(AutoRouter.of(context));
+  //   } on DioException catch (exception) {
+  //     final error = DioService.handleDioException(exception);
+  //     debugPrint(error.message);
+  //     ServiceHelper.showErrorSnackBar(
+  //         context, error.message ?? 'Error happended when logging in');
+  //     GoogleSignInApi.logout();
+  //   } on Exception catch (exception) {
+  //     debugPrint(exception.toString());
+  //     ServiceHelper.showErrorSnackBar(context, toString());
+  //     GoogleSignInApi.logout();
+  //   }
+  // }
+
+  Future tempLogin(String mail, String id, BuildContext context) async {
     UserCredentials userCredentials = UserCredentials(
-        userEmail: "np05cp4a210083@iic.edu.np",
-        userPassword: "107449163184477293175");
+        // userEmail: "np05cp4a210083@iic.edu.np",
+        // userPassword: "107449163184477293175");
+        userEmail: mail,
+        userPassword: id,
+        device: "PHONE");
     // Map<String, dynamic> val = {
     //   "userEmail": "np05cp4a210083@iic.edu.np" as String,
     //   "userPassword": "107449163184477293175" as String
@@ -93,7 +96,12 @@ class LoginService {
     // );
 
     if (response.statusCode == 200) {
-      return JwtResponse.fromJson(response.data);
+      final res = JwtResponse.fromJson(response.data);
+
+      Store.setToken(res.jwtToken);
+      Store.setRoles(res.roles);
+      Store.setUsername(res.username);
+      UserService.dashboardManagement(AutoRouter.of(context));
     } else {
       final error = ErrorModel.fromJson(response.data);
       throw Exception(error);

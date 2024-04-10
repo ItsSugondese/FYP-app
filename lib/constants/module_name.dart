@@ -5,6 +5,7 @@ class ModuleName {
   static String DASHBOARD = "dashboard";
   static String ONSITE_ORDER = "onsite-order";
   static String USER = "user";
+  static String USER_PROFILE = "user/profile";
   static String STAFF = "staff";
   static String FOOD_MENU = "food-menu";
   static String FEEDBACK = "feedback";

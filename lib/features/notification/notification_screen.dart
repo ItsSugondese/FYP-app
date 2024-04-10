@@ -65,81 +65,53 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: MyDrawer(),
-        backgroundColor: const Color(0xFFF5F5F0),
+        appBar: AppBar(
+          title: const Text("Notifications"),
+          // centerTitle: true,
+        ),
         body: RefreshIndicator(
           onRefresh: refresh,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: !initialLoading
-                ? Container(
-                    padding:
-                        const EdgeInsets.only(top: 50, left: 20, right: 20),
-                    height: Dimension.getScreenHeight(context),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 0),
-                          child: Builder(
-                            builder: (context) =>
-                                GlobalHeaderWidget.getHeader(context),
+          child: !initialLoading
+              ? Container(
+                  height: Dimension.getScreenHeight(context),
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    controller: _scrollController,
+                    shrinkWrap: false,
+                    itemCount: notifications.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: Image.asset(ImagePath.getImagePath(
+                                ScreenName.landing, "anon.jpg")),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(notifications[index].message),
+                                if (notifications[index].remark != null)
+                                  Text(
+                                    notifications[index].remark!,
+                                    style:
+                                        TextStyle(fontStyle: FontStyle.italic),
+                                  ),
+                              ],
+                            ),
+                            subtitle: Text(notifications[index].date),
                           ),
-                        ),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 70,
-                              ),
-                              child: ListView.builder(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                controller: _scrollController,
-                                shrinkWrap: false,
-                                itemCount: notifications.length,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    children: [
-                                      ListTile(
-                                        leading: Image.asset(
-                                            ImagePath.getImagePath(
-                                                ScreenName.landing,
-                                                "anon.jpg")),
-                                        title: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(notifications[index].message),
-                                            if (notifications[index].remark !=
-                                                null)
-                                              Text(
-                                                notifications[index].remark!,
-                                                style: TextStyle(
-                                                    fontStyle:
-                                                        FontStyle.italic),
-                                              ),
-                                          ],
-                                        ),
-                                        subtitle:
-                                            Text(notifications[index].date),
-                                      ),
-                                      if (index == notifications.length - 1 &&
-                                          isLoading)
-                                        const Padding(
-                                          padding: EdgeInsets.all(10),
-                                          child: CircularProgressIndicator(),
-                                        )
-                                    ],
-                                  );
-                                },
-                              ),
-                            )),
-                      ],
-                    ))
-                : Container(
-                    height: Dimension.getScreenHeight(context),
-                    child: const Center(child: CircularProgressIndicator()),
-                  ),
-          ),
+                          if (index == notifications.length - 1 && isLoading)
+                            const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: CircularProgressIndicator(),
+                            )
+                        ],
+                      );
+                    },
+                  ))
+              : Container(
+                  height: Dimension.getScreenHeight(context),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
         ));
   }
 
