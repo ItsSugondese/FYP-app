@@ -64,4 +64,33 @@ class NotificationService {
       throw (DioService.handleDioException(e)).message;
     }
   }
+
+  Future<int> getNotificationCount() async {
+    try {
+      Response response = await _dio.get(
+        "${ApiConstant.backendUrl}/${ModuleName.NOTIFICATION}/new-notification-count",
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+          return response.data['data'];
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
+      print(e.toString());
+      print((DioService.handleDioException(e)).message);
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
 }

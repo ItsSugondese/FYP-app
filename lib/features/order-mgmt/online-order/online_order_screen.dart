@@ -5,6 +5,7 @@ import 'package:fyp/constants/currency_constant.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/food-mgmt/food-mgmt-service/food_management_service.dart';
+import 'package:fyp/features/order-mgmt/online-order/order_summary_screen.dart';
 import 'package:fyp/features/order-mgmt/online-order/widgets/order_food_for_online_card.dart';
 import 'package:fyp/features/order-mgmt/order_time_constant.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
@@ -99,16 +100,32 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
       drawer: MyDrawer(),
       appBar: const CustomAppbar(),
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20, top: 8),
         height: Dimension.getScreenHeight(context),
         child: Column(children: [
-          Text("${lastAddId ?? 'null'}"),
           SearchWidget(
             searchText: "Search User",
             typedText: (val) {
               paginationPayload.name = val.trim() == "" ? null : val;
               fetchOrder();
             },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+              alignment: Alignment.centerRight,
+              child: DefaultButtonNoInfinity(
+                  text: "Summarize",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrderSummary()),
+                    );
+                  })),
+          SizedBox(
+            height: 20,
           ),
           FutureBuilder<PaginatedData<OnlineOrder>>(
               future: onlineOrderFuture,
@@ -154,7 +171,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "Arrival Time : ${onlineOrder.arrivalTime} ago",
+                                                  "Arrival Time : ${onlineOrder.arrivalTime}",
                                                 )
                                               ],
                                             ),
@@ -214,21 +231,6 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
                                       ]),
                                       buttonsToHandle(onlineOrder)!,
                                     ]),
-                                    // Autocomplete<String>(
-                                    //   optionsBuilder:
-                                    //       (TextEditingValue textEditingValue) {
-                                    //     if (textEditingValue.text == '') {
-                                    //       return const Iterable.empty();
-                                    //     }
-                                    //     return items.where((element) => element
-                                    //         .toLowerCase()
-                                    //         .contains(textEditingValue.text
-                                    //             .toLowerCase()));
-                                    //   },
-                                    //   onSelected: (item) {
-                                    //     print(item);
-                                    //   },
-                                    // ),
                                   ],
                                 );
                               }),

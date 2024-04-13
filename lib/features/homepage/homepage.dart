@@ -47,7 +47,8 @@ class _HomepageState extends State<Homepage> {
   late Future<PaginatedData<FoodMenu>> foodMenuFuture;
   // late Future<PaginatedData<FoodMenu>> foodMenuFuture;
   late HomepageWidgets homeWidget;
-  FoodMenuPaginationPayload paginationPayload = FoodMenuPaginationPayload();
+  FoodMenuPaginationPayload paginationPayload =
+      FoodMenuPaginationPayload(filter: true);
 
   int selectedQuantity = 0; // Initialize with a default value
   int selectedFilterer = 1;

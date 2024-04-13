@@ -40,6 +40,8 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
 
   late Future<PaginatedData<OnsiteOrder>> onsiteOrderHistoryFuture;
 
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +50,7 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
         onsiteOrderFilter:
             PayFilterMap.orderManagementFilter.entries.first.value);
     onsiteOrderService = OnsiteOrderService(context);
+    _controller.text = OrderTimeConstant.timeInterval.toString();
     fetchOrder();
   }
 
@@ -83,17 +86,81 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
               fetchOrder();
             },
           ),
+          const SizedBox(
+            height: 15,
+          ),
           GlobalPayFilterWidget(
               options: PayFilterMap.orderManagementFilter,
               selectedFilter: (val) {
                 paginationPayload.onsiteOrderFilter = val;
                 fetchOrder();
               }),
+          const SizedBox(
+            height: 10,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              width: 100,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(
+                  color: Colors.grey, // Set border color here
+                  width: 1, // Set border width here
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(
+                        0, 3), // Positive vertical value for bottom shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _controller,
+                        keyboardType: TextInputType.number,
+                        // controller: _emailFieldController,
+                        decoration: InputDecoration(
+                            hintText: "Min", border: InputBorder.none),
+                        onEditingComplete: (() {
+                          if (_controller.text.isNotEmpty) {
+                            OrderTimeConstant.timeInterval =
+                                int.parse(_controller.text);
+                            fetchOrder();
+                          } else {
+                            setState(() {
+                              _controller.text =
+                                  OrderTimeConstant.timeInterval.toString();
+                            });
+                          }
+                        }),
+                      ),
+                    ),
+                    Text("Minutes"),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           FutureBuilder<PaginatedData<OnsiteOrder>>(
               future: onsiteOrderHistoryFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const DefaultCircularIndicator(height: 0.7);
+                  return const DefaultCircularIndicator(height: 0.5);
                 } else if (snapshot.hasData) {
                   List<OnsiteOrder> orderList = snapshot.data!.content;
                   return Expanded(
@@ -103,7 +170,7 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
                           ? SingleChildScrollView(
                               physics: const AlwaysScrollableScrollPhysics(),
                               child: NoData.getNoDataImage(
-                                  context, "No order Here", 0.7))
+                                  context, "No order Here", 0.5))
                           : ListView.builder(
                               physics: const AlwaysScrollableScrollPhysics(),
                               shrinkWrap: true,

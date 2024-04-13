@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/constants/currency_constant.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/model/order/ordered_food.dart';
 import 'package:fyp/templates/pop-up/are_you_sure_pop_up.dart';
 
-class OrderedFoodForOnlineCard extends StatelessWidget {
+class OrderedFoodListViewForOnlineCard extends StatelessWidget {
   final OrderedFood orderedFood;
   final VoidCallback clicked;
-  const OrderedFoodForOnlineCard(
+  const OrderedFoodListViewForOnlineCard(
       {super.key, required this.orderedFood, required this.clicked});
   // const OrderedFoodCard({super.key});
 
@@ -73,15 +74,30 @@ class OrderedFoodForOnlineCard extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Text(
-                      "x${orderedFood.quantity}",
-                      style: const TextStyle(
-                        color: Color(0xFF8D8D8D),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "${CurrencyConstant.currency}${orderedFood.cost}",
+                          style: const TextStyle(
+                            color: Color(0xFF8D8D8D),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          "x${orderedFood.quantity}",
+                          style: const TextStyle(
+                            color: Color(0xFF8D8D8D),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ],
                 ),

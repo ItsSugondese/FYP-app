@@ -20,6 +20,7 @@ class _CurrentOrderScreenState extends State<CurrentOrderScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           // backgroundColor: Colors.white,
           appBar: const CustomTabBar(),
           // appBar: AppBar(

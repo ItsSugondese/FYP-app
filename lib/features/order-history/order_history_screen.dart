@@ -8,8 +8,6 @@ import 'package:fyp/podo/user-order/user_order_pagination.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
 import 'package:fyp/services/payment/payment_service.dart';
 import 'package:fyp/templates/text/food_type_text.dart';
-import 'package:fyp/utils/appbar/custom-appbar.dart';
-import 'package:fyp/utils/drawer/drawer.dart';
 
 @RoutePage()
 class OrderHistoryScreen extends StatefulWidget {

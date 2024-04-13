@@ -11,6 +11,7 @@ import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/auth/ErrorResponse.dart';
 import 'package:fyp/model/order/online_order.dart';
 import 'package:fyp/model/order/ordered_food.dart';
+import 'package:fyp/podo/orders/online-order/order_summary.dart';
 import 'package:fyp/services/image-fetch-service/image_fetch_service.dart';
 import 'package:fyp/services/network/dio_service.dart';
 
@@ -96,6 +97,44 @@ class OnlineOrderService {
     }
   }
 
+  Future<List<SummaryData>> getOnlineOrderSummary(
+      String fromTime, String toTIme) async {
+    try {
+      Response response = await _dio.get(
+        "${ApiConstant.backendUrl}/${ModuleName.ONLINE_ORDER}/summary/$fromTime/$toTIme",
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+          List<dynamic> jsonDataList = response.data['data'];
+          List<SummaryData> summaryList = [];
+
+          for (var jsonData in jsonDataList) {
+            summaryList.add(SummaryData.fromJson(
+                jsonData,
+                await FetchImageService.fetchBlobData(_dio,
+                    ApiImageConstants.getFoodImage(jsonData['photoId']))));
+          }
+
+          return summaryList;
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
+
   Future<void> deleteSingleOrderedFood(int id) async {
     try {
       Response response = await _dio.delete(
@@ -126,6 +165,32 @@ class OnlineOrderService {
     try {
       Response response = await _dio.get(
         "${ApiConstant.backendUrl}/${ModuleName.ONLINE_ORDER}/make-onsite/$id",
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 1) {
+        } else {
+          throw Exception(
+              MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+        }
+      } else {
+        throw Exception(
+            MessageConstantsMethods.dataRetrieveError(MessageConstants.get));
+      }
+    } on DioException catch (e) {
+      throw (DioService.handleDioException(e)).message;
+    }
+  }
+
+  Future<void> deleteOrder(int id) async {
+    try {
+      Response response = await _dio.delete(
+        "${ApiConstant.backendUrl}/${ModuleName.ONLINE_ORDER}/$id",
         options: Options(
           headers: <String, String>{
             'Content-Type': 'application/json',

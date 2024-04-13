@@ -5,14 +5,13 @@ import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/landing-screen/landing-screen-service/landing_screen_constants.dart';
 import 'package:fyp/features/login/login-service/login-service.dart';
-import 'package:fyp/routes/routes_import.gr.dart';
 
 @RoutePage()
-class LoginScreen extends StatefulWidget {
-  _LoginScreenState createState() => _LoginScreenState();
+class ForgotPasswordScreen extends StatefulWidget {
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailFieldController = TextEditingController();
   final TextEditingController _passwordFieldController =
@@ -48,12 +47,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       const Column(
                         children: [
-                          Text("Login",
+                          Text("Forgot Password",
                               style: TextStyle(letterSpacing: 4, fontSize: 30)),
                           SizedBox(
                             height: 10,
                           ),
-                          Text("Add your details to login",
+                          Text("Submit your email to get reset mail",
                               style: TextStyle(
                                   fontSize: 15, color: Color(0xFF989898))),
                         ],
@@ -96,106 +95,50 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (value == null || value.isEmpty) {
                                     return 'This field is required';
                                   }
+                                  String emailPattern =
+                                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                                  RegExp regex = RegExp(emailPattern);
+                                  if (!regex.hasMatch(value)) {
+                                    return 'Please enter a valid email address';
+                                  }
                                   return null;
                                 },
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              TextFormField(
-                                controller: _passwordFieldController,
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 20),
-                                  filled: true,
-                                  fillColor: Color(0xFFEEEEEE),
-                                  labelText: 'password',
-                                  labelStyle: TextStyle(
-                                    color: Color(
-                                        0xFF989898), // Set the label text color
-                                    fontSize: 16.0, // Set the label text size
-                                    fontWeight: FontWeight
-                                        .normal, // Set the label text weight
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30.0)),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(
+                                        EdgeInsets.symmetric(vertical: 15),
+                                      ),
+                                      shape: MaterialStateProperty.all(
+                                          const StadiumBorder()),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              CustomColors.defaultRedColor),
+                                      elevation: MaterialStateProperty.all(0)),
+                                  onPressed: () {
+                                    loginService.forgotPassword(
+                                        _emailFieldController.text, context);
+                                  },
+                                  child: const Text(
+                                    "Send Mail",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: LandingScreenConstants
+                                            .buttonFontSize,
+                                        fontWeight: FontWeight.normal),
                                   ),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'This field is required';
-                                  }
-                                  return null;
-                                },
                               ),
-
-                              // This formatter allows only numeric values with up to 2 decimal places
                             ],
                           ),
                         ),
                       ),
                       const Spacer(),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(vertical: 15),
-                                  ),
-                                  shape: MaterialStateProperty.all(
-                                      const StadiumBorder()),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      CustomColors.defaultRedColor),
-                                  elevation: MaterialStateProperty.all(0)),
-                              onPressed: () {
-                                loginService.tempLogin(
-                                    _emailFieldController.text,
-                                    _passwordFieldController.text,
-                                    context);
-                              },
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize:
-                                        LandingScreenConstants.buttonFontSize,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              text: "Forgot password? ",
-                              style: TextStyle(
-                                  fontSize: 15, color: Color(0xFF989898)),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      AutoRouter.of(context).push(
-                                          const ForgotPasswordScreenRoute());
-                                    },
-                                  text: 'Click Here',
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
                     ],
                   ),
                 ),
@@ -204,17 +147,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.bottomCenter,
                   child: RichText(
                     text: TextSpan(
-                      text: "Not a staff? ",
+                      text: "Go Back: ",
                       style: TextStyle(fontSize: 15, color: Color(0xFF989898)),
                       children: <TextSpan>[
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              AutoRouter.of(context).pushAndPopUntil(
-                                  const LandingPageScreenRoute(),
-                                  predicate: (_) => false);
+                              Navigator.pop(context);
                             },
-                          text: 'Homepage',
+                          text: 'Login Page',
                           style: TextStyle(
                             color: CustomColors.defaultRedColor,
                           ),

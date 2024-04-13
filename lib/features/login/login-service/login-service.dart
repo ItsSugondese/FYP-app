@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/api-constant.dart';
+import 'package:fyp/features/login/login.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/auth/ErrorResponse.dart';
 import 'package:fyp/model/auth/jwt/JwtResponse.dart';
@@ -102,6 +103,32 @@ class LoginService {
       Store.setRoles(res.roles);
       Store.setUsername(res.username);
       UserService.dashboardManagement(AutoRouter.of(context));
+    } else {
+      final error = ErrorModel.fromJson(response.data);
+      throw Exception(error);
+    }
+  }
+
+  Future forgotPassword(String mail, BuildContext context) async {
+    Map<String, String> val = {'userEmail': mail};
+
+    Response response = await _dio.post(
+      "${ApiConstant.backendUrl}/auth/forgot-password",
+      data: val,
+      options: Options(
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    // final response = await http.post(
+    //   Uri.parse("${ApiConstant.backendUrl}/auth/login"),
+    //   body: json.encode(val),
+    // );
+
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
     } else {
       final error = ErrorModel.fromJson(response.data);
       throw Exception(error);

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/model/order/ordered_food.dart';
+import 'package:fyp/podo/orders/online-order/order_summary.dart';
 import 'package:fyp/templates/pop-up/are_you_sure_pop_up.dart';
 
-class OrderedFoodForOnlineCard extends StatelessWidget {
-  final OrderedFood orderedFood;
+class SummaryFoodCard extends StatelessWidget {
+  final SummaryData summaryData;
   final VoidCallback clicked;
-  const OrderedFoodForOnlineCard(
-      {super.key, required this.orderedFood, required this.clicked});
+  const SummaryFoodCard(
+      {super.key, required this.summaryData, required this.clicked});
   // const OrderedFoodCard({super.key});
 
   @override
@@ -26,30 +27,11 @@ class OrderedFoodForOnlineCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AreYouSurePopUp(
-                          callback: (val) async {
-                            if (val) {
-                              clicked();
-                            }
-                          },
-                          description:
-                              "Are you sure you want to remove this food from order?",
-                          header: "Remove Food from order",
-                        );
-                      },
-                    );
-                  },
-                  icon: Icon(Icons.delete)),
               Center(
                 child: Container(
                   alignment: Alignment.center,
                   child: Image.memory(
-                    orderedFood.photo!,
+                    summaryData.image!,
                     fit: BoxFit.cover,
                     width: Dimension.getScreenWidth(context) * 0.15,
                     height: Dimension.getScreenHeight(context) * 0.1,
@@ -65,7 +47,7 @@ class OrderedFoodForOnlineCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      orderedFood.foodName,
+                      summaryData.foodName,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 17,
@@ -74,7 +56,7 @@ class OrderedFoodForOnlineCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "x${orderedFood.quantity}",
+                      "x${summaryData.quantity}",
                       style: const TextStyle(
                         color: Color(0xFF8D8D8D),
                         fontWeight: FontWeight.w500,
