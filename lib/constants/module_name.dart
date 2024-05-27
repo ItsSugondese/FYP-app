@@ -12,4 +12,5 @@ class ModuleName {
   static String ENUMS = "enums";
   static String NOTIFICATION = "notification";
   static String PAYMENT = "payment";
+  static String COMPANY = "company";
 }

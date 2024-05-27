@@ -12,6 +12,7 @@ class OnsiteOrder {
   final double totalPrice;
   final double remainingAmount;
   final bool? feedbackStatus;
+  final int? tableNumber;
 
   OnsiteOrder(
       {required this.id,
@@ -24,7 +25,8 @@ class OnsiteOrder {
       required this.orderFoodDetails,
       required this.totalPrice,
       required this.remainingAmount,
-      required this.feedbackStatus});
+      required this.feedbackStatus,
+      required this.tableNumber});
 
   factory OnsiteOrder.fromJson(
       Map<String, dynamic> json, List<OrderedFood> orderedFood) {
@@ -39,6 +41,7 @@ class OnsiteOrder {
         orderStatus: json['orderStatus'],
         totalPrice: json['totalPrice'],
         remainingAmount: json['remainingAmount'],
+        tableNumber: json['tableNumber'],
         feedbackStatus: json['feedbackStatus']);
   }
 }

@@ -27,7 +27,7 @@ class User {
         profilePath: json['profilePath'],
         id: json['id'],
         fullName: json['fullName'],
-        isExternal: json['external'],
+        isExternal: json['isExternal'],
         remainingAmount: json.containsKey('remainingAmount')
             ? double.parse(json['remainingAmount'].toString())
             : null,

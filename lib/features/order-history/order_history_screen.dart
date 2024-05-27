@@ -8,6 +8,7 @@ import 'package:fyp/podo/user-order/user_order_pagination.dart';
 import 'package:fyp/services/order-services/onsite_order_service.dart';
 import 'package:fyp/services/payment/payment_service.dart';
 import 'package:fyp/templates/text/food_type_text.dart';
+import 'package:fyp/templates/not-found/no_data.dart';
 
 @RoutePage()
 class OrderHistoryScreen extends StatefulWidget {
@@ -127,146 +128,156 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               Center(child: Text(errMessage!))
             else
               !initialLoading
-                  ? Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: refresh,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemCount: orderList.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.symmetric(horizontal: 15),
-                              child: Column(
-                                children: [
-                                  Column(children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                  ? orderList.isEmpty
+                      ? Expanded(
+                          child: Center(
+                              child:
+                                  NoData.getNoDataImage(context, null, null)))
+                      : Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: refresh,
+                            child: ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              itemCount: orderList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 15),
+                                  child: Column(
+                                    children: [
+                                      Column(children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              "Order no. ${orderList[index].fullName}",
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 20,
-                                              ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${orderList[index].fullName}",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "Ordered : ${orderList[index].orderedTime} ago",
+                                                )
+                                              ],
                                             ),
-                                            Text(
-                                              "Ordered : ${orderList[index].orderedTime} ago",
-                                            )
+                                            FoodTypeText.getFoodType(
+                                                orderList[index].orderStatus,
+                                                14)
                                           ],
                                         ),
-                                        FoodTypeText.getFoodType(
-                                            orderList[index].orderStatus, 14)
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: SingleChildScrollView(
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.end,
-                                            children: [
-                                              for (int i = 0;
-                                                  i <
-                                                      orderList[index]
-                                                          .orderFoodDetails
-                                                          .length;
-                                                  orderList[index]
+                                        SizedBox(
+                                          height: 8,
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.end,
+                                                children: [
+                                                  for (int i = 0;
+                                                      i <
+                                                          orderList[index]
                                                               .orderFoodDetails
-                                                              .length <=
-                                                          2
-                                                      ? i++
-                                                      : i += 2)
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {},
-                                                      child: OrderedFoodCard(
-                                                          orderedFood: orderList[
-                                                                  index]
-                                                              .orderFoodDetails[i]),
-                                                    ),
-                                                    if (orderList[index]
-                                                            .orderFoodDetails
-                                                            .length >
-                                                        2)
-                                                      (orderList[index]
-                                                                      .orderFoodDetails
-                                                                      .length -
-                                                                  1 >=
-                                                              i + 1)
-                                                          ? Column(
-                                                              children: [
-                                                                SizedBox(
-                                                                  height: 10,
+                                                              .length;
+                                                      orderList[index]
+                                                                  .orderFoodDetails
+                                                                  .length <=
+                                                              2
+                                                          ? i++
+                                                          : i += 2)
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {},
+                                                          child: OrderedFoodCard(
+                                                              orderedFood:
+                                                                  orderList[
+                                                                          index]
+                                                                      .orderFoodDetails[i]),
+                                                        ),
+                                                        if (orderList[index]
+                                                                .orderFoodDetails
+                                                                .length >
+                                                            2)
+                                                          (orderList[index]
+                                                                          .orderFoodDetails
+                                                                          .length -
+                                                                      1 >=
+                                                                  i + 1)
+                                                              ? Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    OrderedFoodCard(
+                                                                        orderedFood:
+                                                                            orderList[index].orderFoodDetails[i +
+                                                                                1]),
+                                                                  ],
+                                                                )
+                                                              : Opacity(
+                                                                  opacity: 0.0,
+                                                                  child: OrderedFoodCard(
+                                                                      orderedFood:
+                                                                          orderList[index]
+                                                                              .orderFoodDetails[i]),
                                                                 ),
-                                                                OrderedFoodCard(
-                                                                    orderedFood:
-                                                                        orderList[index].orderFoodDetails[i +
-                                                                            1]),
-                                                              ],
-                                                            )
-                                                          : Opacity(
-                                                              opacity: 0.0,
-                                                              child: OrderedFoodCard(
-                                                                  orderedFood:
-                                                                      orderList[
-                                                                              index]
-                                                                          .orderFoodDetails[i]),
-                                                            ),
-                                                  ],
-                                                ),
-                                            ]),
-                                      ),
-                                    ),
-                                  ]),
-                                  if (orderList[index].orderStatus == 'Pending')
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          onsiteOrderService
-                                              .cancelOrder(orderList[index].id)
-                                              .then((value) {
-                                            if (value) {
-                                              setState(() {
-                                                setAndFetchOrder();
+                                                      ],
+                                                    ),
+                                                ]),
+                                          ),
+                                        ),
+                                      ]),
+                                      if (orderList[index].orderStatus ==
+                                          'Pending')
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              onsiteOrderService
+                                                  .cancelOrder(
+                                                      orderList[index].id)
+                                                  .then((value) {
+                                                if (value) {
+                                                  setState(() {
+                                                    setAndFetchOrder();
+                                                  });
+                                                }
                                               });
-                                            }
-                                          });
-                                        },
-                                        child: Text("Cancel"))
-                                  else if (orderList[index].orderStatus ==
-                                          'Delivered' ||
-                                      orderList[index].orderStatus ==
-                                          'Partial Paid')
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          payWithKhaltiInAppPurchase(
-                                              context,
-                                              PaymentService(context),
-                                              orderList[index].remainingAmount,
-                                              orderList[index].id);
-                                        },
-                                        child: Text("Pay")),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    )
+                                            },
+                                            child: Text("Cancel"))
+                                      else if (orderList[index].orderStatus ==
+                                              'Delivered' ||
+                                          orderList[index].orderStatus ==
+                                              'Partial Paid')
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              payWithKhaltiInAppPurchase(
+                                                  context,
+                                                  PaymentService(context),
+                                                  orderList[index]
+                                                      .remainingAmount,
+                                                  orderList[index].id);
+                                            },
+                                            child: Text("Pay")),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        )
                   : const Expanded(
                       child: Center(
                         child: CircularProgressIndicator(),

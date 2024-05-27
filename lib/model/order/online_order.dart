@@ -32,7 +32,7 @@ class OnlineOrder {
       Map<String, dynamic> json, List<OrderedFood> orderedFood) {
     return OnlineOrder(
         orderCode: json['order_code'] ?? '',
-        fullName: json['full_name'] ?? '',
+        fullName: json['fullName'] ?? '',
         userId: json['user_id'] ?? 0,
         approvalStatus: json['approval_status'] ?? '',
         id: json['id'] ?? 0,

@@ -164,7 +164,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Order no. ${orderList[index].orderCode}",
+                                                  "${orderList[index].fullName}",
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 20,
@@ -287,7 +287,7 @@ class _OnlineOrderScreenState extends State<OnlineOrderScreen> {
       DefaultButtonNoInfinity(
           text: "Deliver",
           onPressed: () async {
-            await onlineOrderService.convertToOnsite(order.id);
+            await onlineOrderService.convertToOnsite(order.id, null);
             fetchOrder();
           }),
     ]);

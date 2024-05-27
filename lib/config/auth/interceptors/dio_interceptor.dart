@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/helper/data/error_response_data.dart';
 import 'package:fyp/helper/data/response_data.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
+import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/services/storage/store_service.dart';
 
 class DioInterceptor extends Interceptor {
@@ -23,6 +25,9 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.response?.statusCode == 403) {
+      AutoRouter.of(context!).push(const LandingPageScreenRoute());
+    }
     ErrorResponseData? responseData;
     if (err.response != null && err.response!.data != null) {
       responseData = ErrorResponseData.fromJson(err.response!.data);

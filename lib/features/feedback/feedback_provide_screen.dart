@@ -57,19 +57,10 @@ class _FeedbackProvideScreenState extends State<FeedbackProvideScreen> {
                 height: Dimension.getScreenHeight(context),
                 child: Stack(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 0),
-                      child: Builder(
-                        builder: (context) =>
-                            GlobalHeaderWidget.getHeader(context),
-                      ),
-                    ),
                     Align(
                       alignment: Alignment.center,
                       child: Container(
-                        padding: EdgeInsets.only(
-                          top: 70,
-                        ),
+                        padding: EdgeInsets.only(),
                         height: Dimension.getScreenHeight(context),
                         child: FutureBuilder<List<FoodMenuForFeedback>>(
                             future: menuToFeedbackFuture,

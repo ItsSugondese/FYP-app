@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/enums/pay_status.dart';
+import 'package:fyp/features/homepage/qr_scanner.dart';
+import 'package:fyp/features/order-history/current-order/constatns/current_order_constants.dart';
+import 'package:fyp/features/order-history/current-order/current_online_order_screen.dart';
+import 'package:fyp/helper/widgets/service_helper.dart';
+import 'package:fyp/layout/constants/layout_tab_constant.dart';
 import 'package:fyp/podo/foodmgmt/food_order_response.dart';
 import 'package:fyp/podo/orders/online-order/online_order_response.dart';
 import 'package:fyp/podo/orders/onsite-order/onsite_order_response.dart';
@@ -12,7 +17,10 @@ import '../../../podo/foodmgmt/food_ordering_details.dart';
 
 class MakeOrderAndPayment extends StatefulWidget {
   final List<FoodOrderingDetails> details;
-  const MakeOrderAndPayment({super.key, required this.details});
+  final Function(int) callback;
+
+  const MakeOrderAndPayment(
+      {super.key, required this.details, required this.callback});
 
   @override
   State<MakeOrderAndPayment> createState() => _MakeOrderAndPaymentState();
@@ -27,7 +35,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
   bool? isOnlineOrder;
   bool payUsingCash = false;
   String tableNumber = "";
-
+  bool verifying = false;
   TimeOfDay? selectedTime;
 
   Future<void> _selectTime(BuildContext context) async {
@@ -64,20 +72,28 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                       isOnlineOrder = false;
                       selectedTime = null;
                     });
-                    // await QrScanner.showForQr(context, (String text) {
-                    //   setState(() {
-                    //     if (text.isNotEmpty) {
-                    //       tableNumber = text;
-                    //       isVerified = true;
-                    //     } else {
-                    //       isVerified = false;
-                    //     }
-                    //   });
-                    // });
+                    QrScanner.showForQr(context,
+                        (String text, bool isCorrect) async {
+                      RegExp regExp = RegExp(r':');
 
-                    setState(() {
-                      tableNumber = 10.toString();
-                      isVerified = true;
+                      if (isCorrect) {
+                        setState(() {
+                          verifying = true;
+                        });
+                        bool check =
+                            await onsiteOrderService.verifyOnsite(text);
+                        if (check) {
+                          setState(() {
+                            tableNumber = text.split(":")[1];
+                            isVerified = true;
+                            verifying = false;
+                          });
+                        } else {
+                          notVerifiedQr();
+                        }
+                      } else {
+                        notVerifiedQr();
+                      }
                     });
                   },
                   child: Card(
@@ -90,7 +106,10 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                                 ))
                               : null,
                           height: 50,
-                          child: Center(child: Text("On-site")))),
+                          child: Center(
+                              child: verifying
+                                  ? CircularProgressIndicator() // Loading indicator
+                                  : Text("On-site")))),
                 ),
               ),
               Expanded(
@@ -114,7 +133,7 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                           height: 50,
                           child: Center(child: Text("Online")))),
                 ),
-              )
+              ),
             ],
           ),
           const SizedBox(
@@ -141,18 +160,11 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                         // });
 
                         try {
-                          bool statusBoolean = await onsiteOrderService
+                          await onsiteOrderService
                               .makeOnsiteOrder(onsiteOrderResponse.toJson());
-                          if (statusBoolean) {
-                            Navigator.pop(context);
-                          } else {
-                            // Handle case where order was not successfully made
-                            // You can show an error message to the user or take appropriate action.
-                          }
+                          afterOrder(0);
                         } catch (e) {
-                          // Handle exceptions thrown by makeOnsiteOrder
-                          print('Error making onsite order: $e');
-                          // You can show an error message to the user or take appropriate action.
+                          Navigator.pop(context);
                         }
                       },
                     )
@@ -191,16 +203,25 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
                             arrivalTime: getStringConvertedTime(selectedTime),
                             totalPrice: getTotalCostAmount());
 
-                    await onlineOrderService
-                        .makeOnlineOrder(onlineOrderResponse.toJson());
+                    try {
+                      await onlineOrderService
+                          .makeOnlineOrder(onlineOrderResponse.toJson());
 
-                    Navigator.pop(context);
+                      afterOrder(1);
+                    } on Exception {
+                      Navigator.pop(context);
+                    }
                   },
                 )
               : const SizedBox(width: 0.0, height: 0.0)
         ],
       ),
     );
+  }
+
+  void afterOrder(int orderIndex) {
+    CurrentOrderConstants.initialTab = orderIndex;
+    widget.callback(1);
   }
 
   List<FoodOrderResponse> getFoodOrderList(List<FoodOrderingDetails> details) {
@@ -223,5 +244,11 @@ class _MakeOrderAndPaymentState extends State<MakeOrderAndPayment> {
 
   String getStringConvertedTime(TimeOfDay? selectedTime) {
     return "${selectedTime?.hour.toString().padLeft(2, '0') ?? '00'}:${selectedTime?.minute.toString().padLeft(2, '0') ?? '00'}";
+  }
+
+  void notVerifiedQr() {
+    ServiceHelper.showErrorSnackBar(
+        context, "Invalid Qr used for verification");
+    Navigator.pop(context);
   }
 }

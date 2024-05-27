@@ -22,7 +22,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   final ScrollController _scrollController = ScrollController();
   late NotificationService notificationService;
   NotificationPaginationPayload paginationPayload =
-      NotificationPaginationPayload();
+      NotificationPaginationPayload(row: 15);
 
   late Future<PaginatedData<NotificationModel>> notificationFuture;
 

@@ -102,6 +102,8 @@ class LoginService {
       Store.setToken(res.jwtToken);
       Store.setRoles(res.roles);
       Store.setUsername(res.username);
+      Store.setEmail(res.email);
+      Store.setUserId(res.userId);
       UserService.dashboardManagement(AutoRouter.of(context));
     } else {
       final error = ErrorModel.fromJson(response.data);

@@ -40,6 +40,24 @@ class OnsiteOrderService {
     }
   }
 
+  Future<bool> verifyOnsite(String text) async {
+    Response response = await _dio.get(
+      "${ApiConstant.backendUrl}/onsite-order/verify-onsite/$text",
+      options: Options(
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return response.data['data'];
+    } else {
+      final error = ErrorModel.fromJson(response.data);
+      throw Exception(error);
+    }
+  }
+
   Future<bool> cancelOrder(int orderId) async {
     Response response = await _dio
         .get("${ApiConstant.backendUrl}/onsite-order/status/$orderId/CANCELED");

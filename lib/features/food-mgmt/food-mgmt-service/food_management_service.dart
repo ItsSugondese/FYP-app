@@ -7,6 +7,7 @@ import 'package:fyp/constants/api-constant.dart';
 import 'package:fyp/constants/module_name.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
+import 'package:fyp/podo/foodmgmt/toggle_menu_payload.dart';
 import 'package:fyp/services/network/dio_service.dart';
 
 class FoodManagementService {
@@ -78,6 +79,22 @@ class FoodManagementService {
       } else {
         throw Exception("Error when getting data");
       }
+    } on DioException catch (e) {
+      throw e.message!;
+    }
+  }
+
+  Future<void> toggleMenuToDisable(Map<String, dynamic> map) async {
+    try {
+      await _dio.post(
+        "${ApiConstant.backendUrl}/${ModuleName.FOOD_MENU}/toggle-availability",
+        data: map,
+        options: Options(
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
     } on DioException catch (e) {
       throw e.message!;
     }

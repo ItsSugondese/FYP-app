@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fyp/config/network/api/GoogleSignInApi.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
+import 'package:fyp/services/storage/store_service.dart';
 
 class CustomAppbarProfile extends StatelessWidget
     implements PreferredSizeWidget {
@@ -30,7 +31,10 @@ class CustomAppbarProfile extends StatelessWidget
                     elevation: MaterialStateProperty.all(0)),
                 onPressed: () {
                   GoogleSignInApi.logout();
-                  AutoRouter.of(context).push(const LandingPageScreenRoute());
+                  AutoRouter.of(context).pushAndPopUntil(
+                      const LandingPageScreenRoute(),
+                      predicate: (route) => false);
+                  Store.clear();
                 },
                 child: Text(
                   'Logout',

@@ -5,6 +5,7 @@ import 'package:fyp/features/homepage/khati_dart.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
 import 'package:fyp/features/order-mgmt/online-order/widgets/food_card_for_summary.dart';
 import 'package:fyp/features/order-mgmt/online-order/widgets/order_food_for_online_card.dart';
+import 'package:fyp/features/order-mgmt/order_time_constant.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/model/order/onsite_order.dart';
 import 'package:fyp/podo/orders/online-order/order_summary.dart';
@@ -38,10 +39,9 @@ class _OrderSummaryState extends State<OrderSummary> {
   @override
   void initState() {
     super.initState();
-    // _startDate = TimeOfDay.now();
-    _startDate = TimeOfDay(hour: 7, minute: 30);
+    _startDate = TimeOfDay.now();
     _endDate = TimeOfDay.now();
-    _endDate = addMinutesToTime(_endDate, 30);
+    _endDate = addMinutesToTime(_endDate, OrderTimeConstant.timeInterval);
     onlineOrderService = OnlineOrderService(context);
 
     fetchApi();

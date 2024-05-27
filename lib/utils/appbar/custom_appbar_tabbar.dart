@@ -4,9 +4,9 @@ import 'package:fyp/utils/appbar/widgets/menu-icon.dart';
 import 'package:fyp/utils/appbar/widgets/notification-icon.dart';
 
 class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomTabBar({
-    Key? key,
-  }) : super(key: key);
+  final TabController controller;
+
+  const CustomTabBar({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,8 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 color: Color.fromARGB(255, 230, 203, 200),
               ),
-              child: const TabBar(
+              child: TabBar(
+                controller: controller,
                 indicatorSize: TabBarIndicatorSize.tab,
                 dividerColor: Colors.transparent,
                 indicator: BoxDecoration(

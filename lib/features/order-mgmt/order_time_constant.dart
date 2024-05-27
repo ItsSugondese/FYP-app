@@ -1,3 +1,3 @@
 class OrderTimeConstant {
-  static int timeInterval = 400;
+  static int timeInterval = 30;
 }

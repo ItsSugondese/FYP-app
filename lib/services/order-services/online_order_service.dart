@@ -161,10 +161,10 @@ class OnlineOrderService {
     }
   }
 
-  Future<void> convertToOnsite(int id) async {
+  Future<void> convertToOnsite(int id, String? val) async {
     try {
       Response response = await _dio.get(
-        "${ApiConstant.backendUrl}/${ModuleName.ONLINE_ORDER}/make-onsite/$id",
+        "${ApiConstant.backendUrl}/${ModuleName.ONLINE_ORDER}/make-onsite/$id/$val",
         options: Options(
           headers: <String, String>{
             'Content-Type': 'application/json',

@@ -19,6 +19,7 @@ class UserOrderHistoryPagination extends DefaultPagination {
     // Remove null values from the map
     json['fromDate'] = fromDate;
     json['toDate'] = toDate;
+    json['today'] = today;
     json.removeWhere((key, value) => value == null);
     return json;
   }

@@ -10,6 +10,7 @@ import 'package:fyp/constants/module_name.dart';
 import 'package:fyp/helper/pagination/pagination_data.dart';
 import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/people/user.dart';
+import 'package:fyp/services/image-fetch-service/image_fetch_service.dart';
 import 'package:fyp/services/network/dio_service.dart';
 
 class UserManagementService {
@@ -37,7 +38,15 @@ class UserManagementService {
           List<User> userList = [];
 
           for (var jsonData in jsonDataList) {
-            userList.add(User.fromJson(jsonData, null));
+            if (jsonData['isExternal'] as bool == true &&
+                jsonData['profilePath'] != null) {
+              userList.add(User.fromJson(
+                  jsonData,
+                  await FetchImageService.fetchBlobData(_dio,
+                      "${ApiConstant.backendUrl}/${ModuleName.STAFF}/photo/${jsonData['id']}")));
+            } else {
+              userList.add(User.fromJson(jsonData, null));
+            }
           }
 
           int totalPages = response.data['data']['totalPages'];

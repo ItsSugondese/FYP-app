@@ -15,14 +15,14 @@ import 'package:fyp/features/feedback/feedback_inspect_screen.dart' as _i8;
 import 'package:fyp/features/feedback/feedback_provide_screen.dart' as _i9;
 import 'package:fyp/features/food-mgmt/add_food_screen.dart' as _i1;
 import 'package:fyp/features/food-mgmt/food_mgmt_screen.dart' as _i10;
-import 'package:fyp/features/homepage/homepage.dart' as _i12;
-import 'package:fyp/features/homepage/order_foods_screen.dart' as _i20;
+import 'package:fyp/features/homepage/order_foods_screen.dart' as _i19;
 import 'package:fyp/features/homepage/selected_food_to_order_screen.dart'
-    as _i21;
-import 'package:fyp/features/landing-screen/landing_screen.dart' as _i13;
+    as _i20;
+import 'package:fyp/features/landing-screen/landing_screen.dart' as _i12;
+import 'package:fyp/features/landing-screen/splash_screen.dart' as _i21;
 import 'package:fyp/features/login/forgot_password.dart' as _i11;
-import 'package:fyp/features/login/login.dart' as _i14;
-import 'package:fyp/features/notification/notification_screen.dart' as _i15;
+import 'package:fyp/features/login/login.dart' as _i13;
+import 'package:fyp/features/notification/notification_screen.dart' as _i14;
 import 'package:fyp/features/order-history/current-order/current_online_order_screen.dart'
     as _i4;
 import 'package:fyp/features/order-history/current-order/current_onsite_order_screen.dart'
@@ -30,12 +30,12 @@ import 'package:fyp/features/order-history/current-order/current_onsite_order_sc
 import 'package:fyp/features/order-history/current-order/current_order_screen.dart'
     as _i6;
 import 'package:fyp/features/order-history/order_history_management_screen.dart'
-    as _i18;
-import 'package:fyp/features/order-history/order_history_screen.dart' as _i19;
-import 'package:fyp/features/order-mgmt/online-order/online_order_screen.dart'
-    as _i16;
-import 'package:fyp/features/order-mgmt/onsite-order/onsite_order_screen.dart'
     as _i17;
+import 'package:fyp/features/order-history/order_history_screen.dart' as _i18;
+import 'package:fyp/features/order-mgmt/online-order/online_order_screen.dart'
+    as _i15;
+import 'package:fyp/features/order-mgmt/onsite-order/onsite_order_screen.dart'
+    as _i16;
 import 'package:fyp/features/people-mgmt/disable_history_screen.dart' as _i7;
 import 'package:fyp/features/people-mgmt/staff-mgmt/add-staff/add_staff_screen.dart'
     as _i2;
@@ -142,69 +142,69 @@ abstract class $AppRouter extends _i29.RootStackRouter {
         child: _i11.ForgotPasswordScreen(),
       );
     },
-    HomepageRoute.name: (routeData) {
-      return _i29.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i12.Homepage(),
-      );
-    },
     LandingPageScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i13.LandingPageScreen(),
+        child: _i12.LandingPageScreen(),
       );
     },
     LoginScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i14.LoginScreen(),
+        child: _i13.LoginScreen(),
       );
     },
     NotificationScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i15.NotificationScreen(),
+        child: const _i14.NotificationScreen(),
       );
     },
     OnlineOrderScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i16.OnlineOrderScreen(),
+        child: const _i15.OnlineOrderScreen(),
       );
     },
     OnsiteOrderScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.OnsiteOrderScreen(),
+        child: const _i16.OnsiteOrderScreen(),
       );
     },
     OrderHistoryManagementScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i18.OrderHistoryManagementScreen(),
+        child: const _i17.OrderHistoryManagementScreen(),
       );
     },
     OrderHistoryScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i19.OrderHistoryScreen(),
+        child: const _i18.OrderHistoryScreen(),
       );
     },
     OrderedFoodScreenRoute.name: (routeData) {
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i20.OrderedFoodScreen(),
+        child: const _i19.OrderedFoodScreen(),
       );
     },
     SelectedFoodToOrderScreenRoute.name: (routeData) {
       final args = routeData.argsAs<SelectedFoodToOrderScreenRouteArgs>();
       return _i29.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i21.SelectedFoodToOrderScreen(
+        child: _i20.SelectedFoodToOrderScreen(
           key: args.key,
           foodMenu: args.foodMenu,
           callback: args.callback,
         ),
+      );
+    },
+    SplashScreenRoute.name: (routeData) {
+      return _i29.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i21.SplashScreen(),
       );
     },
     StaffDetailsScreenRoute.name: (routeData) {
@@ -518,21 +518,7 @@ class ForgotPasswordScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.Homepage]
-class HomepageRoute extends _i29.PageRouteInfo<void> {
-  const HomepageRoute({List<_i29.PageRouteInfo>? children})
-      : super(
-          HomepageRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomepageRoute';
-
-  static const _i29.PageInfo<void> page = _i29.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i13.LandingPageScreen]
+/// [_i12.LandingPageScreen]
 class LandingPageScreenRoute extends _i29.PageRouteInfo<void> {
   const LandingPageScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -546,7 +532,7 @@ class LandingPageScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.LoginScreen]
+/// [_i13.LoginScreen]
 class LoginScreenRoute extends _i29.PageRouteInfo<void> {
   const LoginScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -560,7 +546,7 @@ class LoginScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i15.NotificationScreen]
+/// [_i14.NotificationScreen]
 class NotificationScreenRoute extends _i29.PageRouteInfo<void> {
   const NotificationScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -574,7 +560,7 @@ class NotificationScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i16.OnlineOrderScreen]
+/// [_i15.OnlineOrderScreen]
 class OnlineOrderScreenRoute extends _i29.PageRouteInfo<void> {
   const OnlineOrderScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -588,7 +574,7 @@ class OnlineOrderScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i17.OnsiteOrderScreen]
+/// [_i16.OnsiteOrderScreen]
 class OnsiteOrderScreenRoute extends _i29.PageRouteInfo<void> {
   const OnsiteOrderScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -602,7 +588,7 @@ class OnsiteOrderScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i18.OrderHistoryManagementScreen]
+/// [_i17.OrderHistoryManagementScreen]
 class OrderHistoryManagementScreenRoute extends _i29.PageRouteInfo<void> {
   const OrderHistoryManagementScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -616,7 +602,7 @@ class OrderHistoryManagementScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i19.OrderHistoryScreen]
+/// [_i18.OrderHistoryScreen]
 class OrderHistoryScreenRoute extends _i29.PageRouteInfo<void> {
   const OrderHistoryScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -630,7 +616,7 @@ class OrderHistoryScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i20.OrderedFoodScreen]
+/// [_i19.OrderedFoodScreen]
 class OrderedFoodScreenRoute extends _i29.PageRouteInfo<void> {
   const OrderedFoodScreenRoute({List<_i29.PageRouteInfo>? children})
       : super(
@@ -644,7 +630,7 @@ class OrderedFoodScreenRoute extends _i29.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.SelectedFoodToOrderScreen]
+/// [_i20.SelectedFoodToOrderScreen]
 class SelectedFoodToOrderScreenRoute
     extends _i29.PageRouteInfo<SelectedFoodToOrderScreenRouteArgs> {
   SelectedFoodToOrderScreenRoute({
@@ -691,6 +677,20 @@ class SelectedFoodToOrderScreenRouteArgs {
   String toString() {
     return 'SelectedFoodToOrderScreenRouteArgs{key: $key, foodMenu: $foodMenu, callback: $callback}';
   }
+}
+
+/// generated route for
+/// [_i21.SplashScreen]
+class SplashScreenRoute extends _i29.PageRouteInfo<void> {
+  const SplashScreenRoute({List<_i29.PageRouteInfo>? children})
+      : super(
+          SplashScreenRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SplashScreenRoute';
+
+  static const _i29.PageInfo<void> page = _i29.PageInfo<void>(name);
 }
 
 /// generated route for

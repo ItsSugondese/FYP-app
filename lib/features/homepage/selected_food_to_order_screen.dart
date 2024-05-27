@@ -61,7 +61,8 @@ class _SelectedFoodToOrderScreenState extends State<SelectedFoodToOrderScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                FoodTypeText.getFoodType("Individual", 14),
+                                FoodTypeText.getFoodType(
+                                    widget.foodMenu.foodType, 14),
                                 Text(
                                   "Rs. ${widget.foodMenu.cost}",
                                   style: const TextStyle(
@@ -92,7 +93,9 @@ class _SelectedFoodToOrderScreenState extends State<SelectedFoodToOrderScreen> {
                                   child: ItemCount(
                                     initialValue: quantitySelected,
                                     minValue: 0,
-                                    maxValue: 10,
+                                    maxValue: widget.foodMenu.isAuto
+                                        ? widget.foodMenu.remainingQuantity!
+                                        : 1000,
                                     decimalPlaces: 0,
                                     buttonTextColor: Colors.white,
                                     buttonSizeWidth: 30,
@@ -113,6 +116,18 @@ class _SelectedFoodToOrderScreenState extends State<SelectedFoodToOrderScreen> {
                             const SizedBox(
                               height: 5,
                             ),
+                            if (widget.foodMenu.isAuto)
+                              Column(
+                                children: [
+                                  Text(
+                                    "Only ${widget.foodMenu.remainingQuantity} left",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
+                              ),
                             Text(
                               widget.foodMenu.description,
                               style: const TextStyle(fontSize: 16),
@@ -120,6 +135,7 @@ class _SelectedFoodToOrderScreenState extends State<SelectedFoodToOrderScreen> {
                           ]),
                     )),
               ),
+
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(

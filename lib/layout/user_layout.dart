@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:fyp/constants/designing/colors.dart';
@@ -7,6 +9,7 @@ import 'package:fyp/features/notification/notification-service/notification_serv
 import 'package:fyp/features/notification/notification_screen.dart';
 import 'package:fyp/features/order-history/current-order/current_order_screen.dart';
 import 'package:fyp/features/user-profile/user_profile_screen.dart';
+import 'package:fyp/layout/constants/layout_tab_constant.dart';
 
 @RoutePage()
 class UserLayout extends StatefulWidget {
@@ -17,29 +20,52 @@ class UserLayout extends StatefulWidget {
 }
 
 class _UserLayoutState extends State<UserLayout> {
-  int currentTab = 0;
+  int currentTab = LayoutTabConstant.intialTab;
+  Timer? _timer;
   late NotificationService notificationService;
   late Future<int> notificationServiceFuture;
-  final List<Widget> screens = [
-    Homepage(),
-    CurrentOrderScreen(),
-    NotificationScreen(),
-    UserProfile(),
-  ];
+
+  GlobalKey _bottomNavigationKey = GlobalKey();
+
+  late List<Widget> screens;
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Homepage();
+  // Widget currentScreen = Homepage();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    this.screens = [
+      Homepage(
+        onTabSelected: (val) {
+          print("Last screen");
+          setState(() {
+            currentTab = val;
+          });
+        },
+      ),
+      CurrentOrderScreen(),
+      NotificationScreen(),
+      UserProfile(),
+    ];
     notificationService = NotificationService(context);
     fetchNotificationCount();
+    _timer = Timer.periodic(Duration(seconds: 7), (timer) {
+      fetchNotificationCount();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    super.dispose();
   }
 
   fetchNotificationCount() {
-    notificationServiceFuture = notificationService.getNotificationCount();
+    setState(() {
+      notificationServiceFuture = notificationService.getNotificationCount();
+    });
   }
 
   @override
@@ -48,9 +74,10 @@ class _UserLayoutState extends State<UserLayout> {
       // appBar: const CustomAppbar(),
       body: PageStorage(
         bucket: bucket,
-        child: currentScreen,
+        child: screens[currentTab],
       ),
       bottomNavigationBar: BottomAppBar(
+        key: _bottomNavigationKey,
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
         child: Container(
@@ -67,7 +94,7 @@ class _UserLayoutState extends State<UserLayout> {
                 // minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = Homepage();
+                    // currentScreen = Homepage(globalKey: _bottomNavigationKey,);
                     currentTab = 0;
                   });
                 },
@@ -83,7 +110,7 @@ class _UserLayoutState extends State<UserLayout> {
                 // minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = CurrentOrderScreen();
+                    // currentScreen = CurrentOrderScreen();
                     currentTab = 1;
                   });
                 },
@@ -101,7 +128,7 @@ class _UserLayoutState extends State<UserLayout> {
                     // minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = NotificationScreen();
+                        // currentScreen = NotificationScreen();
                         currentTab = 2;
                       });
                     },
@@ -146,7 +173,8 @@ class _UserLayoutState extends State<UserLayout> {
                 // minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = UserProfile();
+                    // currentScreen = UserProfile();
+
                     currentTab = 3;
                   });
                 },

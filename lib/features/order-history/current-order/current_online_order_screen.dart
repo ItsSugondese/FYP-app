@@ -5,11 +5,13 @@ import 'package:fyp/constants/currency_constant.dart';
 import 'package:fyp/constants/designing/colors.dart';
 import 'package:fyp/constants/designing/dimension.dart';
 import 'package:fyp/features/food-mgmt/food-mgmt-service/food_management_service.dart';
+import 'package:fyp/features/homepage/qr_scanner.dart';
 import 'package:fyp/features/order-history/current-order/widgets/add_menu_pop_up.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_card.dart';
 import 'package:fyp/features/order-history/current-order/widgets/ordered_food_list_card.dart';
 import 'package:fyp/features/order-history/order-history-service/order_history_service.dart';
 import 'package:fyp/features/order-mgmt/online-order/widgets/order_food_for_online_card.dart';
+import 'package:fyp/helper/widgets/service_helper.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/model/order/online_order.dart';
 import 'package:fyp/model/order/ordered_food.dart';
@@ -42,6 +44,7 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
 
   late Future<List<UserOrderHistory>> onlineOrderHistoryFuture;
   late OnlineOrderService onlineOrderService;
+  late OnsiteOrderService onsiteOrderService;
 
   UserOrderHistoryPagination paginationPayload =
       UserOrderHistoryPagination(fromDate: '2024-01-01', toDate: '2024-01-31');
@@ -66,7 +69,7 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
     orderHistoryService = OrderHistoryService(context);
     foodManagementService = FoodManagementService(context);
     onlineOrderService = OnlineOrderService(context);
-
+    onsiteOrderService = OnsiteOrderService(context);
     fetchOrder();
   }
 
@@ -134,6 +137,8 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     Column(
                                                       crossAxisAlignment:
@@ -151,7 +156,9 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
                                                         ),
                                                         Text(
                                                           "Arrival time: ${historyList[index].arrivalTime}",
-                                                        )
+                                                        ),
+                                                        Text(
+                                                            "${CurrencyConstant.currency}${historyList[index].totalPrice}")
                                                       ],
                                                     ),
                                                     FoodTypeText.getFoodType(
@@ -274,9 +281,33 @@ class _CurrentOnlineOrderScreenState extends State<CurrentOnlineOrderScreen> {
                                                             },
                                                           );
                                                         }),
-                                                    Text(historyList[index]
-                                                        .totalPrice
-                                                        .toString())
+                                                    DefaultButtonNoInfinity(
+                                                        text: "Verify",
+                                                        onPressed: () {
+                                                          QrScanner.showForQr(
+                                                              context,
+                                                              (String text,
+                                                                  bool
+                                                                      isTrue) async {
+                                                            if (isTrue) {
+                                                              await onlineOrderService
+                                                                  .convertToOnsite(
+                                                                      historyList[
+                                                                              index]
+                                                                          .id,
+                                                                      text);
+
+                                                              setState(() {
+                                                                fetchOrder();
+                                                              });
+                                                            } else {
+                                                              ServiceHelper
+                                                                  .showErrorSnackBar(
+                                                                      context,
+                                                                      "Invalid Qr used for verification");
+                                                            }
+                                                          });
+                                                        }),
                                                   ],
                                                 )
                                               ]),

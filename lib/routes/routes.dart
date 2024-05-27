@@ -13,8 +13,11 @@ class AppRouter extends $AppRouter {
         ),
         AutoRoute(page: ForgotPasswordScreenRoute.page),
         AutoRoute(page: LoginScreenRoute.page),
-        AutoRoute(page: HomepageRoute.page),
-        AutoRoute(page: UserLayoutRoute.page, initial: true),
+        // AutoRoute(page: HomepageRoute.page),
+        AutoRoute(
+          page: UserLayoutRoute.page,
+        ),
+        AutoRoute(page: SplashScreenRoute.page, initial: true),
         AutoRoute(page: SelectedFoodToOrderScreenRoute.page),
         AutoRoute(
           page: OrderedFoodScreenRoute.page,

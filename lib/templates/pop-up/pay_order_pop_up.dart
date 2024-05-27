@@ -32,73 +32,78 @@ class _PayOrderPopUpState extends State<PayOrderPopUp> {
     return SimpleDialog(
       title: Text("Payment for ${widget.order.fullName}"),
       children: <Widget>[
-        Text(
-            "Current Order cost: ${CurrencyConstant.currency}${widget.order.totalPrice}"),
-        Text(
-            "Previous Due Amount: ${CurrencyConstant.currency}${widget.order.remainingAmount - widget.order.totalPrice}"),
-        Text(
-            "Remaining Amount To pay: ${CurrencyConstant.currency}${widget.order.remainingAmount}"),
-        Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: amountController,
-                  decoration: InputDecoration(
-                    labelText: "Enter amount",
-                    hintText: "Amount",
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly // Allow only digits
+        Column(
+          children: [
+            Text(
+                "Current Order cost: ${CurrencyConstant.currency}${widget.order.totalPrice}"),
+            Text(
+                "Previous Due Amount: ${CurrencyConstant.currency}${widget.order.remainingAmount - widget.order.totalPrice}"),
+            Text(
+                "Remaining Amount To pay: ${CurrencyConstant.currency}${widget.order.remainingAmount}"),
+            Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: amountController,
+                      decoration: InputDecoration(
+                        labelText: "Enter amount",
+                        hintText: "Amount",
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly // Allow only digits
+                      ],
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please valid amount between ${CurrencyConstant.currency}1 - ${CurrencyConstant.currency}${widget.order.remainingAmount}';
+                        }
+                        return null;
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: paying ||
+                              amountController.text.isEmpty ||
+                              (amountController.text.isNotEmpty &&
+                                  (double.parse(amountController.text) >
+                                          widget.order.remainingAmount ||
+                                      double.parse(amountController.text) < 1))
+                          ? null
+                          : () async {
+                              setStateForLoading(true);
+                              if (_formKey.currentState!.validate()) {
+                                PaymentPayload payload = PaymentPayload(
+                                    totalAmount: widget.order.totalPrice,
+                                    paidAmount: convertControllerToDouble(),
+                                    dueAmount: convertControllerToDouble() >
+                                            widget.order.totalPrice
+                                        ? 0
+                                        : widget.order.totalPrice -
+                                            convertControllerToDouble(),
+                                    onsiteOrderId: widget.order.id,
+                                    userId: widget.order.userId);
+
+                                try {
+                                  await paymentService
+                                      .payForOrder(payload.toJson());
+                                } catch (e) {
+                                  setStateForLoading(false);
+                                }
+
+                                widget.callback(true);
+                                Navigator.pop(context);
+                              }
+                              setStateForLoading(true);
+                            },
+                      child: Text("Pay"),
+                    ),
                   ],
-                  onChanged: (value) {
-                    setState(() {});
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please valid amount between ${CurrencyConstant.currency}1 - ${CurrencyConstant.currency}${widget.order.remainingAmount}';
-                    }
-                    return null;
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: paying ||
-                          amountController.text.isEmpty ||
-                          (amountController.text.isNotEmpty &&
-                              (double.parse(amountController.text) >
-                                      widget.order.remainingAmount ||
-                                  double.parse(amountController.text) < 1))
-                      ? null
-                      : () async {
-                          setStateForLoading(true);
-                          if (_formKey.currentState!.validate()) {
-                            PaymentPayload payload = PaymentPayload(
-                                totalAmount: widget.order.totalPrice,
-                                paidAmount: convertControllerToDouble(),
-                                dueAmount: convertControllerToDouble() >
-                                        widget.order.totalPrice
-                                    ? 0
-                                    : widget.order.totalPrice -
-                                        convertControllerToDouble(),
-                                onsiteOrderId: widget.order.id,
-                                userId: widget.order.userId);
-
-                            try {
-                              await paymentService
-                                  .payForOrder(payload.toJson());
-                            } catch (e) {
-                              setStateForLoading(false);
-                            }
-
-                            widget.callback(true);
-                            Navigator.pop(context);
-                          }
-                          setStateForLoading(true);
-                        },
-                  child: Text("Pay"),
-                ),
-              ],
-            )),
+                )),
+          ],
+        ),
       ],
     );
   }

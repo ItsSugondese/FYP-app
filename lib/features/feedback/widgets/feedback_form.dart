@@ -38,95 +38,98 @@ class _FeedbackFormState extends State<FeedbackForm> {
             return SimpleDialog(
               title: Text("Feedback for ${widget.menu.foodName}"),
               children: <Widget>[
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        DropdownButtonFormField<String>(
-                          value: selected,
-                          onChanged: (String? value) {
-                            setState(() {
-                              selected = value;
-                            });
-                          },
-                          items: snapshot.data!
-                              .map((String value) => DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  ))
-                              .toList(),
-                          decoration: InputDecoration(
-                            labelText: "Select your shit",
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please select a role';
-                            }
-                            return null;
-                          },
-                        ),
-                        Center(child: Text("Rs. ")),
-                        TextFormField(
-                          controller: feedbackRemarksController,
-                          decoration: InputDecoration(
-                            labelText: "Write review",
-                            hintText: "Feedback",
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter a quantity';
-                            }
-                            return null;
-                          },
-                        ),
-                        Row(
-                          children: [
-                            Text("Anonymous: "),
-                            Switch(
-                              value: isToggled,
-                              onChanged: (value) {
-                                setState(() {
-                                  isToggled = value;
-                                });
-                              },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          DropdownButtonFormField<String>(
+                            value: selected,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selected = value;
+                              });
+                            },
+                            items: snapshot.data!
+                                .map((String value) => DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            decoration: InputDecoration(
+                              labelText: "Select your experience",
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  FeedbackPayload feedbackPayload =
-                                      FeedbackPayload(
-                                          feedbackStatus: selected!,
-                                          foodId: widget.menu.foodId,
-                                          feedbacks:
-                                              feedbackRemarksController.text,
-                                          isAnonymous: isToggled);
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select a role';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: feedbackRemarksController,
+                            decoration: InputDecoration(
+                              labelText: "Write review",
+                              hintText: "Feedback",
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a quantity';
+                              }
+                              return null;
+                            },
+                          ),
+                          Row(
+                            children: [
+                              Text("Anonymous: "),
+                              Switch(
+                                value: isToggled,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isToggled = value;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    FeedbackPayload feedbackPayload =
+                                        FeedbackPayload(
+                                            feedbackStatus: selected!,
+                                            foodId: widget.menu.foodId,
+                                            feedbacks:
+                                                feedbackRemarksController.text,
+                                            isAnonymous: isToggled);
 
-                                  bool saved = await feedbackService
-                                      .saveFeedbacks(feedbackPayload.toJson());
+                                    bool saved =
+                                        await feedbackService.saveFeedbacks(
+                                            feedbackPayload.toJson());
 
-                                  if (saved) {
-                                    widget.callback(true);
-                                    Navigator.pop(context);
+                                    if (saved) {
+                                      widget.callback(true);
+                                      Navigator.pop(context);
+                                    }
                                   }
-                                }
-                              },
-                              child: Text("Review"),
-                            ),
-                            SizedBox(width: 20),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Cancel"),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )),
+                                },
+                                child: Text("Review"),
+                              ),
+                              SizedBox(width: 20),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Cancel"),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                ),
               ],
             );
           } else if (snapshot.hasError) {

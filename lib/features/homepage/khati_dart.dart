@@ -15,7 +15,7 @@ payWithKhaltiInApp(
       productIdentity: 'Product Id',
       productName: 'Product Name',
       mobileReadOnly: false,
-      mobile: '9810527260',
+      mobile: '',
     ),
     preferences: [
       PaymentPreference.khalti,

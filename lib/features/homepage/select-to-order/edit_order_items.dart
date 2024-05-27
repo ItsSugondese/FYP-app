@@ -17,12 +17,12 @@ import '../payment/make_order_and_payment.dart';
 class EditOrderItems extends StatefulWidget {
   final List<FoodOrderingDetails> details;
   final Function(int, int, ActionType) callback;
-  final Function(bool) payCallback;
+  final Function(int) orderCallback;
   const EditOrderItems(
       {super.key,
       required this.details,
       required this.callback,
-      required this.payCallback});
+      required this.orderCallback});
 
   @override
   State<EditOrderItems> createState() => _EditOrderItemsState();
@@ -208,8 +208,10 @@ class _EditOrderItemsState extends State<EditOrderItems> {
                               CustomColors.defaultRedColor),
                           elevation: MaterialStateProperty.all(0)),
                       onPressed: () async {
-                        openModalButtonSheet(
-                            context, details, ((p0, p1, p2) => {}));
+                        openModalButtonSheet(context, details, ((navId) {
+                          Navigator.pop(context);
+                          widget.orderCallback(navId);
+                        }));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(

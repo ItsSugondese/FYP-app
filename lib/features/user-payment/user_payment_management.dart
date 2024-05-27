@@ -102,7 +102,7 @@ class _UserPaymentManagementScreenState
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 20, top: 10),
+              padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
               child: SearchWidget(
                 searchText: "Search User",
                 typedText: (val) {
@@ -113,6 +113,9 @@ class _UserPaymentManagementScreenState
                 },
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             GlobalPayFilterWidget(
                 options: PayFilterMap.payfilterWithoutPartial,
                 selectedFilter: (val) {
@@ -121,6 +124,9 @@ class _UserPaymentManagementScreenState
                     setAndFetchUsers();
                   });
                 }),
+            const SizedBox(
+              height: 10,
+            ),
             if (errMessage != null)
               Center(child: Text(errMessage!))
             else
@@ -138,7 +144,10 @@ class _UserPaymentManagementScreenState
                       : Expanded(
                           child: RefreshIndicator(
                             onRefresh: refresh,
-                            child: ListView.builder(
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: 10,
+                              ),
                               physics: const AlwaysScrollableScrollPhysics(),
                               controller: _scrollController,
                               shrinkWrap: true,
@@ -155,7 +164,6 @@ class _UserPaymentManagementScreenState
                                         width:
                                             Dimension.getScreenWidth(context) *
                                                 0.75,
-                                        color: Colors.amber,
                                         child: Row(
                                           children: [
                                             ClipOval(
@@ -174,15 +182,25 @@ class _UserPaymentManagementScreenState
                                                           0.08,
                                                       fit: BoxFit.cover,
                                                     )
-                                                  : Image.network(
-                                                      userList[index]
-                                                          .profilePath!,
-                                                      height: Dimension
-                                                              .getScreenHeight(
-                                                                  context) *
-                                                          0.08,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                                  : (userList[index].isExternal
+                                                      ? Image.memory(
+                                                          userList[index]
+                                                              .image!,
+                                                          height: Dimension
+                                                                  .getScreenHeight(
+                                                                      context) *
+                                                              0.08,
+                                                          fit: BoxFit.cover,
+                                                        )
+                                                      : Image.network(
+                                                          userList[index]
+                                                              .profilePath!,
+                                                          height: Dimension
+                                                                  .getScreenHeight(
+                                                                      context) *
+                                                              0.08,
+                                                          fit: BoxFit.cover,
+                                                        )),
                                             ),
                                             const SizedBox(
                                               width: 5,

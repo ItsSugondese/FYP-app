@@ -11,6 +11,7 @@ import 'package:fyp/helper/widgets/search_widget.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_menu_pagination.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
+import 'package:fyp/podo/foodmgmt/toggle_menu_payload.dart';
 import 'package:fyp/routes/routes_import.gr.dart';
 import 'package:fyp/templates/circular_indicator/default_circular_indicator.dart';
 import 'package:fyp/utils/appbar/custom-appbar.dart';
@@ -37,6 +38,7 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
   int selectedQuantity = 0; // Initialize with a default value
   bool isToggled = true;
   int selectedFilterer = 1;
+  Map<int, bool> isAvailable = {};
 
   Future<void> refresh() async {
     setState(() {
@@ -198,11 +200,24 @@ class _FoodManagementScreenState extends State<FoodManagementScreen> {
                                             ),
                                             Switch(
                                               value: foodMenu.isAvailableToday,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  isToggled = value;
-                                                });
-                                              },
+                                              onChanged: foodMenu.isAuto
+                                                  ? null
+                                                  : (value) async {
+                                                      ToggleMenuAvailabilityPayload
+                                                          payload =
+                                                          ToggleMenuAvailabilityPayload(
+                                                              foodId:
+                                                                  foodMenu.id,
+                                                              status: value);
+                                                      await foodManagementService
+                                                          .toggleMenuToDisable(
+                                                              payload.toJson());
+
+                                                      setState(() {
+                                                        foodMenu.isAvailableToday =
+                                                            value;
+                                                      });
+                                                    },
                                             ),
                                           ],
                                         ),

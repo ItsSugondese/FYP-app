@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:fyp/constants/designing/image_path.dart';
+import 'package:fyp/constants/designing/screen_name.dart';
 
 class FeedbackCard extends StatelessWidget {
   final String username;
   final String userImage;
   final String feedbackStatus;
   final String feedbackMessage;
+  final bool isAnon;
 
-  FeedbackCard({
-    required this.username,
-    required this.userImage,
-    required this.feedbackStatus,
-    required this.feedbackMessage,
-  });
+  FeedbackCard(
+      {required this.username,
+      required this.userImage,
+      required this.feedbackStatus,
+      required this.feedbackMessage,
+      required this.isAnon});
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +28,15 @@ class FeedbackCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(userImage),
+                  backgroundImage: isAnon
+                      ? AssetImage(ImagePath.getImagePath(
+                          ScreenName.landing, "anon.jpg"))
+                      : NetworkImage(userImage) as ImageProvider,
                   radius: 20,
                 ),
                 SizedBox(width: 8),
                 Text(
-                  username,
+                  isAnon ? "Anonymous" : username,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

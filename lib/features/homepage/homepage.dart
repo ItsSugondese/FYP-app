@@ -20,6 +20,8 @@ import 'package:fyp/helper/widgets/global/food_filter_widgets.dart';
 import 'package:fyp/helper/widgets/global/header_widgets.dart';
 import 'package:fyp/helper/widgets/search_widget.dart';
 import 'package:fyp/helper/widgets/simple_dialog.dart';
+import 'package:fyp/layout/constants/layout_tab_constant.dart';
+import 'package:fyp/layout/user_layout.dart';
 import 'package:fyp/model/foodmgmt/food_menu.dart';
 import 'package:fyp/podo/foodmgmt/food_menu_pagination.dart';
 import 'package:fyp/podo/foodmgmt/food_ordering_details.dart';
@@ -30,9 +32,10 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../routes/routes_import.gr.dart';
 
-@RoutePage()
 class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+  final Function(int) onTabSelected; // Callback function
+
+  const Homepage({required this.onTabSelected});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -106,7 +109,10 @@ class _HomepageState extends State<Homepage> {
                           builder: (context) => EditOrderItems(
                                 details: foodSelectedForOrderingList,
                                 callback: removeOrUpdateItemFromOrderList,
-                                payCallback: ((p0) => {}),
+                                orderCallback: ((val) {
+                                  print("Is it woroking " + val.toString());
+                                  widget.onTabSelected(val);
+                                }),
                               )));
 
                   // openModalButtonSheet(context, foodSelectedForOrderingList,

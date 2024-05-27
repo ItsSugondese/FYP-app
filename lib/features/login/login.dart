@@ -103,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 20,
                               ),
                               TextFormField(
+                                obscureText: true,
                                 controller: _passwordFieldController,
                                 decoration: const InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(

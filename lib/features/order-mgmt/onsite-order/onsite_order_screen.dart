@@ -194,7 +194,7 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "Order no. ${orderList[index].fullName}",
+                                                  "${orderList[index].fullName}",
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 20,
@@ -202,6 +202,9 @@ class _OnsiteOrderScreenState extends State<OnsiteOrderScreen> {
                                                 ),
                                                 Text(
                                                   "Ordered : ${orderList[index].orderedTime} ago",
+                                                ),
+                                                Text(
+                                                  "Table no. : ${orderList[index].tableNumber ?? 'Not Specified'}",
                                                 )
                                               ],
                                             ),

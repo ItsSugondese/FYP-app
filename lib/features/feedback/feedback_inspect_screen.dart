@@ -156,6 +156,7 @@ class _FeedbackInspectScreenState extends State<FeedbackInspectScreen> {
                                     userImage: feedback.userProfileUrl,
                                     feedbackStatus: feedback.feedbackStatus,
                                     feedbackMessage: feedback.feedbacks,
+                                    isAnon: feedback.isAnonymous,
                                   );
                                 },
                               ),

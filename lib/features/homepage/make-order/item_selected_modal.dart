@@ -39,14 +39,17 @@ import '../../../podo/foodmgmt/food_ordering_details.dart';
 //   );
 // }
 
-void openModalButtonSheet(
-    BuildContext context,
-    List<FoodOrderingDetails> details,
-    Function(int, int, ActionType) callback) {
+void openModalButtonSheet(BuildContext context,
+    List<FoodOrderingDetails> details, Function(int) callback) {
   showModalBottomSheet(
     context: context,
     builder: (context) => StatefulBuilder(builder: (context, setState) {
-      return MakeOrderAndPayment(details: details);
+      return MakeOrderAndPayment(
+          details: details,
+          callback: (val) {
+            Navigator.pop(context);
+            callback(val);
+          });
     }),
   );
 }
